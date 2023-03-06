@@ -1,7 +1,8 @@
-const { create } = require("../service/user.service");
+const { create, getUsers, getUserById } = require("../service/user.service");
 const  { genSaltSync, hashSync } = require("bcrypt");
 
 module.exports = {
+    
     createUser: (req, res) => {
         const body = req.body;
         const salt = genSaltSync(10);
@@ -19,5 +20,42 @@ module.exports = {
                 data: results
             });
         });
+    },
+
+    getUserById: (req, res) => {
+        const userName = req.params.userName;
+        getUserById(userName, (err, results) => {
+            if(err) {
+                console.log(err);
+                return;
+            }
+            if(results.length===0){
+                return res.json({
+                    success: 0,
+                    message: "Record not found"
+                })
+            }
+            return res.json({
+                success: 1,
+                data: results
+            });
+        })
+    },
+
+    getUsers: (req, res) => {
+        getUsers((err, results) => {
+            if(err) {
+                console.log(err);
+                return;
+            }
+            return res.json({
+                success: 1,
+                data: results
+            });
+        })
     }
+
+
+
+
 }
