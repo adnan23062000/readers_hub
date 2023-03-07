@@ -1,4 +1,4 @@
-const { create, getUsers, getUserById, updateUser } = require("../service/user.service");
+const { create, getUsers, getUserById, updateUser, deleteUser } = require("../service/user.service");
 const  { genSaltSync, hashSync } = require("bcrypt");
 
 module.exports = {
@@ -61,8 +61,8 @@ module.exports = {
         const body = req.body;
         const userName = req.params.userName;
 
-        console.log("user name:   " + userName);
-        console.log(body);
+        // console.log("user name:   " + userName);
+        // console.log(body);
 
         const salt = genSaltSync(10);
         body.password = hashSync(body.password, salt);
@@ -77,8 +77,30 @@ module.exports = {
                 message: "updated successfully"
             });
         });
-    }
+    },
 
+
+    deleteUser: (req, res) => {
+        
+        const userName = req.params.userName;
+
+        deleteUser(userName, (err, results) => {
+            if (err) {
+                console.log(err);
+                return;
+              }
+              if (!results) {
+                return res.json({
+                  success: 0,
+                  message: "Record Not Found"
+                });
+              }
+              return res.json({
+                success: 1,
+                message: "user deleted successfully"
+              });
+        })
+    }
 
 
 

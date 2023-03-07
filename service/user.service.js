@@ -68,10 +68,20 @@ module.exports = {
             return callBack(null, results);
         }
         );
+    },
+
+
+    deleteUser: (userName, callBack) => {
+        pool.query(`delete from user where Username = ?`,
+        [userName],
+        (error, results, fields) => {
+            if(error) {
+                return callBack(error);
+            }
+            return callBack(null, results);
+        });
     }
 
 
 
-
-
-}
+};
