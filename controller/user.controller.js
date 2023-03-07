@@ -32,7 +32,15 @@ module.exports = {
     },
 
     getUserById: (req, res) => {
+        
         const userName = req.params.userName;
+        
+        if (req.params.userName.includes(" ")) {
+             return res.status(401).json({
+                success: 0,
+                data: "Parameter contains space character"
+            });
+        }
         
         getUserById(userName, (err, results) => {
             if(err) {
@@ -72,6 +80,13 @@ module.exports = {
 
         const userName = req.params.userName.toLowerCase();
 
+        if (req.params.userName.includes(" ")) {
+            return res.status(401).json({
+               success: 0,
+               data: "Parameter contains space character"
+           });
+        }
+
         const salt = genSaltSync(10);
         body.password = hashSync(body.password, salt);
         
@@ -92,6 +107,13 @@ module.exports = {
     deleteUser: (req, res) => {
         
         const userName = req.params.userName;
+
+        if (req.params.userName.includes(" ")) {
+            return res.status(401).json({
+               success: 0,
+               data: "Parameter contains space character"
+           });
+        }
 
         deleteUser(userName, (err, results) => {
             if (err) {
