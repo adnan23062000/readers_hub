@@ -1,4 +1,6 @@
 const pool = require("../config/database");
+const UserDTO = require("../DTO/user.dto");
+const UserUpdateDTO = require("../DTO/userUpdate.dto");
 
 module.exports = {
     
@@ -32,7 +34,9 @@ module.exports = {
                 if(error) {
                     return callBack(error);
                 }
-                return callBack(null, results);
+                const userDTO = new UserDTO(results);
+                console.log(results);
+                return callBack(null, userDTO);
             }
         )
     },
@@ -45,7 +49,9 @@ module.exports = {
                 if(error) {
                     return callBack(error);
                 }
-                return callBack(null, results);
+                const userDTO = new UserDTO(results);
+                console.log(userDTO);
+                return callBack(null, userDTO);
             }
         )
     },
@@ -65,7 +71,9 @@ module.exports = {
             if(error){
                 return callBack(error);
             }
-            return callBack(null, results);
+            const userUpdateDTO = new UserUpdateDTO(data);
+            console.log(data);
+            return callBack(null, results, userUpdateDTO);
         }
         );
     },

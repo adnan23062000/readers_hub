@@ -31,12 +31,12 @@ module.exports = {
                 return;
             }
             if(results.length===0){
-                return res.json({
+                return res.status(404).json({
                     success: 0,
                     message: "Record not found"
                 })
             }
-            return res.json({
+            return res.status(200).json({
                 success: 1,
                 data: results
             });
@@ -49,7 +49,7 @@ module.exports = {
                 console.log(err);
                 return;
             }
-            return res.json({
+            return res.status(200).json({
                 success: 1,
                 data: results
             });
@@ -67,14 +67,15 @@ module.exports = {
         const salt = genSaltSync(10);
         body.password = hashSync(body.password, salt);
         
-        updateUser(userName, body, (err, results) => {
+        updateUser(userName, body, (err, results, data) => {
             if(err) {
                 console.log(err);
                 return;
             }
-            return res.json({
+            return res.status(200).json({
                 success: 1,
-                message: "updated successfully"
+                message: "updated successfully",
+                message: data
             });
         });
     },
@@ -95,7 +96,7 @@ module.exports = {
                   message: "Record Not Found"
                 });
               }
-              return res.json({
+              return res.status(202).json({
                 success: 1,
                 message: "user deleted successfully"
               });
