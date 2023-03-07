@@ -58,11 +58,10 @@ module.exports = {
 
 
     updateUser: (req, res) => {
+        
         const body = req.body;
-        const userName = req.params.userName.toLowerCase();
 
-        // console.log("user name:   " + userName);
-        // console.log(body);
+        const userName = req.params.userName.toLowerCase();
 
         const salt = genSaltSync(10);
         body.password = hashSync(body.password, salt);
@@ -75,7 +74,7 @@ module.exports = {
             return res.status(200).json({
                 success: 1,
                 message: "updated successfully",
-                message: data
+                message: results
             });
         });
     },

@@ -63,13 +63,9 @@ module.exports = {
 
 
     updateUser: (userName, data, callBack) => {
-        pool.query(`update user set Id=?, Email=?, Password=?, CreatedAt=?, UpdatedAt=? where Username = ?`,
+        pool.query(`update user set Password=? where Username = ?`,
         [
-            data.id,
-            data.email,
             data.password,
-            data.createdAt,
-            data.updatedAt,
             userName
         ],
         (error, results, fields) => {
