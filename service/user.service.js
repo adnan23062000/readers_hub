@@ -1,15 +1,20 @@
 const pool = require("../config/database");
 const UserDTO = require("../DTO/user.dto");
 const UserUpdateDTO = require("../DTO/userUpdate.dto");
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
     
     create: (data, callBack) => {
+        
+        const myUuid = uuidv4();
+        console.log(myUuid);
+
         pool.query(
             `insert into user(Id, Username, Email, Password, CreatedAt, UpdatedAt)
             values(?,?,?,?,?,?)`, 
             [
-                data.id,
+                myUuid,
                 data.userName,
                 data.email,
                 data.password,
@@ -35,7 +40,7 @@ module.exports = {
                     return callBack(error);
                 }
                 const userDTO = new UserDTO(results);
-                console.log(results);
+                //console.log(results);
                 return callBack(null, userDTO);
             }
         )
@@ -50,7 +55,7 @@ module.exports = {
                     return callBack(error);
                 }
                 const userDTO = new UserDTO(results);
-                console.log(userDTO);
+                //console.log(userDTO);
                 return callBack(null, userDTO);
             }
         )
