@@ -44,7 +44,7 @@ module.exports = {
     getUserById: (userName, callBack) => {
         pool.query(
             `select Id, Username, Email, Password, CreatedAt, UpdatedAt from user where Username= ?`,
-            [userName],
+            [userName.toLowerCase()],
             (error, results, fields) => {
                 if(error) {
                     return callBack(error);
@@ -72,7 +72,7 @@ module.exports = {
                 return callBack(error);
             }
             const userUpdateDTO = new UserUpdateDTO(data);
-            console.log(data);
+            //console.log(data);
             return callBack(null, results, userUpdateDTO);
         }
         );
@@ -81,7 +81,7 @@ module.exports = {
 
     deleteUser: (userName, callBack) => {
         pool.query(`delete from user where Username = ?`,
-        [userName],
+        [userName.toLowerCase()],
         (error, results, fields) => {
             if(error) {
                 return callBack(error);

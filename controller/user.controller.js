@@ -59,7 +59,7 @@ module.exports = {
 
     updateUser: (req, res) => {
         const body = req.body;
-        const userName = req.params.userName;
+        const userName = req.params.userName.toLowerCase();
 
         // console.log("user name:   " + userName);
         // console.log(body);
