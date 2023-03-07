@@ -9,17 +9,26 @@ module.exports = {
         body.password = hashSync(body.password, salt);
         create(body, (err, results) => {
             if(err) {
-                console.log(err);
-                return res.status(500).json({
-                    success: 0,
-                    message: "Database connection error"
-                });
+                if(err.code==='ER_DUP_ENTRY')
+                {
+                    return res.status(409).json({
+                        success: 0,
+                        message: 'Error: User with this userName already exists',
+                    });
+                }
+                else{
+                    return res.status(500).json({
+                        success: 0,
+                        message: "post failed!",
+                    });
+                }
             }
             return res.status(200).json({
                 success: 1,
                 data: results
             });
         });
+        
     },
 
     getUserById: (req, res) => {
