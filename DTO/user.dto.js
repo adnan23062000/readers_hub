@@ -4,6 +4,7 @@ class UserDTO {
       this.users = [];
         
       for (var i = 0; i < user.length; i++) {
+        
         var obj = {
           id: user[i]["Id"],
           userName: user[i]["Username"],
@@ -11,7 +12,9 @@ class UserDTO {
           createdAt: user[i]["CreatedAt"],
           updatedAt: user[i]["UpdatedAt"]
         };
+
         this.users.push(obj);
+        
       }
     }
 }
