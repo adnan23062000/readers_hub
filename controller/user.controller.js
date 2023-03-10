@@ -76,24 +76,14 @@ module.exports = {
         
         const body = req.body;
 
-        if(!body.password){
-            return res.status(400).json({
-                message: "bad request"
-            });
-        }
+        //console.log(body.password);
 
         const userName = req.params.userName;
 
-        if(!checkParamValidity(userName)){
-            
-            return res.status(400).json({
-                message: "invalid request"
-            })
-        
-        }
+        //console.log(userName);
 
         try{
-            const result = await updateUser(userName, body);
+            const result = await updateUser(userName, body.password);
             if(result){
                 return res.status(200).json({
                     success: 1,
