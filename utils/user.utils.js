@@ -20,6 +20,13 @@ module.exports = {
         const encryptedPassword = hashSync(rawPassword, salt);
         
         return encryptedPassword;
+    },
+
+    checkParamValidity: (parameter) => {
+        if(parameter.includes(" ")){
+            return false;
+        }
+        return true;   
     }
 
 }

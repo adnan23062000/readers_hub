@@ -21,7 +21,7 @@ module.exports = {
                   )`,
                   (err, result) => {
                     if (err) throw err;
-                    console.log('Table x created!');
+                    console.log('Table user created!');
                 });
             }
     });

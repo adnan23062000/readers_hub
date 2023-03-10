@@ -1,5 +1,5 @@
-const { getUserByUsernameService, updateUserService, deleteUser, getAllUsersService, createUserService, deleteUserService } = require("../service/user.service");
-const  { genSaltSync, hashSync } = require("bcrypt");
+const { getUserByUsername, updateUser, getAllUsers, createUser, deleteUser } = require("../service/user.service");
+const { checkParamValidity } = require("../utils/user.utils");
 
 module.exports = {
     
@@ -8,9 +8,9 @@ module.exports = {
         const body = req.body;
 
         try{
-            const data = await createUserService(body);
+            const data = await createUser(body);
             if(data){
-                return res.status(200).json({
+                return res.status(201).json({
                     success: 1,
                     data: "user created"
                 });
@@ -18,39 +18,31 @@ module.exports = {
         }
         catch(error){
             console.log(error);
-            return;
+            return res.status(400).json({
+                message: "bad request"
+            });
         }
         
-        // create(body, (err, results) => {
-        //     if(err) {
-        //         if(err.code==='ER_DUP_ENTRY')
-        //         {
-        //             return res.status(409).json({
-        //                 success: 0,
-        //                 message: 'Error: User with this userName already exists',
-        //             });
-        //         }
-        //         else{
-        //             return res.status(500).json({
-        //                 success: 0,
-        //                 message: "post failed!",
-        //             });
-        //         }
-        //     }
-        //     return res.status(200).json({
-        //         success: 1,
-        //         data: results
-        //     });
-        // });
         
     },
 
-    getUserById: async (req, res) => {
+    getUserByUsername: async (req, res) => {
         
         const userName = req.params.userName;
+
+        if(!checkParamValidity(userName)){
+            
+            return res.status(400).json({
+                message: "invalid request"
+            })
+        
+        }
         
         try{
-            const results = await getUserByUsernameService(userName);
+            const results = await getUserByUsername(userName);
+
+            console.log(results);
+
             return res.status(200).json({
                 success: 1,
                 data: results
@@ -60,20 +52,13 @@ module.exports = {
             console.log(error);
             return;
         }
-
-        // if (req.params.userName.includes(" ")) {
-        //      return res.status(401).json({
-        //         success: 0,
-        //         data: "Parameter contains space character"
-        //     });
-        // }
         
     },
 
     getUsers: async (req, res) => {
         
         try{
-            const results = await getAllUsersService();
+            const results = await getAllUsers();
  
             return res.status(200).json({
                 success: 1,
@@ -91,10 +76,24 @@ module.exports = {
         
         const body = req.body;
 
+        if(!body.password){
+            return res.status(400).json({
+                message: "bad request"
+            });
+        }
+
         const userName = req.params.userName;
 
+        if(!checkParamValidity(userName)){
+            
+            return res.status(400).json({
+                message: "invalid request"
+            })
+        
+        }
+
         try{
-            const result = await updateUserService(userName, body);
+            const result = await updateUser(userName, body);
             if(result){
                 return res.status(200).json({
                     success: 1,
@@ -104,31 +103,10 @@ module.exports = {
         }
         catch(error){
             console.log(error);
-            return;
+            return res.status(400).json({
+                message: "bad request"
+            });
         }
-
-
-        // if (req.params.userName.includes(" ")) {
-        //     return res.status(401).json({
-        //        success: 0,
-        //        data: "Parameter contains space character"
-        //    });
-        // }
-
-        //const salt = genSaltSync(10);
-        //body.password = hashSync(body.password, salt);
-        
-        // updateUser(userName, body, (err, results, data) => {
-        //     if(err) {
-        //         console.log(err);
-        //         return;
-        //     }
-        //     return res.status(200).json({
-        //         success: 1,
-        //         message: "updated successfully",
-        //         message: results
-        //     });
-        // });
 
     },
 
@@ -137,16 +115,17 @@ module.exports = {
         
         const userName = req.params.userName;
 
-        // if (req.params.userName.includes(" ")) {
-        //     return res.status(401).json({
-        //        success: 0,
-        //        data: "Parameter contains space character"
-        //    });
-        // }
+        if(!checkParamValidity(userName)){
+            
+            return res.status(400).json({
+                message: "invalid request"
+            })
+        
+        }
 
         
         try{
-            const result = await deleteUserService(userName);
+            const result = await deleteUser(userName);
             if(result){
                 return res.status(200).json({
                     success: 1,
@@ -156,27 +135,12 @@ module.exports = {
         }
         catch(error){
             console.log(error);
-            return;
+            return res.status(400).json({
+                message: "bad request"
+            });
         }
         
         
-        
-        // deleteUser(userName, (err, results) => {
-        //     if (err) {
-        //         console.log(err);
-        //         return;
-        //       }
-        //       if (!results) {
-        //         return res.json({
-        //           success: 0,
-        //           message: "Record Not Found"
-        //         });
-        //       }
-        //       return res.status(202).json({
-        //         success: 1,
-        //         message: "user deleted successfully"
-        //       });
-        // })
     }
 
 
