@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/databaseSequelize'); 
+const sequelize = require('../config/databaseSequelize');
+const bcrypt = require('bcrypt');
 
 const User = sequelize.define('User', {
   
@@ -47,9 +48,17 @@ const User = sequelize.define('User', {
 
 {
     timestamps: false,
+    hooks: {
+        beforeSave: async (User) => {
+          if (User.changed('password')) {
+            const hashedPassword = await bcrypt.hash(user.password, 10);
+            user.password = hashedPassword;
+          }
+        }
+      }
 });
 
-// Sync the User model with the database
+
 User.sync()
   .then(() => {
     console.log('User table created successfully.');

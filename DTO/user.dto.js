@@ -3,19 +3,19 @@ class UserDTO {
       
       this.users = [];
         
-      for (var i = 0; i < user.length; i++) {
+      
         
         var obj = {
-          id: user[i]["Id"],
-          userName: user[i]["Username"],
-          email: user[i]["Email"],
-          createdAt: user[i]["CreatedAt"],
-          updatedAt: user[i]["UpdatedAt"]
+          id: user["id"],
+          userName: user["username"],
+          email: user["email"],
+          createdAt: user["createdAt"],
+          updatedAt: user["updatedAt"]
         };
 
-        this.users.push(obj);
+        return obj;
         
-      }
+
     }
 }
 

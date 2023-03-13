@@ -1,18 +1,12 @@
-const repositoryDB = require("../repository/createDb.repository");
-const { getAllUsersRepo, getUserByUsernameRepo, createUserRepo, updateUserRepo, deleteUserRepo } = require("../repository/user.repository");
 const UserDTO = require("../DTO/user.dto");
 const { convertToLowerCase, generateUUID,  generateHashedPassword } = require("../utils/user.utils");
-const UserService = require("../repository/userSequelize.repository");
+const UserRepository = require("../repository/userSequelize.repository");
 
 module.exports = {
     
     createUser: async (data) => {
         
-        // const uuid = generateUUID();
-        // return await createUserRepo(uuid, data);
-
-        return await UserService.createUser(data.userName, data.email, data.password);
-
+        return await UserRepository.createUser(data.userName, data.email, data.password);
 
     },
 
@@ -22,34 +16,37 @@ module.exports = {
          //const updatedPassword = generateHashedPassword(body.password);
         // return await updateUserRepo(updatedPassword, userName);
 
-        return await UserService.updateUser(userName, password);
+        return await UserRepository.updateUser(userName, password);
 
     },
 
 
     getAllUsers: async () => {
         
-        // const users  = await getAllUsersRepo();
-        // const userDTO = new UserDTO(users[0]);
+        const users = await UserRepository.getAllUsers();
         
-        // return userDTO;
+        const usersList = [];
+        
+        const dataValuesArray = users.map(user => user.dataValues);
+        
+        for (var i = 0; i < dataValuesArray.length; i++) {
+            const userDTO = new UserDTO(dataValuesArray[i]);
+            usersList.push(userDTO);
+        }
 
-        const users = await UserService.getAllUsers();
-        return users;
+        return usersList;
     },
 
 
     getUserByUsername: async (userName) => {
         
-        // const validUsername = await convertToLowerCase(userName);
-        // const users = await getUserByUsernameRepo(validUsername);
-        // console.log(users);
-        // const userDTO = new UserDTO(users[0]);
-
-        // return userDTO;
-
-        const user = await UserService.getUserByUsername(userName);
-        return user;
+        const user = await UserRepository.getUserByUsername(userName);
+        
+        const dataValuesArray = user.dataValues;
+        //console.log(dataValuesArray);
+        const userDTO = new UserDTO(dataValuesArray);
+        
+        return userDTO;
     
     },
 
@@ -59,7 +56,7 @@ module.exports = {
         // const validUsername = await convertToLowerCase(userName);
         // return await deleteUserRepo(validUsername);
 
-        return await UserService.deleteUser(userName);
+        return await UserRepository.deleteUser(userName);
     },
 
 

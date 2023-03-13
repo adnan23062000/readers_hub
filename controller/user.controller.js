@@ -33,8 +33,9 @@ module.exports = {
         if(!checkParamValidity(userName)){
             
             return res.status(400).json({
+                success: 0,
                 message: "invalid request"
-            })
+            });
         
         }
         
@@ -76,11 +77,8 @@ module.exports = {
         
         const body = req.body;
 
-        //console.log(body.password);
-
         const userName = req.params.userName;
 
-        //console.log(userName);
 
         try{
             const result = await updateUser(userName, body.password);
