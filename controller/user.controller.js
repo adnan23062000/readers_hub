@@ -1,33 +1,9 @@
-const { getUserByUsername, updateUser, getAllUsers, createUser, deleteUser } = require("../service/user.service");
+const { getUserByUsername, updateUser, getAllUsers, createUser, deleteUser, userLogin } = require("../service/user.service");
 const { checkParamValidity } = require("../utils/user.utils");
-const jwt = require('json-web-token');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
     
-    createUser: async (req, res) => {
-        
-        const body = req.body;
-
-        try{
-            const data = await createUser(body);
-            if(data){
-                return res.status(201).json({
-                    success: 1,
-                    data: "user created"
-                });
-            }
-        }
-        catch(error){
-            console.log(error);
-            return res.status(400).json({
-                message: "bad request"
-            });
-        }
-        
-        
-    },
-
-
 
     getUserByUsername: async (req, res) => {
         
@@ -44,6 +20,12 @@ module.exports = {
         
         try{
             const results = await getUserByUsername(userName);
+
+            if(results===null || results===undefined)
+                return res.status(404).json({
+                    success: 0,
+                    data: "user not found"
+                });
 
             console.log(results);
 
@@ -142,34 +124,69 @@ module.exports = {
 
     userLogin: async (req, res) => {
         
-        const username = req.body.userName;
+        const username = req.body.username;
         const password = req.body.password;
 
-        let payload = {username: username}
+        const user = await userLogin(username);
 
-
-        if (!username || !password){
+        if (!username || !password  ||  password!=user.password){
             return res.status(401).json({
-                message: "Unauthorized"
+                success: 0,
+                message: "Incorrect username or password"
             });
         }
 
-        let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+        let accessToken = jwt.sign({ username: username }, process.env.ACCESS_TOKEN_SECRET, {
             algorithm: "HS256",
             expiresIn: process.env.ACCESS_TOKEN_LIFE
         });
 
-        let refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
-            algorithm: "HS256",
-            expiresIn: process.env.REFRESH_TOKEN_LIFE
+        //console.log(accessToken);
+
+
+        res.cookie("jwt", accessToken, { httpOnly: true });
+        
+        res.status(200).json({
+            success: 1,
+            message: "user logged in"
         });
 
+    },
 
-        payload.refreshToken = refreshToken;
 
-        res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
-        res.send();
+    userRegister: async (req, res) => {
 
+        const body = req.body;
+        const username = req.body.username;
+
+        try{
+            const data = await createUser(body);
+            
+            if(data){
+                
+                let accessToken = jwt.sign({ username: username }, process.env.ACCESS_TOKEN_SECRET, {
+                    algorithm: "HS256",
+                    expiresIn: process.env.ACCESS_TOKEN_LIFE
+                });
+        
+                console.log(accessToken);
+        
+        
+                res.cookie("jwt", accessToken, { httpOnly: true });
+                   
+                
+                return res.status(201).json({
+                    success: 1,
+                    data: "user created"
+                });
+            }
+        }
+        catch(error){
+            console.log(error);
+            return res.status(400).json({
+                message: "bad request"
+            });
+        }
 
     }
 
