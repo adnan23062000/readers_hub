@@ -5,8 +5,8 @@ const UserRepository = require("../repository/userSequelize.repository");
 module.exports = {
     
     createUser: async (data) => {
-        
-        return await UserRepository.createUser(data.userName, data.email, data.password);
+
+        return await UserRepository.createUser(data.username, data.email, data.password);
 
     },
 
@@ -41,6 +41,9 @@ module.exports = {
     getUserByUsername: async (userName) => {
         
         const user = await UserRepository.getUserByUsername(userName);
+
+        if(user===null || user===undefined)
+            return user;
         
         const dataValuesArray = user.dataValues;
         //console.log(dataValuesArray);
@@ -58,6 +61,16 @@ module.exports = {
 
         return await UserRepository.deleteUser(userName);
     },
+
+
+    userLogin: async (username) => {
+        
+        const user = await UserRepository.getUserByUsername(username);
+        
+        const dataValuesArray = user.dataValues;
+
+        return dataValuesArray;
+    }
 
 
 };
