@@ -1,5 +1,6 @@
 const { getUserByUsername, updateUser, getAllUsers, createUser, deleteUser } = require("../service/user.service");
 const { checkParamValidity } = require("../utils/user.utils");
+const jwt = require('json-web-token');
 
 module.exports = {
     
@@ -25,6 +26,8 @@ module.exports = {
         
         
     },
+
+
 
     getUserByUsername: async (req, res) => {
         
@@ -56,6 +59,8 @@ module.exports = {
         
     },
 
+
+
     getUsers: async (req, res) => {
         
         try{
@@ -71,6 +76,7 @@ module.exports = {
             return;
         }
     },
+
 
 
     updateUser: async (req, res) => {
@@ -97,6 +103,7 @@ module.exports = {
         }
 
     },
+
 
 
     deleteUser: async (req, res) => {
@@ -129,6 +136,41 @@ module.exports = {
         }
         
         
+    },
+
+
+
+    userLogin: async (req, res) => {
+        
+        const username = req.body.userName;
+        const password = req.body.password;
+
+        let payload = {username: username}
+
+
+        if (!username || !password){
+            return res.status(401).json({
+                message: "Unauthorized"
+            });
+        }
+
+        let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
+            algorithm: "HS256",
+            expiresIn: process.env.ACCESS_TOKEN_LIFE
+        });
+
+        let refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
+            algorithm: "HS256",
+            expiresIn: process.env.REFRESH_TOKEN_LIFE
+        });
+
+
+        payload.refreshToken = refreshToken;
+
+        res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
+        res.send();
+
+
     }
 
 

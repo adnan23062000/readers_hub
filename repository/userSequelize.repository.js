@@ -72,6 +72,7 @@ const deleteUser = async (username) => {
     }
 };
 
+
 module.exports = {
   getAllUsers,
   getUserByUsername,

@@ -1,10 +1,6 @@
 class UserDTO {
     constructor(user) {
-      
-      this.users = [];
-        
-      
-        
+             
         var obj = {
           id: user["id"],
           userName: user["username"],
