@@ -13,12 +13,5 @@ router.route('/:userName')
     .delete(verify, deleteUser)
 
 
-router.route('/login')
-    .post(userLogin)
-
-
-router.route('/register')
-    .post(userRegister)
-
 
 module.exports = router;

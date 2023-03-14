@@ -6,16 +6,13 @@ module.exports = {
     
     createUser: async (data) => {
 
-        return await UserRepository.createUser(data.username, data.email, data.password);
+        return await UserRepository.createUser(data.username.toLower, data.email, data.password);
 
     },
 
 
     updateUser: async (userName, password) => {
         
-         //const updatedPassword = generateHashedPassword(body.password);
-        // return await updateUserRepo(updatedPassword, userName);
-
         return await UserRepository.updateUser(userName, password);
 
     },
@@ -45,8 +42,8 @@ module.exports = {
         if(user===null || user===undefined)
             return user;
         
+        
         const dataValuesArray = user.dataValues;
-        //console.log(dataValuesArray);
         const userDTO = new UserDTO(dataValuesArray);
         
         return userDTO;
@@ -56,10 +53,8 @@ module.exports = {
 
     deleteUser: async (userName) => {
         
-        // const validUsername = await convertToLowerCase(userName);
-        // return await deleteUserRepo(validUsername);
-
-        return await UserRepository.deleteUser(userName);
+        const validUsername = await convertToLowerCase(userName);
+        return await UserRepository.deleteUser(validUsername);
     },
 
 

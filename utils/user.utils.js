@@ -1,5 +1,7 @@
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require('uuid');
+const jwt = require('jsonwebtoken');
+
 
 module.exports = {
 
@@ -33,7 +35,15 @@ module.exports = {
         
         const result = await bcrypt.compare(rawPassword, encryptedPassword);
         return result;
+
+    },
+
+    generateAccessToken:  (username) => {
         
+        return jwt.sign({ username: username }, process.env.ACCESS_TOKEN_SECRET, {
+            algorithm: "HS256",
+            expiresIn: process.env.ACCESS_TOKEN_LIFE
+        });
     }
 
 }

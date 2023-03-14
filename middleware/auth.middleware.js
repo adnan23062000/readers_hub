@@ -3,8 +3,7 @@ const jwt = require('jsonwebtoken');
 exports.verify = function(req, res, next){
     
     let accessToken = req.cookies.jwt;
-
-    console.log(accessToken);
+    
 
     if (!accessToken){
         return res.status(403).json({

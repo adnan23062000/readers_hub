@@ -1,6 +1,7 @@
-const { getUserByUsername, updateUser, getAllUsers, createUser, deleteUser, userLogin } = require("../service/user.service");
+const { getUserByUsername, updateUser, getAllUsers, deleteUser } = require("../service/user.service");
 const { checkParamValidity, compareHashedPassword } = require("../utils/user.utils");
 const jwt = require('jsonwebtoken');
+
 
 module.exports = {
     
@@ -117,84 +118,7 @@ module.exports = {
         }
         
         
-    },
-
-
-
-    userLogin: async (req, res) => {
-        
-        const username = req.body.username;
-        const password = req.body.password;
-
-        const user = await userLogin(username);
-
-        const passwordMatched = await compareHashedPassword(password, user.password);
-
-        console.log(passwordMatched);
-
-
-
-        if (!username || !password || !passwordMatched) {
-            return res.status(401).json({
-                success: 0,
-                message: "Incorrect username or password"
-            });
-        }
-
-        let accessToken = jwt.sign({ username: username }, process.env.ACCESS_TOKEN_SECRET, {
-            algorithm: "HS256",
-            expiresIn: process.env.ACCESS_TOKEN_LIFE
-        });
-
-        //console.log(accessToken);
-
-
-        res.cookie("jwt", accessToken, { httpOnly: true });
-        
-        res.status(200).json({
-            success: 1,
-            message: "user logged in"
-        });
-
-    },
-
-
-    userRegister: async (req, res) => {
-
-        const body = req.body;
-        const username = req.body.username;
-
-        try{
-            const data = await createUser(body);
-            
-            if(data){
-                
-                let accessToken = jwt.sign({ username: username }, process.env.ACCESS_TOKEN_SECRET, {
-                    algorithm: "HS256",
-                    expiresIn: process.env.ACCESS_TOKEN_LIFE
-                });
-        
-                console.log(accessToken);
-        
-        
-                res.cookie("jwt", accessToken, { httpOnly: true });
-                   
-                
-                return res.status(201).json({
-                    success: 1,
-                    data: "user created"
-                });
-            }
-        }
-        catch(error){
-            console.log(error);
-            return res.status(400).json({
-                message: "bad request"
-            });
-        }
-
     }
-
 
 
 }
