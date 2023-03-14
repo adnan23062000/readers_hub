@@ -1,5 +1,5 @@
 const { getUserByUsername, updateUser, getAllUsers, createUser, deleteUser, userLogin } = require("../service/user.service");
-const { checkParamValidity } = require("../utils/user.utils");
+const { checkParamValidity, compareHashedPassword } = require("../utils/user.utils");
 const jwt = require('jsonwebtoken');
 
 module.exports = {
@@ -27,7 +27,6 @@ module.exports = {
                     data: "user not found"
                 });
 
-            console.log(results);
 
             return res.status(200).json({
                 success: 1,
@@ -129,7 +128,13 @@ module.exports = {
 
         const user = await userLogin(username);
 
-        if (!username || !password  ||  password!=user.password){
+        const passwordMatched = await compareHashedPassword(password, user.password);
+
+        console.log(passwordMatched);
+
+
+
+        if (!username || !password || !passwordMatched) {
             return res.status(401).json({
                 success: 0,
                 message: "Incorrect username or password"
@@ -175,7 +180,7 @@ module.exports = {
                 res.cookie("jwt", accessToken, { httpOnly: true });
                    
                 
-                return res.status(200).json({
+                return res.status(201).json({
                     success: 1,
                     data: "user created"
                 });

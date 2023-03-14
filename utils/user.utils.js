@@ -1,4 +1,4 @@
-const  { genSaltSync, hashSync } = require("bcrypt");
+const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
@@ -16,8 +16,8 @@ module.exports = {
     },
 
     generateHashedPassword: (rawPassword) => {
-        const salt = genSaltSync(10);
-        const encryptedPassword = hashSync(rawPassword, salt);
+        const salt = bcrypt.genSaltSync(10);
+        const encryptedPassword = bcrypt.hashSync(rawPassword, salt);
         
         return encryptedPassword;
     },
@@ -27,6 +27,13 @@ module.exports = {
             return false;
         }
         return true;   
+    },
+
+    compareHashedPassword: async (rawPassword, encryptedPassword) => {
+        
+        const result = await bcrypt.compare(rawPassword, encryptedPassword);
+        return result;
+        
     }
 
 }
