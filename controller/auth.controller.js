@@ -1,4 +1,3 @@
-const { createUser, userLogin } = require("../service/user.service");
 const authService = require('../service/auth.service');
 const { checkParamValidity, compareHashedPassword, generateAccessToken } = require("../utils/user.utils");
 const jwt = require('jsonwebtoken');
@@ -38,7 +37,7 @@ module.exports = {
         catch(error){
             console.log(error);
             return res.status(400).json({
-                message: "bad request"
+                message: "Invalid or duplicate request"
             });
         }
 

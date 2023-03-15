@@ -7,7 +7,7 @@ router.route('/')
     .get(verify, getUsers)
 
 
-router.route('/:userName')
+router.route('/:blogName')
     .get(verify, getUserByUsername)
     .put(verify, updateUser)
     .delete(verify, deleteUser)
