@@ -1,11 +1,12 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/databaseSequelize');
+const User = require('./user.model');
 
 const Blog = sequelize.define('Blog', {
   
   blogId: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
     allowNull: false,
     primaryKey: true,
     unique: true,
@@ -30,8 +31,11 @@ const Blog = sequelize.define('Blog', {
   author: {
     type: DataTypes.STRING,
     allowNull: false,
+    validate: {
+      isAlphanumeric: true,
+    },
     references: {
-      model: 'User',
+      model: User,
       key: 'username'
     }
   },
@@ -49,6 +53,7 @@ const Blog = sequelize.define('Blog', {
   },
 });
 
+
 Blog.sync()
   .then(() => {
     console.log('Blog table created successfully.');
@@ -56,5 +61,6 @@ Blog.sync()
   .catch((err) => {
     console.error('Error creating blog table:', err);
   });
+  
 
 module.exports = Blog;

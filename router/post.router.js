@@ -1,16 +1,18 @@
 const { getUsers, updateUser, deleteUser, getUserByUsername } = require("../controller/user.controller");
+const { getAllBlogs, getBlogById, createBlog, updateBlog, deleteBlog } = require('../controller/post.controller');
 const { verify } = require('../middleware/auth.middleware');
 
 const router = require("express").Router();
 
 router.route('/')
-    .get(verify, getUsers)
+    .get(verify, getAllBlogs)
+    .post(verify, createBlog)
 
 
-router.route('/:blogName')
-    .get(verify, getUserByUsername)
-    .put(verify, updateUser)
-    .delete(verify, deleteUser)
+router.route('/:blogId')
+    .get(verify, getBlogById)
+    .put(verify, updateBlog)
+    .delete(verify, deleteBlog)
 
 
 

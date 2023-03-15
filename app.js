@@ -10,6 +10,8 @@ const app = express();
 
 const indexRouter = require("./router");
 
+const dbSync = require('./model/index.model');
+
 
 app.use(express.json());
 app.use(bodyParser.json());

@@ -70,5 +70,6 @@ User.sync()
   .catch((err) => {
     console.error('Error creating user table:', err);
   });
+  
 
 module.exports = User;
