@@ -74,6 +74,8 @@ module.exports = {
 
 
         res.cookie("jwt", accessToken, { httpOnly: true });
+
+        req.currentUser = req.body.username;
         
         return res.status(200).json({
             success: true,

@@ -4,7 +4,8 @@ class BlogDTO {
         var obj = {
           id: blog["blogId"],
           blogTitle: blog["blogTitle"],
-          blogBody: blog["blogBody"]
+          blogBody: blog["blogBody"],
+          author: blog["username"]
         };
 
         return obj;

@@ -5,7 +5,7 @@ const router = require("express").Router();
 
 router.route('/')
     .get(getAllBlogs)
-    .post(createBlog)
+    .post(verify, createBlog)
 
 
 router.route('/:blogId')

@@ -1,5 +1,6 @@
 const { getUserByUsername, updateUser, getAllUsers, deleteUser } = require("../service/user.service");
 const { checkParamValidity, compareHashedPassword } = require("../utils/user.utils");
+const { isAuthorized } = require('../middleware/isAuthorized.middleware');
 const jwt = require('jsonwebtoken');
 
 const BlogService = require('../service/post.service');
@@ -122,6 +123,20 @@ module.exports = {
 
         const blogId = req.params.blogId;
 
+        const results = await BlogService.getBlogByBlogId(blogId);
+        const authorOfThisBlog = results.author;
+
+        const accessToken = req.cookies.jwt; 
+        const decodedToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+        const currentUser = decodedToken.username;
+
+        if(!(currentUser==authorOfThisBlog)){
+            return res.status(401).json({
+                    success: false,
+                    message: "Unauthorized"
+            })
+        }
+        
 
         try{
             const result = await BlogService.updateBlog(blogId, body.blogBody);
@@ -148,13 +163,18 @@ module.exports = {
         
         const blogId = req.params.blogId;
 
-        if(!checkParamValidity(blogId)){
-            
-            return res.status(400).json({
-                success: false,
-                message: "invalid request"
+        const results = await BlogService.getBlogByBlogId(blogId);
+        const authorOfThisBlog = results.author;
+
+        const accessToken = req.cookies.jwt; 
+        const decodedToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+        const currentUser = decodedToken.username;
+
+        if(!(currentUser==authorOfThisBlog)){
+            return res.status(401).json({
+                    success: false,
+                    message: "Unauthorized"
             })
-        
         }
 
         
