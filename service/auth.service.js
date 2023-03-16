@@ -4,11 +4,11 @@ const UserService = require("../service/user.service");
 
 module.exports = {
 
-    registerUser: async (data) => {
+    registerUser: async (user) => {
 
-        const username = await convertToLowerCase(data.username);
+        user.username = convertToLowerCase(user.username);
         
-        return await UserService.createUser(username, data.email, data.password);
+        return await UserService.createUser(user);
 
     },
 

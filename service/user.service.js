@@ -1,17 +1,19 @@
 const UserDTO = require("../DTO/user.dto");
-const { convertToLowerCase, generateUUID,  generateHashedPassword } = require("../utils/user.utils");
+const { convertToLowerCase, generateHashedPassword } = require("../utils/user.utils");
 const UserRepository = require("../repository/userSequelize.repository");
 
 module.exports = {
     
-    createUser: async (username, email, password) => {
+    createUser: async (user) => {
 
-        return await UserRepository.createUser(username, email, password);
+        return await UserRepository.createUser(user.username, user.email, user.password);
 
     },
 
 
     updateUser: async (userName, password) => {
+        
+        password = generateHashedPassword(password);
         
         return await UserRepository.updateUser(userName, password);
 
@@ -39,7 +41,7 @@ module.exports = {
         
         const user = await UserRepository.getUserByUsername(userName);
 
-        if(user===null || user===undefined)
+        if(!user)
             return user;
         
         
@@ -63,7 +65,7 @@ module.exports = {
 
     deleteUser: async (userName) => {
         
-        const validUsername = await convertToLowerCase(userName);
+        const validUsername = convertToLowerCase(userName);
         return await UserRepository.deleteUser(validUsername);
     },
 

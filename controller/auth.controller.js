@@ -1,6 +1,5 @@
 const authService = require('../service/auth.service');
-const { checkParamValidity, compareHashedPassword, generateAccessToken } = require("../utils/user.utils");
-const jwt = require('jsonwebtoken');
+const { compareHashedPassword, generateAccessToken } = require("../utils/user.utils");
 
 
 module.exports = {
@@ -8,15 +7,16 @@ module.exports = {
     
     userRegister: async (req, res) => {
 
-        const body = req.body;
-        const username = req.body.username;
-
-        if(Object.keys(body).length === 0){
+        if(Object.keys(req.body).length === 0){
             return res.status(400).json({
                 success: false,
                 message: "No request body"
             });
         }
+        
+        const body = req.body;
+        const username = req.body.username;
+
 
         if(!body.username || !body.email || !body.password){
             return res.status(400).json({
@@ -55,32 +55,46 @@ module.exports = {
     
     userLogin: async (req, res) => {
         
+        if(Object.keys(req.body).length === 0){
+            return res.status(400).json({
+                success: false,
+                message: "Empty request body"
+            });
+        }
+        
         const username = req.body.username;
         const password = req.body.password;
 
 
         const user = await authService.userLogin(username);
 
-        console.log(user, password);
-
+        if (!username || !password) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid request"
+            });
+        }
+        
         const passwordMatched = await compareHashedPassword(password, user.password);
         
-        if (!username || !password || !passwordMatched) {
-            return res.status(401).json({
+
+        if(!passwordMatched){
+            res.status(401).json({
                 success: false,
                 message: "Incorrect username or password"
             });
         }
 
-        let accessToken = generateAccessToken(username);
+        else{
+            let accessToken = generateAccessToken(username);
 
-
-        res.cookie("jwt", accessToken, { httpOnly: true });
+            res.cookie("jwt", accessToken, { httpOnly: true });
         
-        return res.status(200).json({
-            success: true,
-            message: "user logged in"
-        });
+            return res.status(200).json({
+                success: true,
+                message: "user logged in"
+            });
+        }
 
     },
 

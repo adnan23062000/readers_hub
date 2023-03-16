@@ -1,6 +1,5 @@
 const { getUserByUsername, updateUser, getAllUsers, deleteUser } = require("../service/user.service");
-const { checkParamValidity, convertToLowerCase } = require("../utils/user.utils");
-const jwt = require('jsonwebtoken');
+const { checkParamValidity, convertToLowerCase, checkPasswordLength } = require("../utils/user.utils");
 
 
 module.exports = {
@@ -20,9 +19,9 @@ module.exports = {
         }
         
         try{
-            const results = await getUserByUsername(convertToLowerCase(userName));
+            const result = await getUserByUsername(convertToLowerCase(userName));
 
-            if(!results)
+            if(!result)
                 return res.status(404).json({
                     success: false,
                     data: "user not found"
@@ -31,7 +30,7 @@ module.exports = {
 
             return res.status(200).json({
                 success: true,
-                data: results
+                data: result
             });    
         }
         catch(error){
@@ -74,6 +73,13 @@ module.exports = {
                 message: "invalid username"
             })
         
+        }
+
+        if(!checkPasswordLength(body.password)){
+            return res.status(400).json({
+                success: false,
+                message: "password length too small"
+            })
         }
 
 
