@@ -37,7 +37,7 @@ module.exports = {
     },
 
 
-    getUserByUsername: async (userName) => {
+    getUserByUsername: async (userName, showPassword) => {
         
         const user = await UserRepository.getUserByUsername(userName);
 
@@ -46,18 +46,9 @@ module.exports = {
         
         
         const dataValuesArray = user.dataValues;
-        const userDTO = new UserDTO(dataValuesArray);
+        const userDTO = new UserDTO(dataValuesArray, showPassword);
         
         return userDTO;
-    
-    },
-
-
-    getUserWithPassword: async (userName) => {
-        
-        const user = await UserRepository.getUserByUsername(userName);
-        
-        return user;
     
     },
 

@@ -14,7 +14,9 @@ module.exports = {
 
     userLogin: async (username) => {
         
-        const user = await UserService.getUserWithPassword(username);
+        const user = await UserService.getUserByUsername(username, true);
+
+        //console.log(user);
 
         return user;
     }

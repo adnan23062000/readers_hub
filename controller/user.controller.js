@@ -19,7 +19,7 @@ module.exports = {
         }
         
         try{
-            const result = await getUserByUsername(convertToLowerCase(userName));
+            const result = await getUserByUsername(convertToLowerCase(userName), false);
 
             if(!result)
                 return res.status(404).json({
