@@ -11,9 +11,16 @@ module.exports = {
         const body = req.body;
         const username = req.body.username;
 
+        if(Object.keys(body).length === 0){
+            return res.status(400).json({
+                success: false,
+                message: "No request body"
+            });
+        }
+
         if(!body.username || !body.email || !body.password){
-            res.status(400).json({
-                success: 1,
+            return res.status(400).json({
+                success: false,
                 message: "Invalid request body"
             });
         }
@@ -29,7 +36,7 @@ module.exports = {
                 res.cookie("jwt", accessToken, { httpOnly: true });
                                   
                 return res.status(201).json({
-                    success: 1,
+                    success: true,
                     data: "user created"
                 });
             }
@@ -37,6 +44,7 @@ module.exports = {
         catch(error){
             console.log(error);
             return res.status(400).json({
+                success: false,
                 message: "Invalid or duplicate request"
             });
         }
@@ -53,11 +61,13 @@ module.exports = {
 
         const user = await authService.userLogin(username);
 
+        console.log(user, password);
+
         const passwordMatched = await compareHashedPassword(password, user.password);
         
         if (!username || !password || !passwordMatched) {
             return res.status(401).json({
-                success: 0,
+                success: false,
                 message: "Incorrect username or password"
             });
         }
@@ -67,8 +77,8 @@ module.exports = {
 
         res.cookie("jwt", accessToken, { httpOnly: true });
         
-        res.status(200).json({
-            success: 1,
+        return res.status(200).json({
+            success: true,
             message: "user logged in"
         });
 

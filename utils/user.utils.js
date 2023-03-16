@@ -18,7 +18,7 @@ module.exports = {
     },
 
     generateHashedPassword: (rawPassword) => {
-        const salt = bcrypt.genSaltSync(10);
+        const salt = bcrypt.genSaltSync(process.env.SALT_ROUND);
         const encryptedPassword = bcrypt.hashSync(rawPassword, salt);
         
         return encryptedPassword;
@@ -41,7 +41,7 @@ module.exports = {
     generateAccessToken:  (username) => {
         
         return jwt.sign({ username: username }, process.env.ACCESS_TOKEN_SECRET, {
-            algorithm: "HS256",
+            algorithm: process.env.ACCESS_TOKEN_ALGORITHM,
             expiresIn: process.env.ACCESS_TOKEN_LIFE
         });
     }
