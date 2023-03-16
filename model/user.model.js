@@ -17,7 +17,7 @@ const User = sequelize.define('User', {
     primaryKey: true,
     validate: {
       isAlphanumeric: true,
-    }
+    },
   },
 
   email: {

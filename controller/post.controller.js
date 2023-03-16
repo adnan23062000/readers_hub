@@ -17,7 +17,7 @@ module.exports = {
 
         if(!body.blogTitle || !body.blogBody || !author){
             res.status(400).json({
-                success: 0,
+                success: false,
                 message: "Invalid request body"
             });
         }
@@ -29,7 +29,7 @@ module.exports = {
             if(data){
                                   
                 return res.status(201).json({
-                    success: 1,
+                    success: true,
                     data: "blog created"
                 });
             }
@@ -37,6 +37,7 @@ module.exports = {
         catch(error){
             console.log(error);
             return res.status(400).json({
+                success: false,
                 message: "Invalid request"
             });
         }
@@ -52,7 +53,7 @@ module.exports = {
         if(!checkParamValidity(blogId)){
             
             return res.status(400).json({
-                success: 0,
+                success: false,
                 message: "invalid request"
             });
         
@@ -63,13 +64,13 @@ module.exports = {
 
             if(results===null || results===undefined)
                 return res.status(404).json({
-                    success: 0,
+                    success: false,
                     data: "blog not found"
                 });
 
 
             return res.status(200).json({
-                success: 1,
+                success: true,
                 data: results
             });    
         }
@@ -88,7 +89,7 @@ module.exports = {
             const results = await BlogService.getAllBlogs();
  
             return res.status(200).json({
-                success: 1,
+                success: true,
                 data: results
             });    
         }
@@ -111,7 +112,7 @@ module.exports = {
             const result = await BlogService.updateBlog(blogId, body.blogBody);
             if(result){
                 return res.status(200).json({
-                    success: 1,
+                    success: true,
                     data: "user updated successfully"
                 });
             }
@@ -119,6 +120,7 @@ module.exports = {
         catch(error){
             console.log(error);
             return res.status(400).json({
+                success: false,
                 message: "bad request"
             });
         }
@@ -134,6 +136,7 @@ module.exports = {
         if(!checkParamValidity(blogId)){
             
             return res.status(400).json({
+                success: false,
                 message: "invalid request"
             })
         
@@ -144,7 +147,7 @@ module.exports = {
             const result = await BlogService.deleteBlog(blogId);
             if(result){
                 return res.status(200).json({
-                    success: 1,
+                    success: true,
                     data: "blog deleted successfully"
                 });
             }
@@ -152,6 +155,7 @@ module.exports = {
         catch(error){
             console.log(error);
             return res.status(400).json({
+                success: false,
                 message: "bad request"
             });
         }

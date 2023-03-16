@@ -13,7 +13,7 @@ module.exports = {
 
         if(!body.username || !body.email || !body.password){
             res.status(400).json({
-                success: 1,
+                success: true,
                 message: "Invalid request body"
             });
         }
@@ -29,7 +29,7 @@ module.exports = {
                 res.cookie("jwt", accessToken, { httpOnly: true });
                                   
                 return res.status(201).json({
-                    success: 1,
+                    success: true,
                     data: "user created"
                 });
             }
@@ -37,6 +37,7 @@ module.exports = {
         catch(error){
             console.log(error);
             return res.status(400).json({
+                success: false,
                 message: "Invalid or duplicate request"
             });
         }
@@ -57,7 +58,7 @@ module.exports = {
         
         if (!username || !password || !passwordMatched) {
             return res.status(401).json({
-                success: 0,
+                success: false,
                 message: "Incorrect username or password"
             });
         }
@@ -68,7 +69,7 @@ module.exports = {
         res.cookie("jwt", accessToken, { httpOnly: true });
         
         res.status(200).json({
-            success: 1,
+            success: true,
             message: "user logged in"
         });
 

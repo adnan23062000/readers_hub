@@ -28,15 +28,14 @@ const Blog = sequelize.define('Blog', {
     }
   },
 
-  author: {
+  username: {
     type: DataTypes.STRING,
+    foreignKey: true,
+    noUpdate: true,
     allowNull: false,
     validate: {
       isAlphanumeric: true,
-    },
-    references: {
-      model: User,
-      key: 'username'
+      notEmpty: true
     }
   },
 
@@ -51,7 +50,14 @@ const Blog = sequelize.define('Blog', {
     allowNull: false,
     defaultValue: DataTypes.NOW,
   },
-});
+  },
+  
+  {
+    timestamps: false,
+  }
+
+
+);
 
 
 Blog.sync()

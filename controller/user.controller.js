@@ -1,5 +1,5 @@
 const { getUserByUsername, updateUser, getAllUsers, deleteUser } = require("../service/user.service");
-const { checkParamValidity, compareHashedPassword } = require("../utils/user.utils");
+const { checkParamValidity, compareHashedPassword, convertToLowerCase } = require("../utils/user.utils");
 const jwt = require('jsonwebtoken');
 
 
@@ -13,24 +13,24 @@ module.exports = {
         if(!checkParamValidity(userName)){
             
             return res.status(400).json({
-                success: 0,
+                success: false,
                 message: "invalid request"
             });
         
         }
         
         try{
-            const results = await getUserByUsername(userName);
+            const results = await getUserByUsername(convertToLowerCase(userName));
 
             if(results===null || results===undefined)
                 return res.status(404).json({
-                    success: 0,
+                    success: false,
                     data: "user not found"
                 });
 
 
             return res.status(200).json({
-                success: 1,
+                success: false,
                 data: results
             });    
         }
@@ -49,7 +49,7 @@ module.exports = {
             const results = await getAllUsers();
  
             return res.status(200).json({
-                success: 1,
+                success: true,
                 data: results
             });    
         }
@@ -69,10 +69,10 @@ module.exports = {
 
 
         try{
-            const result = await updateUser(userName, body.password);
+            const result = await updateUser(convertToLowerCase(userName), body.password);
             if(result){
                 return res.status(200).json({
-                    success: 1,
+                    success: true,
                     data: "user updated successfully"
                 });
             }
@@ -80,6 +80,7 @@ module.exports = {
         catch(error){
             console.log(error);
             return res.status(400).json({
+                success: false,
                 message: "bad request"
             });
         }
@@ -95,6 +96,7 @@ module.exports = {
         if(!checkParamValidity(userName)){
             
             return res.status(400).json({
+                success: false,
                 message: "invalid request"
             })
         
@@ -102,10 +104,10 @@ module.exports = {
 
         
         try{
-            const result = await deleteUser(userName);
+            const result = await deleteUser(convertToLowerCase(userName));
             if(result){
                 return res.status(200).json({
-                    success: 1,
+                    success: true,
                     data: "user deleted successfully"
                 });
             }
@@ -113,6 +115,7 @@ module.exports = {
         catch(error){
             console.log(error);
             return res.status(400).json({
+                success: false,
                 message: "bad request"
             });
         }
