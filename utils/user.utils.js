@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
 
-    convertToLowerCase: async (userName) => {
+    convertToLowerCase: (userName) => {
         const ans = userName.toLowerCase();
         return ans;
     },
@@ -18,7 +18,7 @@ module.exports = {
     },
 
     generateHashedPassword: (rawPassword) => {
-        const salt = bcrypt.genSaltSync(process.env.SALT_ROUND);
+        const salt = bcrypt.genSaltSync(10);
         const encryptedPassword = bcrypt.hashSync(rawPassword, salt);
         
         return encryptedPassword;
@@ -44,6 +44,13 @@ module.exports = {
             algorithm: process.env.ACCESS_TOKEN_ALGORITHM,
             expiresIn: process.env.ACCESS_TOKEN_LIFE
         });
+    },
+
+    checkPasswordLength: (password) => {
+        if(password.length<6){
+            return false;
+        }
+        return true;
     }
 
 }

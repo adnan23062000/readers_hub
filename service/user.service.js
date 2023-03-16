@@ -1,17 +1,19 @@
 const UserDTO = require("../DTO/user.dto");
-const { convertToLowerCase, generateUUID,  generateHashedPassword } = require("../utils/user.utils");
+const { convertToLowerCase, generateHashedPassword } = require("../utils/user.utils");
 const UserRepository = require("../repository/userSequelize.repository");
 
 module.exports = {
     
-    createUser: async (username, email, password) => {
+    createUser: async (data) => {
 
-        return await UserRepository.createUser(username, email, password);
+        return await UserRepository.createUser(data.username.toLower, data.email, data.password);
 
     },
 
 
     updateUser: async (userName, password) => {
+        
+        password = generateHashedPassword(password);
         
         return await UserRepository.updateUser(userName, password);
 
@@ -35,7 +37,7 @@ module.exports = {
     },
 
 
-    getUserByUsername: async (userName) => {
+    getUserByUsername: async (userName, showPassword) => {
         
         const user = await UserRepository.getUserByUsername(userName);
 
@@ -44,27 +46,16 @@ module.exports = {
         
         
         const dataValuesArray = user.dataValues;
-        const userDTO = new UserDTO(dataValuesArray);
+        const userDTO = new UserDTO(dataValuesArray, showPassword);
         
         return userDTO;
     
     },
 
 
-
-    getUserWithPassword: async (userName) => {
-        
-        const user = await UserRepository.getUserByUsername(userName);
-
-        return user;
-    
-    },
-
-
-
     deleteUser: async (userName) => {
         
-        const validUsername = await convertToLowerCase(userName);
+        const validUsername = convertToLowerCase(userName);
         return await UserRepository.deleteUser(validUsername);
     },
     
