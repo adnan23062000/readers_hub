@@ -27,10 +27,12 @@ const getBlogById = async (blogId) => {
 };
 
 // Create new blog
-const createBlog = async (blogTitle, blogBody, author) => {
+const createBlog = async (blogTitle, blogBody, username) => {
   
+    console.log(blogTitle, blogBody, username);
+
     try{
-        return await Blog.create({ blogTitle, blogBody, author });
+        return await Blog.create({ blogTitle, blogBody, username });
     }
     catch(err){
         console.log(err.stack);

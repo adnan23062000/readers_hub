@@ -9,7 +9,6 @@ const Blog = sequelize.define('Blog', {
     autoIncrement: true,
     allowNull: false,
     primaryKey: true,
-    unique: true,
     },
   
   blogTitle: {

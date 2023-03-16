@@ -1,4 +1,5 @@
 const UserDTO = require("../DTO/user.dto");
+const BlogDTO = require("../DTO/blog.dto");
 const { convertToLowerCase, generateUUID,  generateHashedPassword } = require("../utils/user.utils");
 const BlogRepository = require('../repository/post.repository');
 
@@ -34,7 +35,7 @@ module.exports = {
         
         const blog = await BlogRepository.getBlogById(blogId);
 
-        if(blog===null || blog===undefined)
+        if(!blog)
             return blog;
         
         

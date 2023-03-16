@@ -22,7 +22,7 @@ module.exports = {
         try{
             const results = await getUserByUsername(convertToLowerCase(userName));
 
-            if(results===null || results===undefined)
+            if(!results)
                 return res.status(404).json({
                     success: false,
                     data: "user not found"

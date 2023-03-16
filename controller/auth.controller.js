@@ -11,9 +11,16 @@ module.exports = {
         const body = req.body;
         const username = req.body.username;
 
+        if(Object.keys(body).length === 0){
+            return res.status(400).json({
+                success: false,
+                message: "Empty request body"
+            });
+        }
+        
         if(!body.username || !body.email || !body.password){
-            res.status(400).json({
-                success: true,
+            return res.status(400).json({
+                success: false,
                 message: "Invalid request body"
             });
         }
@@ -68,7 +75,7 @@ module.exports = {
 
         res.cookie("jwt", accessToken, { httpOnly: true });
         
-        res.status(200).json({
+        return res.status(200).json({
             success: true,
             message: "user logged in"
         });

@@ -1,5 +1,6 @@
-const UserRepository = require("../repository/userSequelize.repository");
 const { convertToLowerCase } = require("../utils/user.utils");
+const userService = require("./user.service");
+
 
 module.exports = {
 
@@ -7,17 +8,15 @@ module.exports = {
 
         const username = await convertToLowerCase(data.username);
 
-        return await UserRepository.createUser(username, data.email, data.password);
+        return await userService.createUser(username, data.email, data.password);
 
     },
 
     userLogin: async (username) => {
         
-        const user = await UserRepository.getUserByUsername(username);
-        
-        const dataValuesArray = user.dataValues;
+        const user = await userService.getUserWithPassword(username);
 
-        return dataValuesArray;
+        return user;
     }
 
 }

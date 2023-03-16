@@ -13,10 +13,17 @@ module.exports = {
 
         const body = req.body;
 
-        const author = "random author";
+        const author = "adnan";
 
-        if(!body.blogTitle || !body.blogBody || !author){
-            res.status(400).json({
+        if(Object.keys(body).length === 0){
+            return res.status(400).json({
+                success: false,
+                message: "Empty request body"
+            });
+        }
+
+        if(!body.blogTitle || !body.blogBody){
+            return res.status(400).json({
                 success: false,
                 message: "Invalid request body"
             });
@@ -24,6 +31,7 @@ module.exports = {
 
         try{
             
+            //console.log(author);
             const data = await BlogService.createBlog(body, author);
             
             if(data){
@@ -50,19 +58,22 @@ module.exports = {
         
         const blogId = req.params.blogId;
 
-        if(!checkParamValidity(blogId)){
+        // if(!checkParamValidity(blogId)){
             
-            return res.status(400).json({
-                success: false,
-                message: "invalid request"
-            });
+        //     return res.status(400).json({
+        //         success: false,
+        //         message: "invalid request"
+        //     });
         
-        }
+        // }
         
         try{
+            
             const results = await BlogService.getBlogByBlogId(blogId);
 
-            if(results===null || results===undefined)
+
+
+            if(!results)
                 return res.status(404).json({
                     success: false,
                     data: "blog not found"
@@ -113,7 +124,7 @@ module.exports = {
             if(result){
                 return res.status(200).json({
                     success: true,
-                    data: "user updated successfully"
+                    data: "Blog updated successfully"
                 });
             }
         }
