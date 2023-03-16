@@ -13,7 +13,11 @@ module.exports = {
 
         const body = req.body;
 
-        const author = "adnan";
+
+        const accessToken = req.cookies.jwt; 
+        const decodedToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+        const author = decodedToken.username;
+
 
         if(Object.keys(body).length === 0){
             return res.status(400).json({
