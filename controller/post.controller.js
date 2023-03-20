@@ -1,10 +1,7 @@
-const { getUserByUsername, updateUser, getAllUsers, deleteUser } = require("../service/user.service");
-const { checkParamValidity, compareHashedPassword } = require("../utils/user.utils");
-const { isAuthorized } = require('../middleware/isAuthorized.middleware');
+const { isNumeric } = require("../utils/user.utils");
 const jwt = require('jsonwebtoken');
-
 const BlogService = require('../service/post.service');
-const Blog = require("../model/post.model");
+
 
 
 module.exports = {
@@ -12,20 +9,16 @@ module.exports = {
 
     createBlog: async (req, res) => {
 
-        const body = req.body;
 
-
-        const accessToken = req.cookies.jwt; 
-        const decodedToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-        const author = decodedToken.username;
-
-
-        if(Object.keys(body).length === 0){
+        if(Object.keys(req.body).length === 0){
             return res.status(400).json({
                 success: false,
                 message: "Empty request body"
             });
         }
+
+        
+        const body = req.body;
 
         if(!body.blogTitle || !body.blogBody){
             return res.status(400).json({
@@ -34,24 +27,29 @@ module.exports = {
             });
         }
 
+
+        const accessToken = req.cookies.jwt; 
+        const decodedToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+        const author = decodedToken.username;
+
+
         try{
             
-            //console.log(author);
             const data = await BlogService.createBlog(body, author);
             
             if(data){
                                   
                 return res.status(201).json({
                     success: true,
-                    data: "blog created"
+                    data: "Blog created"
                 });
             }
         }
         catch(error){
             console.log(error);
-            return res.status(400).json({
+            return res.status(500).json({
                 success: false,
-                message: "Invalid request"
+                message: "Blog Creation failed"
             });
         }
 
@@ -63,25 +61,22 @@ module.exports = {
         
         const blogId = req.params.blogId;
 
-        // if(!checkParamValidity(blogId)){
-            
-        //     return res.status(400).json({
-        //         success: false,
-        //         message: "invalid request"
-        //     });
-        
-        // }
+        if(!isNumeric(blogId)){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid blog id"
+            });
+        }
+
         
         try{
             
             const results = await BlogService.getBlogByBlogId(blogId);
 
-
-
             if(!results)
                 return res.status(404).json({
                     success: false,
-                    data: "blog not found"
+                    data: "Blog not found"
                 });
 
 
@@ -92,7 +87,7 @@ module.exports = {
         }
         catch(error){
             console.log(error);
-            return;
+            return res.status(500).send();
         }
         
     },
@@ -111,7 +106,7 @@ module.exports = {
         }
         catch(error){
             console.log(error);
-            return;
+            return res.status(500).send();
         }
     },
 
@@ -119,13 +114,45 @@ module.exports = {
 
     updateBlog: async (req, res) => {
         
-        const body = req.body;
+        if(Object.keys(req.body).length === 0){
+            return res.status(400).json({
+                success: false,
+                message: "Empty request body"
+            });
+        }
 
         const blogId = req.params.blogId;
 
-        const results = await BlogService.getBlogByBlogId(blogId);
-        const authorOfThisBlog = results.author;
+        if(!isNumeric(blogId)){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid blog id"
+            });
+        }
 
+        const body = req.body;
+
+        if(!body.blogBody){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid request (No blog body included)"
+            });
+        }
+
+
+
+        const result = await BlogService.getBlogByBlogId(blogId);
+
+        if(!result){
+            return res.status(404).json({
+                success: false,
+                message: "Blog not found"
+            });
+        }
+        
+        const authorOfThisBlog = result.author;
+
+        
         const accessToken = req.cookies.jwt; 
         const decodedToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
         const currentUser = decodedToken.username;
@@ -149,9 +176,9 @@ module.exports = {
         }
         catch(error){
             console.log(error);
-            return res.status(400).json({
+            return res.status(500).json({
                 success: false,
-                message: "bad request"
+                message: "blog update failed"
             });
         }
 
@@ -163,9 +190,26 @@ module.exports = {
         
         const blogId = req.params.blogId;
 
-        const results = await BlogService.getBlogByBlogId(blogId);
-        const authorOfThisBlog = results.author;
+        if(!isNumeric(blogId)){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid blog id"
+            });
+        }
 
+
+        const result = await BlogService.getBlogByBlogId(blogId);
+
+        if(!result){
+            return res.status(404).json({
+                success: false,
+                message: "Blog not found"
+            });
+        }
+
+        const authorOfThisBlog = result.author;
+
+        
         const accessToken = req.cookies.jwt; 
         const decodedToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
         const currentUser = decodedToken.username;
@@ -189,9 +233,9 @@ module.exports = {
         }
         catch(error){
             console.log(error);
-            return res.status(400).json({
+            return res.status(500).json({
                 success: false,
-                message: "bad request"
+                message: "Deletion failed"
             });
         }
         

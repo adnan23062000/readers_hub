@@ -1,6 +1,5 @@
 const { getUserByUsername, updateUser, getAllUsers, deleteUser } = require("../service/user.service");
-const { checkParamValidity, compareHashedPassword } = require("../utils/user.utils");
-const jwt = require('jsonwebtoken');
+const { checkParamValidity, checkPasswordLength, convertToLowerCase } = require("../utils/user.utils");
 
 
 module.exports = {
@@ -30,7 +29,7 @@ module.exports = {
 
 
             return res.status(200).json({
-                success: 1,
+                success: true,
                 data: results
             });    
         }

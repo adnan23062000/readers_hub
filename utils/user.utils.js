@@ -51,6 +51,10 @@ module.exports = {
             return false;
         }
         return true;
+    },
+
+    isNumeric: (str) => {
+        return /^\d+$/.test(str);
     }
 
 }

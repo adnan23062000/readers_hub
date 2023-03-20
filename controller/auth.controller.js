@@ -44,7 +44,7 @@ module.exports = {
             console.log(error);
             return res.status(400).json({
                 success: false,
-                message: "Invalid or duplicate request"
+                message: "User creation failed"
             });
         }
 
@@ -64,37 +64,39 @@ module.exports = {
         const username = req.body.username;
         const password = req.body.password;
 
-
-        const user = await authService.userLogin(username);
-
         if (!username || !password) {
             return res.status(401).json({
                 success: false,
                 message: "Invalid request"
             });
         }
+
+        const user = await authService.userLogin(username);
         
         const passwordMatched = await compareHashedPassword(password, user.password);
         
-        if (!username || !password || !passwordMatched) {
+        if (!passwordMatched) {
             return res.status(401).json({
-                success: 0,
+                success: false,
                 message: "Incorrect username or password"
             });
         }
 
         else{
+            
             let accessToken = generateAccessToken(username);
 
-        res.cookie("jwt", accessToken, { httpOnly: true });
+            res.cookie("jwt", accessToken, { httpOnly: true });
         
-        res.status(200).json({
-            success: 1,
-            message: "user logged in"
-        });
+            res.status(200).json({
+                success: true,
+                message: "user logged in"
+            });
 
-    },
+        }
 
 
+
+    }
 
 }
