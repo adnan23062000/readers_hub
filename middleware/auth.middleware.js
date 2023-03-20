@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { contentNegotiate } = require('../utils/userContentNegotiation.utils');
 
 exports.verify = function(req, res, next){
     
@@ -13,7 +14,7 @@ exports.verify = function(req, res, next){
     }
 
     let payload;
-
+    contentNegotiate(req)
     try{
         payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET)
         next();

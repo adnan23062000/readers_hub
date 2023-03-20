@@ -6,8 +6,7 @@ const convert = require('json-to-plain-text');
 
 module.exports = {
 
-    contentNegotiate: (req, res, results) => {
-        
+    contentNegotiate: (req, res, results) => {  
         
         
         if(req.headers.accept === 'application/json'){
@@ -19,7 +18,7 @@ module.exports = {
 
 
 
-        else if(req.headers.accept === 'application/xml'){
+        if(req.headers.accept === 'application/xml'){
 
             const json = JSON.stringify(results);
             const xmlData = json2xml(json, { compact: true, spaces: 4 });
@@ -32,11 +31,9 @@ module.exports = {
 
 
 
-        else if(req.headers.accept === 'application/text'){
+        if(req.headers.accept === 'application/text'){
 
             let formattedString = '';
-
-            //console.log(results);
 
             for (const obj of results) {
                 
@@ -55,7 +52,7 @@ module.exports = {
 
 
 
-        else if(req.headers.accept === 'application/html'){
+        if(req.headers.accept === 'application/html'){
             
             console.log(results);
 
