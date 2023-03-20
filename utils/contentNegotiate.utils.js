@@ -8,12 +8,16 @@ module.exports = {
 
     contentNegotiate: (req, res, results) => {
         
+        
+        
         if(req.headers.accept === 'application/json'){
             return res.status(200).json({
                 success: true,
                 data: results
             }); 
         }
+
+
 
         else if(req.headers.accept === 'application/xml'){
 
@@ -26,9 +30,13 @@ module.exports = {
             return res.send(xmlData);
         }
 
+
+
         else if(req.headers.accept === 'application/text'){
 
             let formattedString = '';
+
+            //console.log(results);
 
             for (const obj of results) {
                 
@@ -45,8 +53,37 @@ module.exports = {
             return res.send(formattedString);
         }
 
-        else if(req.headers.accept === 'application/text'){
+
+
+        else if(req.headers.accept === 'application/html'){
             
+            console.log(results);
+
+            let listItems = '';
+            for (const item of results) {
+                listItems += `<li>id: ${item.id}
+                                username: ${item.userName}
+                                email:    ${item.email}
+                              </li>`;
+            }
+
+            const htmlData = `
+                <html>
+                    <head>
+                        <title>My title</title>
+                    </head>
+                    <body>
+                        <ul>
+                            ${listItems}
+                        </ul>
+                    </body>
+                </html>
+                `;
+
+            
+            res.set('Content-Type', 'application/html');
+            res.status(200);
+            return res.send(htmlData);
         }
 
     }

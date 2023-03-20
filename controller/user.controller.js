@@ -20,18 +20,22 @@ module.exports = {
         }
         
         try{
-            const results = await getUserByUsername(userName);
+            const result = await getUserByUsername(userName);
 
-            if(results===null || results===undefined)
+            if(result===null || result===undefined)
                 return res.status(404).json({
                     success: false,
                     data: "user not found"
                 });
-
+            
+            
+            const resultArray = [];
+            resultArray.push(result);
+            contentNegotiate(req, res, resultArray);
 
             return res.status(200).json({
                 success: true,
-                data: results
+                data: result
             });    
         }
         catch(error){
