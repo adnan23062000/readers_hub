@@ -8,7 +8,7 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 
-const indexRouter = require("./router");
+const indexRouter = require("./router/index.router");
 
 
 app.use(express.json());
