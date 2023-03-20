@@ -15,12 +15,17 @@
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "json-to-plain-text": "^1.0.5",
     "json-web-token": "^3.2.0",
     "jsonwebtoken": "^9.0.0",
     "mysql": "^2.18.1",
     "mysql2": "^3.2.0",
+    "node-json2html": "^2.2.3",
     "sequelize": "^6.29.2",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "xml-js": "^1.6.11",
+    "xml2js": "^0.4.23",
+    "xmlbuilder": "^15.1.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.21"
