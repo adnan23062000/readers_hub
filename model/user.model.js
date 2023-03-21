@@ -8,12 +8,16 @@ const User = sequelize.define('User', {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     allowNull: false,
+    unique: true,
   },
 
   username: {
     type: DataTypes.STRING,
     allowNull: false,
     primaryKey: true,
+    validate: {
+      isAlphanumeric: true,
+    }
   },
 
   email: {
@@ -29,7 +33,7 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      len: [6, 25],
+      len: [6, ],
     },
   },
 
@@ -47,12 +51,13 @@ const User = sequelize.define('User', {
 }, 
 
 {
-    timestamps: false,
     hooks: {
         beforeSave: async (User) => {
           if (User.changed('password')) {
-            const hashedPassword = await bcrypt.hash(user.password, 10);
-            user.password = hashedPassword;
+
+          const salt = bcrypt.genSaltSync(parseInt(process.env.SALT_ROUND));
+          const encryptedPassword = bcrypt.hashSync(User.password, salt);
+          User.password = encryptedPassword;
           }
         }
       }

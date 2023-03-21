@@ -1,18 +1,17 @@
-const { createUser, getUsers, updateUser, deleteUser, getUserByUsername, userLogin } = require("../controller/user.controller");
+const { getUsers, updateUser, deleteUser, getUserByUsername } = require("../controller/user.controller");
+const { verify } = require('../middleware/auth.middleware');
+
 const router = require("express").Router();
 
 router.route('/')
-    .post(createUser)
-    .get(getUsers);
+    .get(verify, getUsers)
 
 
 router.route('/:userName')
-    .get(getUserByUsername)
-    .put(updateUser)
-    .delete(deleteUser)
+    .get(verify, getUserByUsername)
+    .put(verify, updateUser)
+    .delete(verify, deleteUser)
 
-router.route('/login')
-    .post(userLogin)
 
 
 module.exports = router;

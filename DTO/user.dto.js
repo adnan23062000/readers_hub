@@ -1,6 +1,6 @@
 class UserDTO {
-    constructor(user) {
-             
+    constructor(user, showPassword=false) {
+      
         var obj = {
           id: user["id"],
           userName: user["username"],
@@ -8,6 +8,11 @@ class UserDTO {
           createdAt: user["createdAt"],
           updatedAt: user["updatedAt"]
         };
+
+        if(showPassword)
+        {
+          obj.password = user["password"];
+        }
 
         return obj;
         

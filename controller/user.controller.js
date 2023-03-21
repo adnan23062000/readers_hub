@@ -1,33 +1,9 @@
-const { getUserByUsername, updateUser, getAllUsers, createUser, deleteUser } = require("../service/user.service");
-const { checkParamValidity } = require("../utils/user.utils");
-const jwt = require('json-web-token');
+const { getUserByUsername, updateUser, getAllUsers, deleteUser } = require("../service/user.service");
+const { checkParamValidity, convertToLowerCase, checkPasswordLength } = require("../utils/user.utils");
+
 
 module.exports = {
     
-    createUser: async (req, res) => {
-        
-        const body = req.body;
-
-        try{
-            const data = await createUser(body);
-            if(data){
-                return res.status(201).json({
-                    success: 1,
-                    data: "user created"
-                });
-            }
-        }
-        catch(error){
-            console.log(error);
-            return res.status(400).json({
-                message: "bad request"
-            });
-        }
-        
-        
-    },
-
-
 
     getUserByUsername: async (req, res) => {
         
@@ -36,20 +12,25 @@ module.exports = {
         if(!checkParamValidity(userName)){
             
             return res.status(400).json({
-                success: 0,
+                success: false,
                 message: "invalid request"
             });
         
         }
         
         try{
-            const results = await getUserByUsername(userName);
+            const result = await getUserByUsername(convertToLowerCase(userName), false);
 
-            console.log(results);
+            if(!result)
+                return res.status(404).json({
+                    success: false,
+                    data: "user not found"
+                });
+
 
             return res.status(200).json({
-                success: 1,
-                data: results
+                success: true,
+                data: result
             });    
         }
         catch(error){
@@ -67,7 +48,7 @@ module.exports = {
             const results = await getAllUsers();
  
             return res.status(200).json({
-                success: 1,
+                success: true,
                 data: results
             });    
         }
@@ -81,16 +62,46 @@ module.exports = {
 
     updateUser: async (req, res) => {
         
+        if(Object.keys(req.body).length === 0){
+            return res.status(400).json({
+                success: false,
+                message: "No request body"
+            });
+        }
+        
         const body = req.body;
+
+        if(!body.password){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid request body"
+            });
+        }
 
         const userName = req.params.userName;
 
+        if(!checkParamValidity(userName)){
+            
+            return res.status(400).json({
+                success: false,
+                message: "invalid username"
+            })
+        
+        }
+
+        if(!checkPasswordLength(body.password)){
+            return res.status(400).json({
+                success: false,
+                message: "password length too small"
+            })
+        }
+
 
         try{
-            const result = await updateUser(userName, body.password);
+            const result = await updateUser(convertToLowerCase(userName), body.password);
             if(result){
                 return res.status(200).json({
-                    success: 1,
+                    success: true,
                     data: "user updated successfully"
                 });
             }
@@ -98,6 +109,7 @@ module.exports = {
         catch(error){
             console.log(error);
             return res.status(400).json({
+                success: false,
                 message: "bad request"
             });
         }
@@ -113,17 +125,18 @@ module.exports = {
         if(!checkParamValidity(userName)){
             
             return res.status(400).json({
-                message: "invalid request"
+                success: false,
+                message: "invalid username"
             })
         
         }
 
         
         try{
-            const result = await deleteUser(userName);
+            const result = await deleteUser(convertToLowerCase(userName));
             if(result){
                 return res.status(200).json({
-                    success: 1,
+                    success: true,
                     data: "user deleted successfully"
                 });
             }
@@ -131,48 +144,13 @@ module.exports = {
         catch(error){
             console.log(error);
             return res.status(400).json({
+                success: false,
                 message: "bad request"
             });
         }
         
         
-    },
-
-
-
-    userLogin: async (req, res) => {
-        
-        const username = req.body.userName;
-        const password = req.body.password;
-
-        let payload = {username: username}
-
-
-        if (!username || !password){
-            return res.status(401).json({
-                message: "Unauthorized"
-            });
-        }
-
-        let accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, {
-            algorithm: "HS256",
-            expiresIn: process.env.ACCESS_TOKEN_LIFE
-        });
-
-        let refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, {
-            algorithm: "HS256",
-            expiresIn: process.env.REFRESH_TOKEN_LIFE
-        });
-
-
-        payload.refreshToken = refreshToken;
-
-        res.cookie("jwt", accessToken, {secure: true, httpOnly: true});
-        res.send();
-
-
     }
-
 
 
 }

@@ -1,9 +1,11 @@
-const  { genSaltSync, hashSync } = require("bcrypt");
+const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require('uuid');
+const jwt = require('jsonwebtoken');
+
 
 module.exports = {
 
-    convertToLowerCase: async (userName) => {
+    convertToLowerCase: (userName) => {
         const ans = userName.toLowerCase();
         return ans;
     },
@@ -16,8 +18,9 @@ module.exports = {
     },
 
     generateHashedPassword: (rawPassword) => {
-        const salt = genSaltSync(10);
-        const encryptedPassword = hashSync(rawPassword, salt);
+        
+        const salt = bcrypt.genSaltSync(parseInt(process.env.SALT_ROUND));
+        const encryptedPassword = bcrypt.hashSync(rawPassword, salt);
         
         return encryptedPassword;
     },
@@ -27,6 +30,28 @@ module.exports = {
             return false;
         }
         return true;   
+    },
+
+    compareHashedPassword: async (rawPassword, encryptedPassword) => {
+        
+        const result = await bcrypt.compare(rawPassword, encryptedPassword);
+        return result;
+
+    },
+
+    generateAccessToken:  (username) => {
+        
+        return jwt.sign({ username: username }, process.env.ACCESS_TOKEN_SECRET, {
+            algorithm: process.env.ACCESS_TOKEN_ALGORITHM,
+            expiresIn: process.env.ACCESS_TOKEN_LIFE
+        });
+    },
+
+    checkPasswordLength: (password) => {
+        if(password.length<6){
+            return false;
+        }
+        return true;
     }
 
 }

@@ -1,21 +1,20 @@
 const UserDTO = require("../DTO/user.dto");
-const { convertToLowerCase, generateUUID,  generateHashedPassword } = require("../utils/user.utils");
+const { convertToLowerCase, generateHashedPassword } = require("../utils/user.utils");
 const UserRepository = require("../repository/userSequelize.repository");
 
 module.exports = {
     
-    createUser: async (data) => {
-        
-        return await UserRepository.createUser(data.userName, data.email, data.password);
+    createUser: async (user) => {
+
+        return await UserRepository.createUser(user.username, user.email, user.password);
 
     },
 
 
     updateUser: async (userName, password) => {
         
-         //const updatedPassword = generateHashedPassword(body.password);
-        // return await updateUserRepo(updatedPassword, userName);
-
+        password = generateHashedPassword(password);
+        
         return await UserRepository.updateUser(userName, password);
 
     },
@@ -38,26 +37,38 @@ module.exports = {
     },
 
 
-    getUserByUsername: async (userName) => {
+    getUserByUsername: async (userName, showPassword) => {
         
         const user = await UserRepository.getUserByUsername(userName);
+
+        if(!user)
+            return user;
+        
         
         const dataValuesArray = user.dataValues;
-        //console.log(dataValuesArray);
-        const userDTO = new UserDTO(dataValuesArray);
+        const userDTO = new UserDTO(dataValuesArray, showPassword);
         
         return userDTO;
     
     },
 
 
+
     deleteUser: async (userName) => {
         
-        // const validUsername = await convertToLowerCase(userName);
-        // return await deleteUserRepo(validUsername);
-
-        return await UserRepository.deleteUser(userName);
+        const validUsername = convertToLowerCase(userName);
+        return await UserRepository.deleteUser(validUsername);
     },
+
+
+    userLogin: async (username) => {
+        
+        const user = await UserRepository.getUserByUsername(username);
+        
+        const dataValuesArray = user.dataValues;
+
+        return dataValuesArray;
+    }
 
 
 };
