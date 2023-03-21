@@ -1,6 +1,6 @@
 const { getUserByUsername, updateUser, getAllUsers, deleteUser } = require("../service/user.service");
 const { checkParamValidity, checkPasswordLength, convertToLowerCase } = require("../utils/user.utils");
-const { contentNegotiate } = require("../utils/userContentNegotiation.utils");
+const { contentNegotiate } = require("../utils/contentNegotiation.utils");
 
 
 module.exports = {
@@ -31,11 +31,7 @@ module.exports = {
             
             const resultArray = [];
             resultArray.push(result);
-            contentNegotiate(req, res, resultArray);
-            return res.status(200).json({
-                success: true,
-                data: result
-            });    
+            contentNegotiate(req, res, resultArray);  
         }
         catch(error){
             console.log(error);

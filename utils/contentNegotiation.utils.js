@@ -1,5 +1,6 @@
 const { json2xml } = require('xml-js');
 const convert = require('json-to-plain-text');
+const json2html = require('json-to-html');
 
 
 
@@ -53,29 +54,9 @@ module.exports = {
 
 
         if(req.headers.accept === 'application/html'){
-            
-            console.log(results);
 
-            let listItems = '';
-            for (const item of results) {
-                listItems += `<li>id: ${item.id}
-                                username: ${item.userName}
-                                email:    ${item.email}
-                              </li>`;
-            }
-
-            const htmlData = `
-                <html>
-                    <head>
-                        <title>My title</title>
-                    </head>
-                    <body>
-                        <ul>
-                            ${listItems}
-                        </ul>
-                    </body>
-                </html>
-                `;
+            const jsonData = JSON.stringify(results);
+            const htmlData = json2html(jsonData);
 
             
             res.set('Content-Type', 'application/html');
