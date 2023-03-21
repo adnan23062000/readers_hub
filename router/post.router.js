@@ -1,5 +1,6 @@
 const { getAllBlogs, getBlogById, createBlog, updateBlog, deleteBlog } = require('../controller/post.controller');
 const { verify } = require('../middleware/auth.middleware');
+const { isAuthorized } = require('../middleware/isAuthorized.middleware');
 
 const router = require("express").Router();
 
@@ -10,8 +11,8 @@ router.route('/')
 
 router.route('/:blogId')
     .get(getBlogById)
-    .put(updateBlog)
-    .delete(deleteBlog)
+    .put(verify, isAuthorized, updateBlog)
+    .delete(verify, isAuthorized, deleteBlog)
 
 
 
