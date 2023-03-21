@@ -120,16 +120,7 @@ module.exports = {
                 message: "Empty request body"
             });
         }
-
-        const blogId = req.params.blogId;
-
-        if(!isNumeric(blogId)){
-            return res.status(400).json({
-                success: false,
-                message: "Invalid blog id"
-            });
-        }
-
+        
         const body = req.body;
 
         if(!body.blogBody){
@@ -138,33 +129,10 @@ module.exports = {
                 message: "Invalid request (No blog body included)"
             });
         }
-
-
-
-        const result = await BlogService.getBlogByBlogId(blogId);
-
-        if(!result){
-            return res.status(404).json({
-                success: false,
-                message: "Blog not found"
-            });
-        }
-        
-        const authorOfThisBlog = result.author;
-
-        
-        const accessToken = req.cookies.jwt; 
-        const decodedToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-        const currentUser = decodedToken.username;
-
-        if(!(currentUser==authorOfThisBlog)){
-            return res.status(401).json({
-                    success: false,
-                    message: "Unauthorized"
-            })
-        }
         
 
+        const blogId = req.params.blogId;
+        
         try{
             const result = await BlogService.updateBlog(blogId, body.blogBody);
             if(result){
@@ -189,38 +157,6 @@ module.exports = {
     deleteBlog: async (req, res) => {
         
         const blogId = req.params.blogId;
-
-        if(!isNumeric(blogId)){
-            return res.status(400).json({
-                success: false,
-                message: "Invalid blog id"
-            });
-        }
-
-
-        const result = await BlogService.getBlogByBlogId(blogId);
-
-        if(!result){
-            return res.status(404).json({
-                success: false,
-                message: "Blog not found"
-            });
-        }
-
-        const authorOfThisBlog = result.author;
-
-        
-        const accessToken = req.cookies.jwt; 
-        const decodedToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-        const currentUser = decodedToken.username;
-
-        if(!(currentUser==authorOfThisBlog)){
-            return res.status(401).json({
-                    success: false,
-                    message: "Unauthorized"
-            })
-        }
-
         
         try{
             const result = await BlogService.deleteBlog(blogId);
