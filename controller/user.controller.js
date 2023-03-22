@@ -22,7 +22,7 @@ module.exports = {
         try{
             const result = await getUserByUsername(userName);
 
-            if(result===null || result===undefined)
+            if(!result)
                 return res.status(404).json({
                     success: false,
                     data: "user not found"
@@ -92,9 +92,9 @@ module.exports = {
         }
         catch(error){
             console.log(error);
-            return res.status(400).json({
+            return res.status(500).json({
                 success: false,
-                message: "bad request"
+                message: "user update failed"
             });
         }
 
@@ -126,9 +126,9 @@ module.exports = {
         }
         catch(error){
             console.log(error);
-            return res.status(400).json({
+            return res.status(500).json({
                 success: false,
-                message: "bad request"
+                message: "user deletion failed"
             });
         }
         
