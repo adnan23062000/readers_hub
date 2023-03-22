@@ -2,6 +2,7 @@ const { isNumeric } = require("../utils/user.utils");
 const jwt = require('jsonwebtoken');
 const BlogService = require('../service/post.service');
 const { contentNegotiate } = require("../utils/contentNegotiation.utils");
+const { pagination } = require('../utils/pagination.utils');
 
 
 
@@ -97,9 +98,11 @@ module.exports = {
 
     getAllBlogs: async (req, res) => {
         
+        const paginationAttr = pagination(req.query.page, req.query.limit);
+        
         try{
             
-            const results = await BlogService.getAllBlogs();
+            const results = await BlogService.getAllBlogs(paginationAttr.page, paginationAttr.limit);
 
             contentNegotiate(req, res, results);
             

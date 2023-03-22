@@ -1,10 +1,10 @@
 const Blog = require('../model/post.model');
 
 // Get all blogs
-const getAllBlogs = async () => {
+const getAllBlogs = async (pageStart, limit) => {
   
     try{
-        const blogs = await Blog.findAll();
+        const blogs = await Blog.findAll({ offset: pageStart, limit: limit });
         return blogs;
     }
     catch(err){
