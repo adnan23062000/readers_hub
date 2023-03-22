@@ -1,10 +1,10 @@
 const User = require('../model/user.model');
 
 // Get all users
-const getAllUsers = async () => {
+const getAllUsers = async (pageStart, limit) => {
   
     try{
-        const users = await User.findAll();
+        const users = await User.findAll({ offset: pageStart, limit: limit });
         return users;
     }
     catch(err){

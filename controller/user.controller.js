@@ -1,6 +1,7 @@
 const { getUserByUsername, updateUser, getAllUsers, deleteUser } = require("../service/user.service");
 const { checkParamValidity, checkPasswordLength, convertToLowerCase } = require("../utils/user.utils");
 const { contentNegotiate } = require("../utils/contentNegotiation.utils");
+const { pagination } = require('../utils/pagination.utils');
 
 
 module.exports = {
@@ -44,8 +45,10 @@ module.exports = {
 
     getUsers: async (req, res) => {
         
+        const paginationAttr = pagination(req.query.page, req.query.limit);
+        
         try{
-            const results = await getAllUsers();
+            const results = await getAllUsers(paginationAttr.page, paginationAttr.limit);
 
             contentNegotiate(req, res, results);
   

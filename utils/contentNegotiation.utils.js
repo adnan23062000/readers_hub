@@ -55,10 +55,8 @@ module.exports = {
 
         if(req.headers.accept === 'application/html'){
 
-            const jsonData = JSON.stringify(results);
-            const htmlData = json2html(jsonData);
-
-            
+            const htmlData = json2html(results);
+ 
             res.set('Content-Type', 'application/html');
             res.status(200);
             return res.send(htmlData);

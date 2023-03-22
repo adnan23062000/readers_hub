@@ -1,5 +1,6 @@
 const UserDTO = require("../DTO/user.dto");
 const { convertToLowerCase, generateHashedPassword } = require("../utils/user.utils");
+const { getStartingSerial } = require('../utils/pagination.utils');
 const UserRepository = require("../repository/userSequelize.repository");
 
 module.exports = {
@@ -20,9 +21,11 @@ module.exports = {
     },
 
 
-    getAllUsers: async () => {
+    getAllUsers: async (page, limit) => {
         
-        const users = await UserRepository.getAllUsers();
+        const pageStart = getStartingSerial(page, limit);
+        
+        const users = await UserRepository.getAllUsers(pageStart, limit);
         
         const usersList = [];
         
