@@ -1,17 +1,14 @@
 class BlogDTO {
-    constructor(blog) {
-             
-        var obj = {
-          id: blog["blogId"],
-          blogTitle: blog["blogTitle"],
-          blogBody: blog["blogBody"],
-          author: blog["username"]
-        };
+  constructor(blog) {
+    const obj = {
+      id: blog.blogId,
+      blogTitle: blog.blogTitle,
+      blogBody: blog.blogBody,
+      author: blog.username,
+    };
 
-        return obj;
-        
-
-    }
+    return obj;
+  }
 }
 
 module.exports = BlogDTO;

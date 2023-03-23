@@ -1,21 +1,14 @@
 module.exports = {
 
-    pagination: (page, limit) => {
-        
-        const paginationObj = {};
+  pagination: (page, limit) => {
+    const paginationObj = {};
 
-        paginationObj.page = Math.abs(page? page:1);
-        paginationObj.limit = Math.abs(limit? limit:5);
+    paginationObj.page = Math.abs(page || 1);
+    paginationObj.limit = Math.abs(limit || 5);
 
-        return paginationObj;
+    return paginationObj;
+  },
 
-    },
+  getStartingSerial: (page, limit) => (limit * (page - 1)),
 
-
-    getStartingSerial: (page, limit) => {
-        return (limit*(page-1));
-    }
-
-
-
-}
+};

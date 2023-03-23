@@ -3,7 +3,7 @@ const User = require('./user.model');
 const Blog = require('./post.model');
 
 User.hasMany(Blog, { foreignKey: { name: 'username', allowNull: false } });
-Blog.belongsTo(User, { foreignKey: { name: 'username', allowNull: false} });
+Blog.belongsTo(User, { foreignKey: { name: 'username', allowNull: false } });
 
 sequelize.sync()
   .then(() => {
