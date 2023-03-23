@@ -62,6 +62,11 @@ module.exports = {
             return res.send(htmlData);
         }
 
+        return res.status(200).json({
+            success: true,
+            data: results
+        });
+
     }
 
 

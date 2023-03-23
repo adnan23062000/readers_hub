@@ -1,6 +1,6 @@
 const BlogDTO = require("../DTO/blog.dto");
 const { getStartingSerial } = require('../utils/pagination.utils');
-const BlogRepository = require('../repository/post.repository');
+const BlogRepository = require('../repository/blog.repository');
 
 module.exports = {
     
@@ -16,12 +16,12 @@ module.exports = {
 
         const pageStart = getStartingSerial(page, limit);
         
-        const blogs = await BlogRepository.getAllBlogs(pageStart, limit);
+        const blogs = await BlogRepository.getAllBlogs(parseInt(pageStart), parseInt(limit));
         
         const blogsList = [];
         
         const dataValuesArray = blogs.map(blog => blog.dataValues);
-        
+        // change to for each
         for (var i = 0; i < dataValuesArray.length; i++) {
             const blogDTO = new BlogDTO(dataValuesArray[i]);
             blogsList.push(blogDTO);

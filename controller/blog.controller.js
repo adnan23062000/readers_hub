@@ -1,6 +1,6 @@
 const { isNumeric } = require("../utils/user.utils");
 const jwt = require('jsonwebtoken');
-const BlogService = require('../service/post.service');
+const BlogService = require('../service/blog.service');
 const { contentNegotiate } = require("../utils/contentNegotiation.utils");
 const { pagination } = require('../utils/pagination.utils');
 

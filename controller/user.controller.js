@@ -46,7 +46,7 @@ module.exports = {
     getUsers: async (req, res) => {
         
         const paginationAttr = pagination(req.query.page, req.query.limit);
-        
+
         try{
             const results = await getAllUsers(paginationAttr.page, paginationAttr.limit);
 

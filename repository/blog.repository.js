@@ -1,4 +1,4 @@
-const Blog = require('../model/post.model');
+const Blog = require('../model/blog.model');
 
 // Get all blogs
 const getAllBlogs = async (pageStart, limit) => {

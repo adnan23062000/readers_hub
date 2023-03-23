@@ -24,8 +24,8 @@ module.exports = {
     getAllUsers: async (page, limit) => {
         
         const pageStart = getStartingSerial(page, limit);
-        
-        const users = await UserRepository.getAllUsers(pageStart, limit);
+
+        const users = await UserRepository.getAllUsers(parseInt(pageStart), parseInt(limit));
         
         const usersList = [];
         
