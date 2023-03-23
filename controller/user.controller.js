@@ -33,6 +33,8 @@ module.exports = {
     } catch (error) {
       console.log(error);
     }
+
+    return null;
   },
 
   getUsers: async (req, res) => {
@@ -40,7 +42,6 @@ module.exports = {
 
     try {
       const results = await getAllUsers(paginationAttr.page, paginationAttr.limit);
-
       contentNegotiate(req, res, results);
     } catch (error) {
       console.log(error);
@@ -81,6 +82,8 @@ module.exports = {
         message: 'user update failed',
       });
     }
+
+    return null;
   },
 
   deleteUser: async (req, res) => {
@@ -107,6 +110,8 @@ module.exports = {
         message: 'user deletion failed',
       });
     }
+
+    return null;
   },
 
 };

@@ -41,6 +41,8 @@ module.exports = {
         message: 'User creation failed',
       });
     }
+
+    return null;
   },
 
   userLogin: async (req, res) => {
@@ -80,6 +82,8 @@ module.exports = {
       success: true,
       message: 'user logged in',
     });
+
+    return null;
   },
 
 };

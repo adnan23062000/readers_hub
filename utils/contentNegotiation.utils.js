@@ -23,13 +23,11 @@ module.exports = {
     if (req.headers.accept === 'application/text') {
       let formattedString = '';
 
-      for (const obj of results) {
-        for (const [key, value] of Object.entries(obj)) {
-          formattedString += `${key}: ${value}\n`;
-        }
-
-        formattedString += '\n\n\n';
-      }
+      formattedString = results
+        .map((obj) => Object.entries(obj)
+          .map(([key, value]) => `${key}: ${value}`)
+          .join('\n'))
+        .join('\n\n\n');
 
       res.set('Content-Type', 'application/text');
       res.status(200);
@@ -43,6 +41,8 @@ module.exports = {
       res.status(200);
       return res.send(htmlData);
     }
+
+    return null;
   },
 
 };

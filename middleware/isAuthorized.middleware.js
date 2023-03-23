@@ -41,6 +41,8 @@ module.exports = {
     } catch (e) {
       return res.status(401).send(e);
     }
+
+    return null;
   },
 
 };

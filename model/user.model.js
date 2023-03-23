@@ -54,11 +54,12 @@ const User = sequelize.define(
 
   {
     hooks: {
-      beforeSave: async (User) => {
-        if (User.changed('password')) {
+      beforeSave: async (user) => {
+        if (user.changed('password')) {
           const salt = bcrypt.genSaltSync(parseInt(process.env.SALT_ROUND, 10));
-          const encryptedPassword = bcrypt.hashSync(User.password, salt);
-          User.password = encryptedPassword;
+          const encryptedPassword = bcrypt.hashSync(user.password, salt);
+          // eslint-disable-next-line no-param-reassign
+          user.password = encryptedPassword;
         }
       },
     },

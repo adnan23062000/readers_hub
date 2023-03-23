@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-exports.verify = function (req, res, next) {
+exports.verify = (req, res, next) => {
   const accessToken = req.cookies.jwt;
 
   if (!accessToken) {
@@ -16,4 +16,6 @@ exports.verify = function (req, res, next) {
   } catch (e) {
     return res.status(401).send(e);
   }
+
+  return null;
 };
