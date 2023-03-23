@@ -3,8 +3,11 @@ module.exports = {
   pagination: (page, limit) => {
     const paginationObj = {};
 
-    paginationObj.page = Math.abs(page || 1);
-    paginationObj.limit = Math.abs(limit || 5);
+    paginationObj.page = page || 1;
+    paginationObj.limit = limit || 5;
+
+    if (page <= 0 || isNaN(page)) { paginationObj.page = 1; }
+    if (limit <= 0 || isNaN(limit)) { paginationObj.limit = 5; }
 
     return paginationObj;
   },

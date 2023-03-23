@@ -1,6 +1,6 @@
 const BlogDTO = require('../DTO/blog.dto');
 const { getStartingSerial } = require('../utils/pagination.utils');
-const BlogRepository = require('../repository/post.repository');
+const BlogRepository = require('../repository/blog.repository');
 
 module.exports = {
 
@@ -9,7 +9,7 @@ module.exports = {
   getAllBlogs: async (page, limit) => {
     const pageStart = getStartingSerial(page, limit);
 
-    const blogs = await BlogRepository.getAllBlogs(pageStart, limit);
+    const blogs = await BlogRepository.getAllBlogs(parseInt(pageStart), parseInt(limit));
 
     const blogsList = [];
 
