@@ -43,6 +43,8 @@ module.exports = {
         message: 'Blog Creation failed',
       });
     }
+
+    return null;
   },
 
   getBlogById: async (req, res) => {
@@ -72,6 +74,8 @@ module.exports = {
       console.log(error);
       return res.status(500).send();
     }
+
+    return null;
   },
 
   getAllBlogs: async (req, res) => {
@@ -85,6 +89,8 @@ module.exports = {
       console.log(error);
       return res.status(500).send();
     }
+
+    return null;
   },
 
   updateBlog: async (req, res) => {
@@ -121,6 +127,8 @@ module.exports = {
         message: 'blog update failed',
       });
     }
+
+    return null;
   },
 
   deleteBlog: async (req, res) => {
@@ -140,6 +148,8 @@ module.exports = {
         message: 'Deletion failed',
       });
     }
+
+    return null;
   },
 
 };

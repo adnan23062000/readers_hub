@@ -9,7 +9,7 @@ module.exports = {
   getAllBlogs: async (page, limit) => {
     const pageStart = getStartingSerial(page, limit);
 
-    const blogs = await BlogRepository.getAllBlogs(parseInt(pageStart), parseInt(limit));
+    const blogs = await BlogRepository.getAllBlogs(parseInt(pageStart, 10), parseInt(limit, 10));
 
     const blogsList = [];
 
