@@ -1,4 +1,4 @@
-const { getAllBlogs, getBlogById, createBlog, updateBlog, deleteBlog } = require('../controller/post.controller');
+const { getAllBlogs, getBlogById, createBlog, updateBlog, deleteBlog } = require('../controller/blog.controller');
 const { verify } = require('../middleware/auth.middleware');
 const { isAuthorized } = require('../middleware/isAuthorized.middleware');
 
