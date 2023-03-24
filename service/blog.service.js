@@ -1,7 +1,7 @@
 const UserDTO = require("../DTO/user.dto");
 const BlogDTO = require("../DTO/blog.dto");
 const {  } = require("../utils/user.utils");
-const BlogRepository = require('../repository/post.repository');
+const BlogRepository = require('../repository/blog.repository');
 
 module.exports = {
     

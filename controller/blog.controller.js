@@ -1,7 +1,7 @@
 const { isNumeric } = require("../utils/user.utils");
 const jwt = require('jsonwebtoken');
-const BlogService = require('../service/post.service');
-const { contentNegotiate } = require("../utils/contentNegotiation.utils");
+const BlogService = require('../service/blog.service');
+const { contentNegotiate } = require('../utils/contentNegotiation.utils');
 
 
 
@@ -80,11 +80,10 @@ module.exports = {
                     data: "Blog not found"
                 });
 
-            
+
             const resultArray = [];
             resultArray.push(result);
-            contentNegotiate(req, res, resultArray);
-  
+            contentNegotiate(req, res, resultArray);   
         }
         catch(error){
             console.log(error);
@@ -98,11 +97,9 @@ module.exports = {
     getAllBlogs: async (req, res) => {
         
         try{
-            
             const results = await BlogService.getAllBlogs();
-
-            contentNegotiate(req, res, results);
-            
+ 
+            contentNegotiate(req, res, results);   
         }
         catch(error){
             console.log(error);

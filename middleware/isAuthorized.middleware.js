@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const BlogService = require('../service/post.service');
+const BlogService = require('../service/blog.service');
 const { isNumeric } = require('../utils/user.utils');
 
 

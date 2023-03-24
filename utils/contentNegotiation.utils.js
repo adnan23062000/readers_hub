@@ -1,5 +1,4 @@
 const { json2xml } = require('xml-js');
-const convert = require('json-to-plain-text');
 const json2html = require('json-to-html');
 
 
@@ -55,9 +54,7 @@ module.exports = {
 
         if(req.headers.accept === 'application/html'){
 
-            const jsonData = JSON.stringify(results);
-            const htmlData = json2html(jsonData);
-
+            const htmlData = json2html(results);
             
             res.set('Content-Type', 'application/html');
             res.status(200);
