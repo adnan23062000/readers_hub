@@ -63,7 +63,21 @@ module.exports = {
 
     updateUser: async (req, res) => {
         
+        if(Object.keys(req.body).length === 0){
+            return res.status(400).json({
+                success: false,
+                message: "No request body"
+            });
+        }
+        
         const body = req.body;
+
+        if(!body.password){
+            return res.status(400).json({
+                success: false,
+                message: "Invalid request body"
+            });
+        }
 
         const userName = req.params.userName;
 

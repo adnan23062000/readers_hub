@@ -44,7 +44,7 @@ module.exports = {
             console.log(error);
             return res.status(500).json({
                 success: false,
-                message: "User creation failed"
+                message: "User registration failed"
             });
         }
 
@@ -75,8 +75,8 @@ module.exports = {
         
         const passwordMatched = await compareHashedPassword(password, user.password);
         
-        if (!passwordMatched) {
-            return res.status(401).json({
+        if(!passwordMatched){
+            res.status(401).json({
                 success: false,
                 message: "Incorrect username or password"
             });

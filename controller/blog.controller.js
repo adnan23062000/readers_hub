@@ -81,11 +81,10 @@ module.exports = {
                     data: "Blog not found"
                 });
 
-            
+
             const resultArray = [];
             resultArray.push(result);
-            contentNegotiate(req, res, resultArray);
-  
+            contentNegotiate(req, res, resultArray);   
         }
         catch(error){
             console.log(error);
