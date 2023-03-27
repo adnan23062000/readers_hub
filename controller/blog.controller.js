@@ -1,4 +1,3 @@
-const { isNumeric } = require("../utils/user.utils");
 const jwt = require('jsonwebtoken');
 const BlogService = require('../service/blog.service');
 
@@ -10,7 +9,7 @@ module.exports = {
     createBlog: async (req, res) => {
 
 
-        if(Object.keys(req.body).length === 0){
+        if(!Object.keys(req.body).length){
             return res.status(400).json({
                 success: false,
                 message: "Empty request body"
@@ -20,6 +19,7 @@ module.exports = {
         
         const body = req.body;
 
+
         if(!body.blogTitle || !body.blogBody){
             return res.status(400).json({
                 success: false,
@@ -28,9 +28,7 @@ module.exports = {
         }
 
 
-        const accessToken = req.cookies.jwt; 
-        const decodedToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-        const author = decodedToken.username;
+        const author = req.username;
 
 
         try{
@@ -46,7 +44,7 @@ module.exports = {
             }
         }
         catch(error){
-            console.log(error);
+            console.error(error);
             return res.status(500).json({
                 success: false,
                 message: "Blog Creation failed"
@@ -61,7 +59,7 @@ module.exports = {
         
         const blogId = req.params.blogId;
 
-        if(!isNumeric(blogId)){
+        if(isNaN(parseInt(blogId))){
             return res.status(400).json({
                 success: false,
                 message: "Invalid blog id"
@@ -71,7 +69,7 @@ module.exports = {
         
         try{
             
-            const results = await BlogService.getBlogByBlogId(blogId);
+            const results = await BlogService.getBlogById(blogId);
 
             if(!results)
                 return res.status(404).json({
@@ -86,7 +84,7 @@ module.exports = {
             });    
         }
         catch(error){
-            console.log(error);
+            console.error(error);
             return res.status(500).send();
         }
         
@@ -105,7 +103,7 @@ module.exports = {
             });    
         }
         catch(error){
-            console.log(error);
+            console.error(error);
             return res.status(500).send();
         }
     },
@@ -114,7 +112,7 @@ module.exports = {
 
     updateBlog: async (req, res) => {
         
-        if(Object.keys(req.body).length === 0){
+        if(!Object.keys(req.body).length){
             return res.status(400).json({
                 success: false,
                 message: "Empty request body"
@@ -143,7 +141,7 @@ module.exports = {
             }
         }
         catch(error){
-            console.log(error);
+            console.error(error);
             return res.status(500).json({
                 success: false,
                 message: "blog update failed"
@@ -168,7 +166,7 @@ module.exports = {
             }
         }
         catch(error){
-            console.log(error);
+            console.error(error);
             return res.status(500).json({
                 success: false,
                 message: "Deletion failed"

@@ -1,6 +1,4 @@
-const UserDTO = require("../DTO/user.dto");
 const BlogDTO = require("../DTO/blog.dto");
-const {  } = require("../utils/user.utils");
 const BlogRepository = require('../repository/blog.repository');
 
 module.exports = {
@@ -21,7 +19,7 @@ module.exports = {
         
         const dataValuesArray = blogs.map(blog => blog.dataValues);
         
-        for (var i = 0; i < dataValuesArray.length; i++) {
+        for (let i = 0; i < dataValuesArray.length; i++) {
             const blogDTO = new BlogDTO(dataValuesArray[i]);
             blogsList.push(blogDTO);
         }
@@ -31,7 +29,7 @@ module.exports = {
 
 
 
-    getBlogByBlogId: async (blogId) => {
+    getBlogById: async (blogId) => {
         
         const blog = await BlogRepository.getBlogById(blogId);
 
