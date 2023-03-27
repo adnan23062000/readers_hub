@@ -21,8 +21,8 @@ module.exports = {
         const blogsList = [];
         
         const dataValuesArray = blogs.map(blog => blog.dataValues);
-        // change to for each
-        for (var i = 0; i < dataValuesArray.length; i++) {
+        
+        for (let i = 0; i < dataValuesArray.length; i++) {
             const blogDTO = new BlogDTO(dataValuesArray[i]);
             blogsList.push(blogDTO);
         }
@@ -32,7 +32,7 @@ module.exports = {
 
 
 
-    getBlogByBlogId: async (blogId) => {
+    getBlogById: async (blogId) => {
         
         const blog = await BlogRepository.getBlogById(blogId);
 

@@ -7,7 +7,7 @@ module.exports = {
     
     userRegister: async (req, res) => {
 
-        if(Object.keys(req.body).length === 0){
+        if(!Object.keys(req.body).length){
             return res.status(400).json({
                 success: false,
                 message: "No request body"
@@ -41,8 +41,8 @@ module.exports = {
             }
         }
         catch(error){
-            console.log(error);
-            return res.status(500).json({
+            console.error(error);
+            return res.status(400).json({
                 success: false,
                 message: "User registration failed"
             });
@@ -54,7 +54,7 @@ module.exports = {
     
     userLogin: async (req, res) => {
         
-        if(Object.keys(req.body).length === 0){
+        if(!Object.keys(req.body).length){
             return res.status(400).json({
                 success: false,
                 message: "Empty request body"
@@ -98,5 +98,5 @@ module.exports = {
 
 
     }
-
 }
+

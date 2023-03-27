@@ -35,7 +35,7 @@ module.exports = {
             contentNegotiate(req, res, resultArray);  
         }
         catch(error){
-            console.log(error);
+            console.error(error);
             return;
         }
         
@@ -54,7 +54,7 @@ module.exports = {
   
         }
         catch(error){
-            console.log(error);
+            console.error(error);
             return;
         }
     },
@@ -63,7 +63,7 @@ module.exports = {
 
     updateUser: async (req, res) => {
         
-        if(Object.keys(req.body).length === 0){
+        if(!Object.keys(req.body).length){
             return res.status(400).json({
                 success: false,
                 message: "No request body"
@@ -108,7 +108,7 @@ module.exports = {
             }
         }
         catch(error){
-            console.log(error);
+            console.error(error);
             return res.status(500).json({
                 success: false,
                 message: "user update failed"
@@ -142,7 +142,7 @@ module.exports = {
             }
         }
         catch(error){
-            console.log(error);
+            console.error(error);
             return res.status(500).json({
                 success: false,
                 message: "user deletion failed"

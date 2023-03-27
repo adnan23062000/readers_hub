@@ -8,7 +8,7 @@ const getAllUsers = async (offset, limit) => {
         return users;
     }
     catch(err){
-        console.log(err.stack);
+        console.error(err.stack);
         throw err;
     }
 };
@@ -21,7 +21,7 @@ const getUserByUsername = async (username) => {
         return user;
     }
     catch(err){
-        console.log(err.stack);
+        console.error(err.stack);
         throw err;
     }
 };
@@ -33,7 +33,7 @@ const createUser = async (username, email, password) => {
         return await User.create({ username, email, password });
     }
     catch(err){
-        console.log(err.stack);
+        console.error(err.stack);
         throw err;
     }
 };
@@ -53,7 +53,7 @@ const updateUser = async (username, newPassword) => {
       } 
       catch(err)
       {
-        console.log(err.stack);
+        console.error(err.stack);
         throw err;
       }
 };
@@ -67,7 +67,7 @@ const deleteUser = async (username) => {
           }});
     }
     catch(error){
-        console.log(error.stack);
+        console.error(error.stack);
         throw error;
     }
 };

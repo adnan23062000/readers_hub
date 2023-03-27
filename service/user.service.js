@@ -31,7 +31,7 @@ module.exports = {
         
         const dataValuesArray = users.map(user => user.dataValues);
         
-        for (var i = 0; i < dataValuesArray.length; i++) {
+        for (let i = 0; i < dataValuesArray.length; i++) {
             const userDTO = new UserDTO(dataValuesArray[i]);
             usersList.push(userDTO);
         }
