@@ -2,14 +2,14 @@ const router = require('express').Router();
 const {
   getUsers, updateUser, deleteUser, getUserByUsername,
 } = require('../controller/user.controller');
-const { verify } = require('../middleware/auth.middleware');
+const { isUserLoggedIn } = require('../middleware/auth.middleware');
 
 router.route('/')
-  .get(verify, getUsers);
+  .get(isUserLoggedIn, getUsers);
 
 router.route('/:userName')
-  .get(verify, getUserByUsername)
-  .put(verify, updateUser)
-  .delete(verify, deleteUser);
+  .get(isUserLoggedIn, getUserByUsername)
+  .put(isUserLoggedIn, updateUser)
+  .delete(isUserLoggedIn, deleteUser);
 
 module.exports = router;

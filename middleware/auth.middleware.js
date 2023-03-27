@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-exports.verify = (req, res, next) => {
+exports.isUserLoggedIn = (req, res, next) => {
   const accessToken = req.cookies.jwt;
 
   if (!accessToken) {
@@ -10,12 +10,14 @@ exports.verify = (req, res, next) => {
     });
   }
 
+  let payload;
+
   try {
-    jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+    payload = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+    req.username = payload.username;
     next();
   } catch (e) {
     return res.status(401).send(e);
   }
-
   return null;
 };

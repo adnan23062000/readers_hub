@@ -12,6 +12,5 @@ module.exports = {
     return paginationObj;
   },
 
-  getStartingSerial: (page, limit) => (limit * (page - 1)),
-
+  calculateOffset: (page, limit) => (limit * (page - 1)),
 };

@@ -4,17 +4,17 @@ const { isNumeric } = require('../utils/user.utils');
 
 module.exports = {
 
-  isAuthorized: async (req, res, next) => {
-    const currentUserId = req.params.blogId;
+  isUserAuthorized: async (req, res, next) => {
+    const blogIdToEdit = req.params.blogId;
 
-    if (!isNumeric(currentUserId)) {
+    if (!isNumeric(blogIdToEdit)) {
       return res.status(400).json({
         success: false,
         message: 'Invalid blog id',
       });
     }
 
-    const result = await BlogService.getBlogByBlogId(currentUserId);
+    const result = await BlogService.getBlogById(blogIdToEdit);
 
     if (!result) {
       return res.status(404).json({

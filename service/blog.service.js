@@ -1,5 +1,5 @@
 const BlogDTO = require('../DTO/blog.dto');
-const { getStartingSerial } = require('../utils/pagination.utils');
+const { calculateOffset } = require('../utils/pagination.utils');
 const BlogRepository = require('../repository/blog.repository');
 
 module.exports = {
@@ -7,9 +7,9 @@ module.exports = {
   createBlog: async (data, author) => BlogRepository.createBlog(data.blogTitle, data.blogBody, author),
 
   getAllBlogs: async (page, limit) => {
-    const pageStart = getStartingSerial(page, limit);
+    const pageStart = calculateOffset(page, limit);
 
-    const blogs = await BlogRepository.getAllBlogs(parseInt(pageStart, 10), parseInt(limit, 10));
+    const blogs = await BlogRepository.getAllBlogs(pageStart, limit);
 
     const blogsList = [];
 
@@ -23,7 +23,7 @@ module.exports = {
     return blogsList;
   },
 
-  getBlogByBlogId: async (blogId) => {
+  getBlogById: async (blogId) => {
     const blog = await BlogRepository.getBlogById(blogId);
 
     if (!blog) { return blog; }

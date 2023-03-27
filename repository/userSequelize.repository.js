@@ -6,7 +6,7 @@ const getAllUsers = async (offset, limit) => {
     const users = await User.findAll({ offset, limit });
     return users;
   } catch (err) {
-    console.log(err.stack);
+    console.error(err.stack);
     throw err;
   }
 };
@@ -17,7 +17,7 @@ const getUserByUsername = async (username) => {
     const user = await User.findOne({ where: { username } });
     return user;
   } catch (err) {
-    console.log(err.stack);
+    console.error(err.stack);
     throw err;
   }
 };
@@ -27,15 +27,15 @@ const createUser = async (username, email, password) => {
   try {
     return await User.create({ username, email, password });
   } catch (err) {
-    console.log(err.stack);
+    console.error(err.stack);
     throw err;
   }
 };
 
 // Update user password by username
-const updateUser = async (username, newPassword) => {
+const updateUser = async (username, password) => {
   try {
-    const user = await User.update({ password: newPassword }, {
+    const user = await User.update({ password }, {
       where: {
         username,
       },
@@ -43,7 +43,7 @@ const updateUser = async (username, newPassword) => {
 
     return user;
   } catch (err) {
-    console.log(err.stack);
+    console.error(err.stack);
     throw err;
   }
 };

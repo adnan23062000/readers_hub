@@ -1,5 +1,3 @@
-const jwt = require('jsonwebtoken');
-const { isNumeric } = require('../utils/user.utils');
 const BlogService = require('../service/blog.service');
 const { contentNegotiate } = require('../utils/contentNegotiation.utils');
 const { pagination } = require('../utils/pagination.utils');
@@ -7,7 +5,7 @@ const { pagination } = require('../utils/pagination.utils');
 module.exports = {
 
   createBlog: async (req, res) => {
-    if (Object.keys(req.body).length === 0) {
+    if (!Object.keys(req.body).length) {
       return res.status(400).json({
         success: false,
         message: 'Empty request body',
@@ -23,9 +21,7 @@ module.exports = {
       });
     }
 
-    const accessToken = req.cookies.jwt;
-    const decodedToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
-    const author = decodedToken.username;
+    const author = req.username;
 
     try {
       const data = await BlogService.createBlog(body, author);
@@ -37,20 +33,19 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return res.status(500).json({
         success: false,
         message: 'Blog Creation failed',
       });
     }
-
     return null;
   },
 
   getBlogById: async (req, res) => {
     const { blogId } = req.params;
 
-    if (!isNumeric(blogId)) {
+    if (Number.isNaN(parseInt(blogId, 10))) {
       return res.status(400).json({
         success: false,
         message: 'Invalid blog id',
@@ -58,7 +53,7 @@ module.exports = {
     }
 
     try {
-      const result = await BlogService.getBlogByBlogId(blogId);
+      const result = await BlogService.getBlogById(blogId);
 
       if (!result) {
         return res.status(404).json({
@@ -71,10 +66,9 @@ module.exports = {
       resultArray.push(result);
       contentNegotiate(req, res, resultArray);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return res.status(500).send();
     }
-
     return null;
   },
 
@@ -82,19 +76,18 @@ module.exports = {
     const paginationAttr = pagination(req.query.page, req.query.limit);
 
     try {
-      const results = await BlogService.getAllBlogs(paginationAttr.page, paginationAttr.limit);
+      const results = await BlogService.getAllBlogs(parseInt(paginationAttr.page, 10), parseInt(paginationAttr.limit, 10));
 
       contentNegotiate(req, res, results);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return res.status(500).send();
     }
-
     return null;
   },
 
   updateBlog: async (req, res) => {
-    if (Object.keys(req.body).length === 0) {
+    if (!Object.keys(req.body).length) {
       return res.status(400).json({
         success: false,
         message: 'Empty request body',
@@ -121,7 +114,7 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return res.status(500).json({
         success: false,
         message: 'blog update failed',
@@ -143,13 +136,12 @@ module.exports = {
         });
       }
     } catch (error) {
+      console.error(error);
       return res.status(500).json({
         success: false,
         message: 'Deletion failed',
       });
     }
-
     return null;
   },
-
 };

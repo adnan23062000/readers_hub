@@ -1,16 +1,20 @@
 const UserDTO = require('../DTO/user.dto');
 const { convertToLowerCase, generateHashedPassword } = require('../utils/user.utils');
-const { getStartingSerial } = require('../utils/pagination.utils');
+const { calculateOffset } = require('../utils/pagination.utils');
 const UserRepository = require('../repository/userSequelize.repository');
 
 module.exports = {
 
   createUser: async (data) => UserRepository.createUser(data.username, data.email, data.password),
 
-  updateUser: async (userName, password) => UserRepository.updateUser(userName, generateHashedPassword(password)),
+  updateUser: async (userName, password) => {
+    const newPassword = generateHashedPassword(password);
+
+    return UserRepository.updateUser(userName, newPassword);
+  },
 
   getAllUsers: async (page, limit) => {
-    const pageStart = getStartingSerial(page, limit);
+    const pageStart = calculateOffset(page, limit);
 
     const users = await UserRepository.getAllUsers(parseInt(pageStart, 10), parseInt(limit, 10));
 

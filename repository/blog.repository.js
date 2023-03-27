@@ -1,12 +1,12 @@
 const Blog = require('../model/blog.model');
 
 // Get all blogs
-const getAllBlogs = async (pageStart, limit) => {
+const getAllBlogs = async (offset, limit) => {
   try {
-    const blogs = await Blog.findAll({ offset: pageStart, limit });
+    const blogs = await Blog.findAll({ offset, limit });
     return blogs;
   } catch (err) {
-    console.log(err.stack);
+    console.error(err.stack);
     throw err;
   }
 };
@@ -17,7 +17,7 @@ const getBlogById = async (blogId) => {
     const blog = await Blog.findOne({ where: { blogId } });
     return blog;
   } catch (err) {
-    console.log(err.stack);
+    console.error(err.stack);
     throw err;
   }
 };
@@ -27,15 +27,15 @@ const createBlog = async (blogTitle, blogBody, username) => {
   try {
     return await Blog.create({ blogTitle, blogBody, username });
   } catch (err) {
-    console.log(err.stack);
+    console.error(err.stack);
     throw err;
   }
 };
 
 // Update blog by blogId
-const updateBlog = async (blogId, newBlogBody) => {
+const updateBlog = async (blogId, blogBody) => {
   try {
-    const blog = await Blog.update({ blogBody: newBlogBody }, {
+    const blog = await Blog.update({ blogBody }, {
       where: {
         blogId,
       },
@@ -43,7 +43,7 @@ const updateBlog = async (blogId, newBlogBody) => {
 
     return blog;
   } catch (err) {
-    console.log(err.stack);
+    console.error(err.stack);
     throw err;
   }
 };
@@ -57,7 +57,7 @@ const deleteBlog = async (blogId) => {
       },
     });
   } catch (error) {
-    console.log(error.stack);
+    console.error(error.stack);
     throw error;
   }
 };

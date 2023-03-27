@@ -31,9 +31,8 @@ module.exports = {
       resultArray.push(result);
       contentNegotiate(req, res, resultArray);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
-
     return null;
   },
 
@@ -42,14 +41,29 @@ module.exports = {
 
     try {
       const results = await getAllUsers(paginationAttr.page, paginationAttr.limit);
+
       contentNegotiate(req, res, results);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   },
 
   updateUser: async (req, res) => {
+    if (!Object.keys(req.body).length) {
+      return res.status(400).json({
+        success: false,
+        message: 'No request body',
+      });
+    }
+
     const { body } = req;
+
+    if (!body.password) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid request body',
+      });
+    }
 
     const { userName } = req.params;
 
@@ -76,7 +90,7 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return res.status(500).json({
         success: false,
         message: 'user update failed',
@@ -104,14 +118,12 @@ module.exports = {
         });
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
       return res.status(500).json({
         success: false,
         message: 'user deletion failed',
       });
     }
-
     return null;
   },
-
 };
