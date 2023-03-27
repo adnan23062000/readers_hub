@@ -1,10 +1,10 @@
 const Blog = require('../model/blog.model');
 
 // Get all blogs
-const getAllBlogs = async (pageStart, limit) => {
+const getAllBlogs = async (offset, limit) => {
   
     try{
-        const blogs = await Blog.findAll({ offset: pageStart, limit: limit });
+        const blogs = await Blog.findAll({ offset, limit });
         return blogs;
     }
     catch(err){
@@ -39,12 +39,12 @@ const createBlog = async (blogTitle, blogBody, username) => {
 };
 
 // Update blog by blogId
-const updateBlog = async (blogId, newBlogBody) => {
+const updateBlog = async (blogId, blogBody) => {
     
     try{
-        const blog = await Blog.update({ blogBody: newBlogBody }, {
+        const blog = await Blog.update({ blogBody }, {
           where: {
-            blogId: blogId
+            blogId
           }
         });
 

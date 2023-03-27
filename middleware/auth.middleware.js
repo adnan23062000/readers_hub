@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { contentNegotiate } = require('../utils/contentNegotiation.utils');
+
 
 exports.verify = function(req, res, next){
     

@@ -17,7 +17,7 @@ module.exports = {
     },
 
 
-    getStartingSerial: (page, limit) => {
+    calculateOffset: (page, limit) => {
         return (limit*(page-1));
     }
 

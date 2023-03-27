@@ -101,7 +101,7 @@ module.exports = {
         
         try{
             
-            const results = await BlogService.getAllBlogs(paginationAttr.page, paginationAttr.limit);
+            const results = await BlogService.getAllBlogs(parseInt(paginationAttr.page), parseInt(paginationAttr.limit));
 
             contentNegotiate(req, res, results);
             
