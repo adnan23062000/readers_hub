@@ -8,7 +8,7 @@ const getAllBlogs = async () => {
         return blogs;
     }
     catch(err){
-        console.log(err.stack);
+        console.error(err.stack);
         throw err;
     }
 };
@@ -21,7 +21,7 @@ const getBlogById = async (blogId) => {
         return blog;
     }
     catch(err){
-        console.log(err.stack);
+        console.error(err.stack);
         throw err;
     }
 };
@@ -33,18 +33,18 @@ const createBlog = async (blogTitle, blogBody, username) => {
         return await Blog.create({ blogTitle, blogBody, username });
     }
     catch(err){
-        console.log(err.stack);
+        console.errpr(err.stack);
         throw err;
     }
 };
 
 // Update blog by blogId
-const updateBlog = async (blogId, newBlogBody) => {
+const updateBlog = async (blogId, blogBody) => {
     
     try{
-        const blog = await Blog.update({ blogBody: newBlogBody }, {
+        const blog = await Blog.update({ blogBody }, {
           where: {
-            blogId: blogId
+            blogId
           }
         });
 
@@ -53,7 +53,7 @@ const updateBlog = async (blogId, newBlogBody) => {
       } 
       catch(err)
       {
-        console.log(err.stack);
+        console.error(err.stack);
         throw err;
       }
 };
@@ -63,11 +63,11 @@ const deleteBlog = async (blogId) => {
   
     try{
         return await Blog.destroy({ where: {
-            blogId: blogId
+            blogId
           }});
     }
     catch(error){
-        console.log(error.stack);
+        console.error(error.stack);
         throw error;
     }
 };
