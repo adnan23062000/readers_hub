@@ -24,21 +24,18 @@ module.exports = {
             });
         }
 
-        try{
-            
+        try {
             const data = await authService.registerUser(body);
+
+            let accessToken = generateAccessToken(username);
+    
+            res.cookie("jwt", accessToken, { httpOnly: true });
+                                
+            return res.status(201).json({
+                success: true,
+                data: "user created"
+            });
             
-            if(data){
-                
-                let accessToken = generateAccessToken(username);
-        
-                res.cookie("jwt", accessToken, { httpOnly: true });
-                                  
-                return res.status(201).json({
-                    success: true,
-                    data: "user created"
-                });
-            }
         }
         catch(error){
             console.error(error);
@@ -81,19 +78,17 @@ module.exports = {
                 message: "Incorrect username or password"
             });
         }
-
-        else{
             
-            let accessToken = generateAccessToken(username);
+        let accessToken = generateAccessToken(username);
 
-            res.cookie("jwt", accessToken, { httpOnly: true });
+        res.cookie("jwt", accessToken, { httpOnly: true });
+    
+        res.status(200).json({
+            success: true,
+            message: "user logged in"
+        });
+
         
-            res.status(200).json({
-                success: true,
-                message: "user logged in"
-            });
-
-        }
 
 
 
