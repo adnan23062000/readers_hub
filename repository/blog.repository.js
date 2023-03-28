@@ -39,12 +39,12 @@ const createBlog = async (blogTitle, blogBody, username) => {
 };
 
 // Update blog by blogId
-const updateBlog = async (blogId, newBlogBody) => {
+const updateBlog = async (blogId, blogBody) => {
     
     try{
-        const blog = await Blog.update({ blogBody: newBlogBody }, {
+        const blog = await Blog.update({ blogBody }, {
           where: {
-            blogId: blogId
+            blogId
           }
         });
 
@@ -63,7 +63,7 @@ const deleteBlog = async (blogId) => {
   
     try{
         return await Blog.destroy({ where: {
-            blogId: blogId
+            blogId
           }});
     }
     catch(error){

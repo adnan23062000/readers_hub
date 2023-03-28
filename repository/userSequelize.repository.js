@@ -39,12 +39,12 @@ const createUser = async (username, email, password) => {
 };
 
 // Update user password by username
-const updateUser = async (username, newPassword) => {
+const updateUser = async (username, password) => {
     
     try{
-        const user = await User.update({ password: newPassword }, {
+        const user = await User.update({ password }, {
           where: {
-            username: username
+            username
           }
         });
 
@@ -63,7 +63,7 @@ const deleteUser = async (username) => {
   
     try{
         return await User.destroy({ where: {
-            username: username
+            username
           }});
     }
     catch(error){
