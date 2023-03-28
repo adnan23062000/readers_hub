@@ -1,6 +1,6 @@
-const UserDTO = require("../DTO/user.dto");
-const { convertToLowerCase, generateUUID,  generateHashedPassword } = require("../utils/user.utils");
-const BlogRepository = require('../repository/post.repository');
+const BlogDTO = require("../DTO/blog.dto");
+const { calculateOffset } = require('../utils/pagination.utils');
+const BlogRepository = require('../repository/blog.repository');
 
 module.exports = {
     
@@ -12,15 +12,17 @@ module.exports = {
 
 
 
-    getAllBlogs: async () => {
+    getAllBlogs: async (page, limit) => {
+
+        const pageStart = calculateOffset(page, limit);
         
-        const blogs = await BlogRepository.getAllBlogs();
+        const blogs = await BlogRepository.getAllBlogs(pageStart, limit);
         
         const blogsList = [];
         
         const dataValuesArray = blogs.map(blog => blog.dataValues);
         
-        for (var i = 0; i < dataValuesArray.length; i++) {
+        for (let i = 0; i < dataValuesArray.length; i++) {
             const blogDTO = new BlogDTO(dataValuesArray[i]);
             blogsList.push(blogDTO);
         }
@@ -30,11 +32,11 @@ module.exports = {
 
 
 
-    getBlogByBlogId: async (blogId) => {
+    getBlogById: async (blogId) => {
         
         const blog = await BlogRepository.getBlogById(blogId);
 
-        if(blog===null || blog===undefined)
+        if(!blog)
             return blog;
         
         

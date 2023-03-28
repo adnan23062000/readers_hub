@@ -4,11 +4,10 @@ const sequelize = require('../config/databaseSequelize');
 const Blog = sequelize.define('Blog', {
   
   blogId: {
-    type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
     allowNull: false,
     primaryKey: true,
-    unique: true,
     },
   
   blogTitle: {
@@ -27,12 +26,14 @@ const Blog = sequelize.define('Blog', {
     }
   },
 
-  author: {
+  username: {
     type: DataTypes.STRING,
+    foreignKey: true,
+    noUpdate: true,
     allowNull: false,
-    references: {
-      model: 'User',
-      key: 'username'
+    validate: {
+      isAlphanumeric: true,
+      notEmpty: true
     }
   },
 
@@ -47,7 +48,15 @@ const Blog = sequelize.define('Blog', {
     allowNull: false,
     defaultValue: DataTypes.NOW,
   },
-});
+  },
+  
+  {
+    timestamps: false,
+  }
+
+
+);
+
 
 Blog.sync()
   .then(() => {
@@ -56,5 +65,6 @@ Blog.sync()
   .catch((err) => {
     console.error('Error creating blog table:', err);
   });
+  
 
 module.exports = Blog;

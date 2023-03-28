@@ -1,12 +1,13 @@
 const UserDTO = require("../DTO/user.dto");
 const { convertToLowerCase, generateHashedPassword } = require("../utils/user.utils");
+const { calculateOffset } = require('../utils/pagination.utils');
 const UserRepository = require("../repository/userSequelize.repository");
 
 module.exports = {
     
-    createUser: async (user) => {
+    createUser: async (data) => {
 
-        return await UserRepository.createUser(user.username, user.email, user.password);
+        return await UserRepository.createUser(data.username, data.email, data.password);
 
     },
 
@@ -20,15 +21,17 @@ module.exports = {
     },
 
 
-    getAllUsers: async () => {
+    getAllUsers: async (page, limit) => {
         
-        const users = await UserRepository.getAllUsers();
+        const pageStart = calculateOffset(page, limit);
+
+        const users = await UserRepository.getAllUsers(parseInt(pageStart), parseInt(limit));
         
         const usersList = [];
         
         const dataValuesArray = users.map(user => user.dataValues);
         
-        for (var i = 0; i < dataValuesArray.length; i++) {
+        for (let i = 0; i < dataValuesArray.length; i++) {
             const userDTO = new UserDTO(dataValuesArray[i]);
             usersList.push(userDTO);
         }
@@ -53,12 +56,12 @@ module.exports = {
     },
 
 
-
     deleteUser: async (userName) => {
         
         const validUsername = convertToLowerCase(userName);
         return await UserRepository.deleteUser(validUsername);
     },
+    
 
 
     userLogin: async (username) => {

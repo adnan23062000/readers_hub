@@ -1,5 +1,7 @@
 const { getUserByUsername, updateUser, getAllUsers, deleteUser } = require("../service/user.service");
-const { checkParamValidity, convertToLowerCase, checkPasswordLength } = require("../utils/user.utils");
+const { checkParamValidity, checkPasswordLength, convertToLowerCase } = require("../utils/user.utils");
+const { contentNegotiate } = require("../utils/contentNegotiation.utils");
+const { pagination } = require('../utils/pagination.utils');
 
 
 module.exports = {
@@ -19,22 +21,21 @@ module.exports = {
         }
         
         try{
-            const result = await getUserByUsername(convertToLowerCase(userName), false);
+            const result = await getUserByUsername(userName);
 
             if(!result)
                 return res.status(404).json({
                     success: false,
                     data: "user not found"
                 });
-
-
-            return res.status(200).json({
-                success: true,
-                data: result
-            });    
+            
+            
+            const resultArray = [];
+            resultArray.push(result);
+            contentNegotiate(req, res, resultArray);  
         }
         catch(error){
-            console.log(error);
+            console.error(error);
             return;
         }
         
@@ -44,16 +45,16 @@ module.exports = {
 
     getUsers: async (req, res) => {
         
+        const paginationAttr = pagination(req.query.page, req.query.limit);
+
         try{
-            const results = await getAllUsers();
- 
-            return res.status(200).json({
-                success: true,
-                data: results
-            });    
+            const results = await getAllUsers(paginationAttr.page, paginationAttr.limit);
+
+            contentNegotiate(req, res, results);
+  
         }
         catch(error){
-            console.log(error);
+            console.error(error);
             return;
         }
     },
@@ -62,7 +63,7 @@ module.exports = {
 
     updateUser: async (req, res) => {
         
-        if(Object.keys(req.body).length === 0){
+        if(!Object.keys(req.body).length){
             return res.status(400).json({
                 success: false,
                 message: "No request body"
@@ -107,10 +108,10 @@ module.exports = {
             }
         }
         catch(error){
-            console.log(error);
-            return res.status(400).json({
+            console.error(error);
+            return res.status(500).json({
                 success: false,
-                message: "bad request"
+                message: "user update failed"
             });
         }
 
@@ -125,8 +126,7 @@ module.exports = {
         if(!checkParamValidity(userName)){
             
             return res.status(400).json({
-                success: false,
-                message: "invalid username"
+                message: "invalid request"
             })
         
         }
@@ -142,10 +142,10 @@ module.exports = {
             }
         }
         catch(error){
-            console.log(error);
-            return res.status(400).json({
+            console.error(error);
+            return res.status(500).json({
                 success: false,
-                message: "bad request"
+                message: "user deletion failed"
             });
         }
         

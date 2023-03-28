@@ -7,7 +7,7 @@ module.exports = {
     
     userRegister: async (req, res) => {
 
-        if(Object.keys(req.body).length === 0){
+        if(!Object.keys(req.body).length){
             return res.status(400).json({
                 success: false,
                 message: "No request body"
@@ -16,7 +16,6 @@ module.exports = {
         
         const body = req.body;
         const username = req.body.username;
-
 
         if(!body.username || !body.email || !body.password){
             return res.status(400).json({
@@ -42,7 +41,7 @@ module.exports = {
             }
         }
         catch(error){
-            console.log(error);
+            console.error(error);
             return res.status(400).json({
                 success: false,
                 message: "User registration failed"
@@ -55,7 +54,7 @@ module.exports = {
     
     userLogin: async (req, res) => {
         
-        if(Object.keys(req.body).length === 0){
+        if(!Object.keys(req.body).length){
             return res.status(400).json({
                 success: false,
                 message: "Empty request body"
@@ -74,7 +73,6 @@ module.exports = {
 
         const user = await authService.userLogin(username);
         
-        
         const passwordMatched = await compareHashedPassword(password, user.password);
         
         if(!passwordMatched){
@@ -85,18 +83,20 @@ module.exports = {
         }
 
         else{
+            
             let accessToken = generateAccessToken(username);
 
             res.cookie("jwt", accessToken, { httpOnly: true });
         
-            return res.status(200).json({
+            res.status(200).json({
                 success: true,
                 message: "user logged in"
             });
+
         }
 
-    },
 
 
-
+    }
 }
+

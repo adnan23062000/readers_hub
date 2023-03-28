@@ -18,8 +18,7 @@ module.exports = {
     },
 
     generateHashedPassword: (rawPassword) => {
-        
-        const salt = bcrypt.genSaltSync(parseInt(process.env.SALT_ROUND));
+        const salt = bcrypt.genSaltSync(10);
         const encryptedPassword = bcrypt.hashSync(rawPassword, salt);
         
         return encryptedPassword;
@@ -52,6 +51,10 @@ module.exports = {
             return false;
         }
         return true;
+    },
+
+    isNumeric: (str) => {
+        return /^\d+$/.test(str);
     }
 
 }

@@ -17,7 +17,7 @@ const User = sequelize.define('User', {
     primaryKey: true,
     validate: {
       isAlphanumeric: true,
-    }
+    },
   },
 
   email: {
@@ -71,5 +71,6 @@ User.sync()
   .catch((err) => {
     console.error('Error creating user table:', err);
   });
+  
 
 module.exports = User;
