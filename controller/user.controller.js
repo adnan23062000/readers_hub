@@ -1,7 +1,8 @@
 const { getUserByUsername, updateUser, getAllUsers, deleteUser } = require("../service/user.service");
-const { checkParamValidity, checkPasswordLength, convertToLowerCase } = require("../utils/user.utils");
+const { isParamValid, checkPasswordLength, convertToLowerCase } = require("../utils/userValidation.utils");
 const { contentNegotiate } = require("../utils/contentNegotiation.utils");
 const { pagination } = require('../utils/pagination.utils');
+const Validation = require('../utils/requestValidation.utils');
 
 
 module.exports = {
@@ -11,24 +12,19 @@ module.exports = {
         
         const userName = req.params.userName;
 
-        if(!checkParamValidity(userName)){
-            
-            return res.status(400).json({
-                success: false,
-                message: "invalid request"
-            });
-        
-        }
+        if(!isParamValid(userName))
+            return res.status(400).json({success: false, message: "invalid request"});
         
         try{
             const result = await getUserByUsername(userName);
+
+            console.log(result);
 
             if(!result)
                 return res.status(404).json({
                     success: false,
                     data: "user not found"
-                });
-            
+            });
             
             const resultArray = [];
             resultArray.push(result);
@@ -49,9 +45,7 @@ module.exports = {
 
         try{
             const results = await getAllUsers(paginationAttr.page, paginationAttr.limit);
-
             contentNegotiate(req, res, results);
-  
         }
         catch(error){
             console.error(error);
@@ -63,49 +57,42 @@ module.exports = {
 
     updateUser: async (req, res) => {
         
-        if(!Object.keys(req.body).length){
-            return res.status(400).json({
-                success: false,
-                message: "No request body"
-            });
-        }
-        
         const body = req.body;
-
-        if(!body.password){
-            return res.status(400).json({
-                success: false,
-                message: "Invalid request body"
-            });
+        const emptyReqBody = Validation.validateRequestBody(body);
+        
+        if(emptyReqBody){
+            return res.status(emptyReqBody.status).json({
+                success: emptyReqBody.success,
+                message: emptyReqBody.message
+            })
         }
+
+        if(!body.password)
+            return res.status(400).json({ success: false, message: "Invalid request body"}); 
 
         const userName = req.params.userName;
 
-        if(!checkParamValidity(userName)){
-            
-            return res.status(400).json({
-                success: false,
-                message: "invalid username"
-            })
-        
-        }
+        if(!isParamValid(userName))
+            return res.status(400).json({ success: false, message: "invalid username"})
+         
 
         if(!checkPasswordLength(body.password)){
             return res.status(400).json({
                 success: false,
-                message: "password length too small"
+                message: "password length should be atleast 6 characters"
             })
         }
 
 
         try{
             const result = await updateUser(convertToLowerCase(userName), body.password);
-            if(result){
+            if(result[0]){
                 return res.status(200).json({
                     success: true,
-                    data: "user updated successfully"
+                    data: "Password updated successfully"
                 });
             }
+            return res.status(404).json({ success: true, data: "user not found"});
         }
         catch(error){
             console.error(error);
@@ -123,13 +110,8 @@ module.exports = {
         
         const userName = req.params.userName;
 
-        if(!checkParamValidity(userName)){
-            
-            return res.status(400).json({
-                message: "invalid request"
-            })
-        
-        }
+        if(!isParamValid(userName))
+            return res.status(400).json({ message: "invalid request" });
 
         
         try{
@@ -140,6 +122,10 @@ module.exports = {
                     data: "user deleted successfully"
                 });
             }
+            return res.status(404).json({
+                success: false,
+                message: "user not found"
+            });
         }
         catch(error){
             console.error(error);

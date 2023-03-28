@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const BlogService = require('../service/blog.service');
-const { isNumeric } = require('../utils/user.utils');
 
 
 module.exports = {
@@ -9,7 +8,7 @@ module.exports = {
 
         const blogIdToEdit = req.params.blogId;
 
-        if(!isNumeric(blogIdToEdit)){
+        if(isNaN(blogIdToEdit)){
             return res.status(400).json({
                 success: false,
                 message: "Invalid blog id"
@@ -34,7 +33,7 @@ module.exports = {
 
         try{
 
-            if(!(currentUser==authorOfThisBlog)){
+            if(currentUser != authorOfThisBlog){
                 return res.status(401).json({
                     success: false,
                     message: "Unauthorized"
@@ -48,8 +47,5 @@ module.exports = {
         }
 
     }
-
-
-
 
 }

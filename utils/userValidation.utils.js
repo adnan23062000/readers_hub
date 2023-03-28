@@ -24,7 +24,7 @@ module.exports = {
         return encryptedPassword;
     },
 
-    checkParamValidity: (parameter) => {
+    isParamValid: (parameter) => {
         if(parameter.includes(" ")){
             return false;
         }

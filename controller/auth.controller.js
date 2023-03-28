@@ -1,102 +1,88 @@
 const authService = require('../service/auth.service');
-const { compareHashedPassword, generateAccessToken } = require("../utils/user.utils");
+const { compareHashedPassword, generateAccessToken } = require("../utils/userValidation.utils");
+const Validation = require('../utils/requestValidation.utils');
+const SequelizerValidation = require('../utils/sequelizerValidition.utils');
 
 
 module.exports = {
 
     
     userRegister: async (req, res) => {
-
-        if(!Object.keys(req.body).length){
-            return res.status(400).json({
-                success: false,
-                message: "No request body"
-            });
-        }
-        
+      
         const body = req.body;
-        const username = req.body.username;
-
-        if(!body.username || !body.email || !body.password){
-            return res.status(400).json({
-                success: false,
-                message: "Invalid request body"
-            });
+        const emptyReqBody = Validation.validateRequestBody(body);
+        
+        if(emptyReqBody){
+            return res.status(emptyReqBody.status).json({
+                success: emptyReqBody.success,
+                message: emptyReqBody.message
+            })
         }
 
-        try{
-            
+        if(!body.username || !body.email || !body.password)
+            return res.status(400).json({success: false, message: 'one or more fields are empty'});
+
+        try{    
             const data = await authService.registerUser(body);
-            
-            if(data){
-                
-                let accessToken = generateAccessToken(username);
+
+            const username = req.body.username;
+            const accessToken = generateAccessToken(username);
         
-                res.cookie("jwt", accessToken, { httpOnly: true });
+            res.cookie("jwt", accessToken, { httpOnly: true });
                                   
-                return res.status(201).json({
-                    success: true,
-                    data: "user created"
-                });
-            }
+            return res.status(201).json({
+                success: true,
+                message: "user created",
+                data: data
+            });
         }
         catch(error){
             console.error(error);
             return res.status(400).json({
                 success: false,
-                message: "User registration failed"
+                message: SequelizerValidation.sequelizerErrorValidation(error)
             });
         }
 
     },
-    
-    
+       
     
     userLogin: async (req, res) => {
         
-        if(!Object.keys(req.body).length){
-            return res.status(400).json({
-                success: false,
-                message: "Empty request body"
-            });
-        }
+        const body = req.body;
+        const emptyReqBody = Validation.validateRequestBody(body);
         
-        const username = req.body.username;
-        const password = req.body.password;
-
-        if (!username || !password) {
-            return res.status(401).json({
-                success: false,
-                message: "Invalid request"
-            });
+        if(emptyReqBody){
+            return res.status(emptyReqBody.status).json({
+                success: emptyReqBody.success,
+                message: emptyReqBody.message
+            })
         }
+
+        if(!body.username || !body.password)
+            return res.status(400).json({success: false, message: 'one or more fields are empty'});
+        
+        const { username, password } = body;
 
         const user = await authService.userLogin(username);
         
         const passwordMatched = await compareHashedPassword(password, user.password);
         
         if(!passwordMatched){
-            res.status(401).json({
+            return res.status(401).json({
                 success: false,
                 message: "Incorrect username or password"
             });
         }
 
-        else{
-            
-            let accessToken = generateAccessToken(username);
+        let accessToken = generateAccessToken(username);
 
-            res.cookie("jwt", accessToken, { httpOnly: true });
+        res.cookie("jwt", accessToken, { httpOnly: true });
         
-            res.status(200).json({
-                success: true,
-                message: "user logged in"
-            });
-
-        }
-
-
-
+        res.status(200).json({
+            success: true,
+            message: "user logged in"
+        });
     }
 }
 
