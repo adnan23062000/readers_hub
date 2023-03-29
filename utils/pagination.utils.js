@@ -1,26 +1,16 @@
 module.exports = {
 
-    pagination: (page, limit) => {
-        
-        const paginationObj = {};
+  pagination: (page, limit) => {
+    const paginationObj = {};
 
-        paginationObj.page = page? page:1;
-        paginationObj.limit = limit? limit:5;
+    paginationObj.page = page || 1;
+    paginationObj.limit = limit || 5;
 
-        if(page<=0 || isNaN(page))
-            paginationObj.page = 1;
-        if(limit<=0 || isNaN(limit))
-            paginationObj.limit = 5;
+    if (page <= 0 || Number.isNaN(Number(page))) { paginationObj.page = 1; }
+    if (limit <= 0 || Number.isNaN(Number(limit))) { paginationObj.limit = 5; }
 
-        return paginationObj;
+    return paginationObj;
+  },
 
-    },
-
-
-    calculateOffset: (page, limit) => {
-        return (limit*(page-1));
-    }
-
-
-
-}
+  calculateOffset: (page, limit) => (limit * (page - 1)),
+};
