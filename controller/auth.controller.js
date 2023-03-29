@@ -65,13 +65,16 @@ module.exports = {
         const { username, password } = body;
 
         const user = await authService.userLogin(username);
+
+        if(!user)
+            return res.status(400).json({ success: false, message: "username doesn't exist" });
         
         const passwordMatched = await compareHashedPassword(password, user.password);
         
         if(!passwordMatched){
             return res.status(401).json({
                 success: false,
-                message: "Incorrect username or password"
+                message: "Incorrect password"
             });
         }
 

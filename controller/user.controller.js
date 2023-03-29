@@ -18,8 +18,6 @@ module.exports = {
         try{
             const result = await getUserByUsername(userName);
 
-            console.log(result);
-
             if(!result)
                 return res.status(404).json({
                     success: false,

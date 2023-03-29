@@ -1,16 +1,10 @@
 require("dotenv").config();
-
 const express = require("express");
-
 const bodyParser = require('body-parser');
-
 const cookieParser = require('cookie-parser');
-
-const app = express();
-
 const indexRouter = require("./router/index.router");
 
-
+const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());

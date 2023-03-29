@@ -13,7 +13,6 @@ module.exports = {
 
     generateUUID:  () => {
         const myUuid = uuidv4();
-        console.log(myUuid);
         return myUuid;
     },
 

@@ -4,8 +4,8 @@ const BlogRepository = require('../repository/blog.repository');
 
 module.exports = {
     
-    createBlog: async (data, author) => {
-        return await BlogRepository.createBlog(data.blogTitle, data.blogBody, author);
+    createBlog: async (blogData, blogAuthor) => {
+        return await BlogRepository.createBlog(blogData.blogTitle, blogData.blogBody, blogAuthor);
     },
 
     getAllBlogs: async (page, limit) => {
@@ -38,8 +38,8 @@ module.exports = {
     
     },
 
-    updateBlog: async (blogId, newBlogBody) => {
-        return await BlogRepository.updateBlog(blogId, newBlogBody);
+    updateBlog: async (blogId, updatedBlogBody) => {
+        return await BlogRepository.updateBlog(blogId, updatedBlogBody);
     },
 
     deleteBlog: async (blogId) => {   

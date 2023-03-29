@@ -2,8 +2,8 @@ const UserService = require('../service/user.service');
 
 module.exports = {
 
-    registerUser: async (data) => {
-        return await UserService.createUser(data);
+    registerUser: async (userData) => {
+        return await UserService.createUser(userData);
     },
 
     userLogin: async (username) => {  
