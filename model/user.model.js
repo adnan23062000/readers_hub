@@ -70,6 +70,13 @@ const User = sequelize.define('User', {
             const encryptedPassword = bcrypt.hashSync(User.password, salt);
             User.password = encryptedPassword;
           }
+        },
+        beforeUpdate: async(User) => {
+          if (User.changed('password')) {
+            const salt = bcrypt.genSaltSync(parseInt(process.env.SALT_ROUND));
+            const encryptedPassword = bcrypt.hashSync(User.password, salt);
+            User.password = encryptedPassword;
+          }
         }
       }
 });

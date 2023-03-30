@@ -1,5 +1,4 @@
 const authService = require('../service/auth.service');
-const { compareHashedPassword, generateAccessToken } = require("../utils/userValidation.utils");
 const Validation = require('../utils/requestValidation.utils');
 const SequelizerValidation = require('../utils/sequelizerValidition.utils');
 
@@ -23,17 +22,13 @@ module.exports = {
             return res.status(400).json({success: false, message: 'one or more fields are empty'});
 
         try{    
-            const userData = await authService.registerUser(body);
-
-            const username = req.body.username;
-            const accessToken = generateAccessToken(username);
-        
+            const accessToken = await authService.registerUser(body);
             res.cookie("jwt", accessToken, { httpOnly: true });
                                   
             return res.status(201).json({
                 success: true,
                 message: "user created",
-                data: userData
+                token: accessToken
             });
         }
         catch(error){
@@ -63,29 +58,24 @@ module.exports = {
             return res.status(400).json({success: false, message: 'one or more fields are empty'});
         
         const { username, password } = body;
-
-        const user = await authService.userLogin(username);
-
-        if(!user)
-            return res.status(400).json({ success: false, message: "username doesn't exist" });
         
-        const passwordMatched = await compareHashedPassword(password, user.password);
+        try{
         
-        if(!passwordMatched){
-            return res.status(401).json({
-                success: false,
-                message: "Incorrect password"
+            const accessToken = await authService.userLogin(username, password);
+
+            res.cookie("jwt", accessToken, { httpOnly: true });
+        
+            res.status(200).json({
+                success: true,
+                message: "user logged in"
             });
         }
-
-        let accessToken = generateAccessToken(username);
-
-        res.cookie("jwt", accessToken, { httpOnly: true });
-        
-        res.status(200).json({
-            success: true,
-            message: "user logged in"
-        });
+        catch(error){
+            if(error.message === 'user not found')
+                return res.status(404).json({ success: false, message: error.message });
+            
+            return res.status(401).json({ success: false, message: error.message });
+        }
     }
 }
 
