@@ -23,7 +23,7 @@ module.exports = {
             return res.status(400).json({success: false, message: 'one or more fields are empty'});
 
         try{    
-            const data = await authService.registerUser(body);
+            const userData = await authService.registerUser(body);
 
             const username = req.body.username;
             const accessToken = generateAccessToken(username);
@@ -33,7 +33,7 @@ module.exports = {
             return res.status(201).json({
                 success: true,
                 message: "user created",
-                data: data
+                data: userData
             });
         }
         catch(error){

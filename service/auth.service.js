@@ -1,4 +1,5 @@
 const UserService = require('../service/user.service');
+const { compareHashedPassword } = require("../utils/userValidation.utils");
 
 module.exports = {
 

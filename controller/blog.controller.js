@@ -27,8 +27,8 @@ module.exports = {
 
 
         try{ 
-            const data = await BlogService.createBlog(body, author);                
-            return res.status(201).json({ success: true, message: "Blog created", data: data});   
+            const blogData = await BlogService.createBlog(body, author);                
+            return res.status(201).json({ success: true, message: "Blog created", data: blogData});   
         }
         catch(error){
             console.error(error);
