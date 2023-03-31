@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 
-app.use('/', indexRouter);
+app.use('/api/v1', indexRouter);
 
 app.use('*', (req, res) => {
     return res.status(404).json({
