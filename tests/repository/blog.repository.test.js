@@ -125,33 +125,33 @@ describe('Blog Repository unit tests', () => {
           .spyOn(Blog, 'update')
           .mockResolvedValueOnce([1]);
         
-        const result = await userRepository.updateUser(14, 'adnan12345');
+        const result = await blogRepository.updateBlog(14, 'adnan12345');
         
         expect(result).toEqual([1]);
         expect(spyOnUpdate).toHaveBeenCalledTimes(1);
         expect(spyOnUpdate).toHaveBeenCalledWith(
-          { password: 'newpassword' },
-          { where: { username: 'testuser' }, individualHooks: true }, 
+          { blogBody: 'adnan12345' },
+          { where: { blogId: 14 } }, 
         );
       });
     });
   
-    // describe('testing deleteUser', () => {
-    //   it('should delete the user for a valid username', async () => {
-    //     const spyOnDestroy = jest.spyOn(User, 'destroy').mockResolvedValueOnce(1);
+    describe('testing deleteBlog', () => {
+      it('should delete a blog for a valid blogId', async () => {
+        const spyOnDestroy = jest.spyOn(Blog, 'destroy').mockResolvedValueOnce(1);
         
-    //     const username = 'testuser';
-    //     const result = await userRepository.deleteUser(username);
+        const blogId = 14;
+        const result = await blogRepository.deleteBlog(blogId);
         
-    //     expect(result).toEqual(1);
-    //     expect(spyOnDestroy).toHaveBeenCalledTimes(1);
-    //     expect(spyOnDestroy).toHaveBeenCalledWith({
-    //       where: {
-    //         username,
-    //       },
-    //     });
-    //   });
-    // });
+        expect(result).toEqual(1);
+        expect(spyOnDestroy).toHaveBeenCalledTimes(1);
+        expect(spyOnDestroy).toHaveBeenCalledWith({
+          where: {
+            blogId,
+          },
+        });
+      });
+    });
   
   
   });
