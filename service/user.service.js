@@ -11,7 +11,6 @@ module.exports = {
 
 
     updateUser: async (username, password) => {
-        //password = generateHashedPassword(password); 
         return await UserRepository.updateUser(username, password);
     },
 
