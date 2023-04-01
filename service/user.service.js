@@ -1,5 +1,6 @@
 const UserDTO = require("../DTO/user.dto");
-const { convertToLowerCase, generateHashedPassword } = require("../utils/userValidation.utils");
+const { convertToLowerCase } = require("../utils/userValidation.utils");
+const { getUsersList } = require('../utils/dtoDataList.utils');
 const { calculateOffset } = require('../utils/pagination.utils');
 const UserRepository = require("../repository/user.repository");
 
@@ -20,14 +21,7 @@ module.exports = {
         const pageStart = calculateOffset(page, limit);
 
         const users = await UserRepository.getAllUsers(parseInt(pageStart), parseInt(limit));
-        
-        const usersList = [];
-        const dataValuesArray = users.map(user => user.dataValues);
-
-        dataValuesArray.forEach(dataValue => {
-            const userDTO = new UserDTO(dataValue);
-            usersList.push(userDTO);
-        });
+        const usersList = getUsersList(users);
 
         return usersList;
     },

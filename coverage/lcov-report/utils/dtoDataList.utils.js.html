@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for utils/pagination.utils.js</title>
+    <title>Code coverage report for utils/dtoDataList.utils.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">utils</a> pagination.utils.js</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">utils</a> dtoDataList.utils.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.5% </span>
+                <span class="strong">38.23% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/24</span>
+                <span class='fraction'>13/34</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">37.5% </span>
+                <span class="strong">38.23% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/24</span>
+                <span class='fraction'>13/34</span>
             </div>
         
             
@@ -86,51 +86,81 @@
 <a name='L21'></a><a href='#L21'>21</a>
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
-<a name='L24'></a><a href='#L24'>24</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L24'></a><a href='#L24'>24</a>
+<a name='L25'></a><a href='#L25'>25</a>
+<a name='L26'></a><a href='#L26'>26</a>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">module.exports = {
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">const UserDTO = require('../DTO/user.dto');
+const BlogDTO = require('../DTO/blog.dto');
 &nbsp;
-    pagination: <span class="fstat-no" title="function not covered" >(page, limit) =&gt; {</span>
+module.exports = {
+&nbsp;
+    getUsersList: (<span class="fstat-no" title="function not covered" >users) =&gt; {</span>
 <span class="cstat-no" title="statement not covered" >        </span>
-<span class="cstat-no" title="statement not covered" >        const paginationObj = {};</span>
+<span class="cstat-no" title="statement not covered" >        const usersList = [];</span>
+<span class="cstat-no" title="statement not covered" >        const dataValuesArray = users.map(user =&gt; user.dataValues);</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >        paginationObj.page = page? page:1;</span>
-<span class="cstat-no" title="statement not covered" >        paginationObj.limit = limit? limit:5;</span>
+<span class="cstat-no" title="statement not covered" >        dataValuesArray.forEach(dataValue =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            const userDTO = new UserDTO(dataValue);</span>
+<span class="cstat-no" title="statement not covered" >            usersList.push(userDTO);</span>
+<span class="cstat-no" title="statement not covered" >        });</span>
 <span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >        if(page&lt;=0 || isNaN(page))</span>
-<span class="cstat-no" title="statement not covered" >            paginationObj.page = 1;</span>
-<span class="cstat-no" title="statement not covered" >        if(limit&lt;=0 || isNaN(limit))</span>
-<span class="cstat-no" title="statement not covered" >            paginationObj.limit = 5;</span>
-<span class="cstat-no" title="statement not covered" ></span>
-<span class="cstat-no" title="statement not covered" >        return paginationObj;</span>
-<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >        return usersList;</span>
     },
 &nbsp;
-&nbsp;
-    calculateOffset: <span class="fstat-no" title="function not covered" >(page, limit) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >        return (limit*(page-1));</span>
+    getBlogsList: (<span class="fstat-no" title="function not covered" >blogs) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        </span>
+<span class="cstat-no" title="statement not covered" >        const blogsList = [];</span>
+<span class="cstat-no" title="statement not covered" >        const dataValuesArray = blogs.map(blog =&gt; blog.dataValues);</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >        dataValuesArray.forEach(dataValue =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >            const blogDTO = new BlogDTO(dataValue);</span>
+<span class="cstat-no" title="statement not covered" >            blogsList.push(blogDTO);</span>
+<span class="cstat-no" title="statement not covered" >        });</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >        return blogsList;</span>
 <span class="cstat-no" title="statement not covered" >    }</span>
+&nbsp;
+&nbsp;
 &nbsp;
 }</pre></td></tr></table></pre>
 

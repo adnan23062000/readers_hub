@@ -1,5 +1,6 @@
 const BlogDTO = require("../DTO/blog.dto");
 const { calculateOffset } = require('../utils/pagination.utils');
+const { getBlogsList } = require('../utils/dtoDataList.utils');
 const BlogRepository = require('../repository/blog.repository');
 
 module.exports = {
@@ -10,18 +11,10 @@ module.exports = {
 
     getAllBlogs: async (page, limit) => {
 
-        const pageStart = calculateOffset(page, limit);
+        const offset = calculateOffset(page, limit);
         
-        const blogs = await BlogRepository.getAllBlogs(pageStart, limit);
-        
-        const blogsList = [];
-
-        const dataValuesArray = blogs.map(blog => blog.dataValues);
-
-        dataValuesArray.forEach(dataValue => {
-            const blogDTO = new BlogDTO(dataValue);
-            blogsList.push(blogDTO);
-        });
+        const blogs = await BlogRepository.getAllBlogs(offset, limit);
+        const blogsList = getBlogsList(blogs);
 
         return blogsList;
     },
