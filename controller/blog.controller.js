@@ -11,7 +11,7 @@ module.exports = {
     createBlog: async (req, res) => {
 
 
-        const emptyReqBody = Validation.validateRequestBody(req.body);
+        const emptyReqBody = Validation.isRequestBodyEmpty(req.body);
         
         if(emptyReqBody)
             return res.status(emptyReqBody.status).json({success: emptyReqBody.success, message: emptyReqBody.message});
@@ -83,7 +83,7 @@ module.exports = {
 
     updateBlog: async (req, res) => {
         
-        const emptyReqBody = Validation.validateRequestBody(req.body);
+        const emptyReqBody = Validation.isRequestBodyEmpty(req.body);
         
         if(emptyReqBody)
             return res.status(emptyReqBody.status).json({success: emptyReqBody.success, message: emptyReqBody.message});

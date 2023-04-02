@@ -56,7 +56,7 @@ module.exports = {
     updateUser: async (req, res) => {
         
         const body = req.body;
-        const emptyReqBody = Validation.validateRequestBody(body);
+        const emptyReqBody = Validation.isRequestBodyEmpty(body);
         
         if(emptyReqBody){
             return res.status(emptyReqBody.status).json({

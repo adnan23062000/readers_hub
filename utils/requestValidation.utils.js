@@ -1,6 +1,6 @@
 module.exports = {
 
-    validateRequestBody: (body) => {
+    isRequestBodyEmpty: (body) => {
         
         if(!Object.keys(body).length)
             return {success: false, status: 400, message: "Empty Request Body"};

@@ -1,6 +1,6 @@
 const authController = require('../../controller/auth.controller');
 const authService = require('../../service/auth.service');
-const { validateRequestBody } = require('../../utils/requestValidation.utils');
+const { isRequestBodyEmpty } = require('../../utils/requestValidation.utils');
 const { sequelizerErrorValidation } = require('../../utils/sequelizerValidition.utils');
 
 jest.mock('../../utils/requestValidation.utils.js');
@@ -23,7 +23,7 @@ describe('testing auth controller', () => {
 
             const req = { body: {} };
 
-            validateRequestBody.mockReturnValue({
+            isRequestBodyEmpty.mockReturnValue({
                 success: false,
                 status: 400,
                 message: 'Empty Request Body'
@@ -43,7 +43,7 @@ describe('testing auth controller', () => {
             
             const req = { body: {username: "adnan2306", password: "adnan1234"}};
 
-            validateRequestBody.mockReturnValue(false);
+            isRequestBodyEmpty.mockReturnValue(false);
 
             await authController.userRegister(req, res);
 
@@ -60,7 +60,7 @@ describe('testing auth controller', () => {
             const mockToken = 'testToken';
             
             
-            validateRequestBody.mockReturnValue(false);
+            isRequestBodyEmpty.mockReturnValue(false);
             const spyOnMethod = jest.spyOn(authService, 'registerUser').mockResolvedValueOnce(mockToken);
 
 
@@ -86,7 +86,7 @@ describe('testing auth controller', () => {
 
             const mockError = new Error('User registration failed');
 
-            validateRequestBody.mockReturnValue(null);
+            isRequestBodyEmpty.mockReturnValue(null);
             authService.registerUser.mockRejectedValueOnce(mockError);
             sequelizerErrorValidation.mockReturnValue('User registration failed');
 
@@ -103,5 +103,87 @@ describe('testing auth controller', () => {
         });
 
     });
+
+    
+    describe('testing userLogin', () => {
+
+        it('should return a empty request body error in the response', async() => {
+
+            const req = { body: {} };
+
+            isRequestBodyEmpty.mockReturnValue({
+                success: false,
+                status: 400,
+                message: 'Empty Request Body'
+            });
+
+            await authController.userLogin(req, res);
+
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.json).toHaveBeenCalledWith({
+                success: false,
+                message: 'Empty Request Body'
+            });
+        });
+
+
+        it('should return the one or more fields are empty error in the response', async() => {
+            
+            const req = { body: {password: "adnan1234"} };
+
+            isRequestBodyEmpty.mockReturnValue(false);
+
+            await authController.userLogin(req, res);
+
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.json).toHaveBeenCalledWith({
+                success: false,
+                message: 'one or more fields are empty'
+            });
+        });
+
+
+        it('should return success and the newly created jwt token in the response', async() => {
+
+            const mockToken = 'testToken';
+            
+            
+            isRequestBodyEmpty.mockReturnValue(false);
+            const spyOnMethod = jest.spyOn(authService, 'userLogin').mockResolvedValueOnce(mockToken);
+
+
+            await authController.userLogin(req, res);
+
+
+            expect(spyOnMethod).toHaveBeenCalledWith("adnan2306", "adnan1234");
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.cookie).toHaveBeenCalledWith("jwt", mockToken, { httpOnly: true });
+            expect(res.json).toHaveBeenCalledWith({
+                success: true,
+                message: "user logged in"
+            });
+        });
+
+
+        it('should return the error that occurs when user login fails', async() => {
+
+            const mockError = new Error('User login failed');
+
+            isRequestBodyEmpty.mockReturnValue(null);
+            authService.userLogin.mockRejectedValueOnce(mockError);
+
+
+            await authController.userLogin(req, res);
+
+
+            expect(res.status).toHaveBeenCalledWith(401);
+            expect(res.json).toHaveBeenCalledWith({
+                success: false,
+                message: 'User login failed'
+            });
+
+        });
+
+    })
 
 });
