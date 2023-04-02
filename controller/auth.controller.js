@@ -33,10 +33,10 @@ module.exports = {
         }
         catch(error){
             console.error(error);
-            return res.status(400).json({
-                success: false,
-                message: SequelizerValidation.sequelizerErrorValidation(error)
-            });
+            if(error.name === 'SequelizeValidationError')
+                return res.status(400).json({success: false, message: SequelizerValidation.sequelizerErrorValidation(error)});
+
+            return res.status(500).send();
         }
 
     },
@@ -71,10 +71,13 @@ module.exports = {
             });
         }
         catch(error){
-            if(error.message === 'user not found')
+            console.error(error);
+            if(error.message === 'User not found')
                 return res.status(404).json({ success: false, message: error.message });
-            
-            return res.status(401).json({ success: false, message: error.message });
+            if(error.message === 'Incorrect Password')
+                return res.status(401).json({ success: false, message: error.message });
+
+            return res.status(500).send();
         }
     }
 }

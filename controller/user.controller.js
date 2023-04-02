@@ -30,7 +30,7 @@ module.exports = {
         }
         catch(error){
             console.error(error);
-            return;
+            return res.status(500).send();
         }
         
     },
@@ -47,7 +47,7 @@ module.exports = {
         }
         catch(error){
             console.error(error);
-            return;
+            return res.status(500).send();
         }
     },
 
