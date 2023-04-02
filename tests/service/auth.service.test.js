@@ -30,8 +30,6 @@ describe('testing auth service', () => {
 
             expect(spyOnMethod).toHaveBeenCalledTimes(1);
             expect(result).toEqual(mockAccessToken);
-
-
         })
     }),
 
