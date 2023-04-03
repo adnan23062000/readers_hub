@@ -9,15 +9,15 @@ module.exports = {
     
 
     getUserByUsername: async (req, res) => {
-        
         const userName = req.params.userName;
 
-        if(!isParamValid(userName))
-            return res.status(400).json({success: false, message: "invalid request"});
+        if(!isParamValid(userName)){
+            res.status(400);
+            return res.json({success: false, message: "invalid request"});
+        }
         
         try{
             const result = await getUserByUsername(userName);
-
             if(!result)
                 return res.status(404).json({
                     success: false,
@@ -29,8 +29,7 @@ module.exports = {
             contentNegotiate(req, res, resultArray);  
         }
         catch(error){
-            console.error(error);
-            return;
+            return res.status(500).json({ success: false, message: 'error occured'});
         }
         
     },
@@ -46,8 +45,7 @@ module.exports = {
             contentNegotiate(req, res, results);
         }
         catch(error){
-            console.error(error);
-            return;
+            return res.status(500).json({ success: false, message: 'error occured'});
         }
     },
 
@@ -93,7 +91,6 @@ module.exports = {
             return res.status(404).json({ success: true, data: "user not found"});
         }
         catch(error){
-            console.error(error);
             return res.status(500).json({
                 success: false,
                 message: "user update failed"
@@ -109,7 +106,7 @@ module.exports = {
         const userName = req.params.userName;
 
         if(!isParamValid(userName))
-            return res.status(400).json({ message: "invalid request" });
+            return res.status(400).json({ success: false, message: "invalid request" });
 
         
         try{
@@ -126,7 +123,6 @@ module.exports = {
             });
         }
         catch(error){
-            console.error(error);
             return res.status(500).json({
                 success: false,
                 message: "user deletion failed"
