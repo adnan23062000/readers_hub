@@ -203,7 +203,7 @@ describe('testing user controller', () => {
 
     describe('testing deleteUser', () => {
         it('should return invalid username error message', async() => {
-            const req = { body: { password: 'password' }, params: 'testuser' };
+            const req = { params: 'testuser' };
 
             isParamValid.mockReturnValue(false);
 
@@ -213,8 +213,23 @@ describe('testing user controller', () => {
             expect(res.json).toHaveBeenCalledWith({ success: false, message: "invalid request"});
         });
 
+        it('should return success and user deletion message', async() => {
+            const req = { params: 'testuser' };
+
+            isParamValid.mockReturnValue(true);
+            deleteUser.mockReturnValue(1);
+
+            await userController.deleteUser(req, res);
+
+            expect(res.status).toHaveBeenCalledWith(200);
+            expect(res.json).toHaveBeenCalledWith({
+                success: true,
+                data: "user deleted successfully"
+            });
+        });
+
         it('should return an error message', async() => {
-            const req = { body: { password: 'password' }, params: 'testuser' };
+            const req = { params: 'testuser' };
             const mockError = new Error('Error occured');
 
             isParamValid.mockReturnValue(true);

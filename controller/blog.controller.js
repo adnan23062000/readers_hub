@@ -31,7 +31,6 @@ module.exports = {
             return res.status(201).json({ success: true, message: "Blog created", data: blogData});   
         }
         catch(error){
-            console.error(error);
             return res.status(500).json({ success: false, message: "Blog Creation failed"});
         }
 
@@ -57,8 +56,7 @@ module.exports = {
             contentNegotiate(req, res, resultArray);   
         }
         catch(error){
-            console.error(error);
-            return res.status(500).send();
+            return res.status(500).json({ success: false, message: 'error occured' });
         }
         
     },
@@ -74,8 +72,7 @@ module.exports = {
             contentNegotiate(req, res, results);     
         }
         catch(error){
-            console.error(error);
-            return res.status(500).send();
+            return res.status(500).json({ success: false, message: 'error occured' });
         }
     },
 

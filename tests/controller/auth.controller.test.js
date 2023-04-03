@@ -29,7 +29,8 @@ describe('testing auth controller', () => {
                 message: 'Empty Request Body'
             });
 
-            const result = await authController.userRegister(req, res);
+            
+            await authController.userRegister(req, res);
 
             expect(res.status).toHaveBeenCalledWith(400);
             expect(res.json).toHaveBeenCalledWith({
