@@ -1,51 +1,6 @@
 const userRepository = require('../../repository/user.repository');
 const User = require('../../model/user.model');
-
-const mockUser = [{
-    username: 'testuser',
-    email: 'testuser@example.com',
-    password: 'password',
-    createdAt: '2023-03-22T10:30:55.000Z',
-    updateAt: '2023-03-28T10:57:10.000Z'
-},
-{
-    username: 'testuser2',
-    email: 'testuser2@example.com',
-    password: 'password2',
-    createdAt: '2023-03-23T10:30:55.000Z',
-    updateAt: '2023-03-29T10:57:10.000Z'
-},
-{
-    username: 'testuser3',
-    email: 'testuser3@example.com',
-    password: 'password3',
-    createdAt: '2023-03-23T10:30:55.000Z',
-    updateAt: '2023-03-29T10:57:10.000Z'
-},
-{
-    username: 'testuser4',
-    email: 'testuser4@example.com',
-    password: 'password2',
-    createdAt: '2023-03-23T10:30:55.000Z',
-    updateAt: '2023-03-29T10:57:10.000Z'
-},
-{
-    username: 'testuser5',
-    email: 'testuser5@example.com',
-    password: 'password2',
-    createdAt: '2023-03-23T10:30:55.000Z',
-    updateAt: '2023-03-29T10:57:10.000Z'
-},
-{
-    username: 'testuser6',
-    email: 'testuser6@example.com',
-    password: 'password2',
-    createdAt: '2023-03-23T10:30:55.000Z',
-    updateAt: '2023-03-29T10:57:10.000Z'
-}
-];
-
-
+const { mockUser } = require('../mockData');
 
 describe('User Repository unit tests', () => {
 
@@ -75,6 +30,20 @@ describe('User Repository unit tests', () => {
         ])
       );
     });
+
+    // it('should return an error', async() => {
+    //   const offset = 0;
+    //   const limit = 3;
+    //   const err = new Error('error occured');
+
+    //   const spyOnMethod = jest
+    //     .spyOn(User, 'findAll')
+    //     .mockRejectedValue(err);
+
+    //   const result = await userRepository.getAllUsers(offset, limit);
+
+    //   expect(result).rejects.toThrow(err);
+    // })
   });
 
   describe('testing getUserByUsername', () => {
@@ -100,6 +69,18 @@ describe('User Repository unit tests', () => {
         })
       );
     });
+
+    // it('should return an error', async() => {
+    //   const err = new Error('error occured');
+      
+    //   jest
+    //     .spyOn(User, 'findOne')
+    //     .mockRejectedValue(err);
+
+    //   const result = await userRepository.getUserByUsername('testuser');
+
+    //   expect(result).rejects.toThrow(err);
+    // });
   });
 
   describe('testing createUser', () => {

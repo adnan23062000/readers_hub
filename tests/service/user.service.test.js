@@ -4,62 +4,12 @@ const { convertToLowerCase } = require('../../utils/userValidation.utils');
 const { calculateOffset } = require('../../utils/pagination.utils');
 const { getUsersList } = require('../../utils/dtoDataList.utils');
 const userDTO = require('../../DTO/user.dto');
+const { mockUser } = require('../mockData');
 
 jest.mock('../../utils/userValidation.utils');
 jest.mock('../../utils/pagination.utils.js');
 jest.mock('../../utils/dtoDataList.utils.js');
 jest.mock('../../DTO/user.dto.js');
-
-const mockUser = {
-    username: 'testuser',
-    email: 'testuser@example.com',
-    password: 'password',
-};
-
-const mockForGet = [
-{
-    username: 'testuser',
-    email: 'testuser@example.com',
-    password: 'password',
-    createdAt: '2023-03-22T10:30:55.000Z',
-    updateAt: '2023-03-28T10:57:10.000Z'
-},
-{
-    username: 'testuser2',
-    email: 'testuser2@example.com',
-    password: 'password2',
-    createdAt: '2023-03-23T10:30:55.000Z',
-    updateAt: '2023-03-29T10:57:10.000Z'
-},
-{
-    username: 'testuser3',
-    email: 'testuser3@example.com',
-    password: 'password3',
-    createdAt: '2023-03-23T10:30:55.000Z',
-    updateAt: '2023-03-29T10:57:10.000Z'
-},
-{
-    username: 'testuser4',
-    email: 'testuser4@example.com',
-    password: 'password2',
-    createdAt: '2023-03-23T10:30:55.000Z',
-    updateAt: '2023-03-29T10:57:10.000Z'
-},
-{
-    username: 'testuser5',
-    email: 'testuser5@example.com',
-    password: 'password2',
-    createdAt: '2023-03-23T10:30:55.000Z',
-    updateAt: '2023-03-29T10:57:10.000Z'
-},
-{
-    username: 'testuser6',
-    email: 'testuser6@example.com',
-    password: 'password2',
-    createdAt: '2023-03-23T10:30:55.000Z',
-    updateAt: '2023-03-29T10:57:10.000Z'
-}
-];
 
 
 describe('testing user service', () => {
@@ -67,9 +17,10 @@ describe('testing user service', () => {
     describe('testing create user', () => {
         it('should call userRepository.createUser() method and return an object of a user', async() => {
 
+            const mockData = mockUser[0];
             const spyOnMethod = jest
                 .spyOn(userRepository, 'createUser')
-                .mockReturnValue(mockUser);
+                .mockReturnValue({ username: mockData.username, email: mockData.email, password: mockData.password });
 
             const result = await userService.createUser({
                 username: 'testuser',
@@ -80,9 +31,12 @@ describe('testing user service', () => {
 
             expect(spyOnMethod).toHaveBeenCalledTimes(1);
             expect(spyOnMethod).toHaveBeenCalledWith('testuser', 'testuser@example.com', 'password');
-            expect(result).toEqual(mockUser);
-
-        })
+            expect(result).toEqual({
+                    username: 'testuser',
+                    email: 'testuser@example.com',
+                    password: 'password'
+            });
+        });
     }),
 
 
@@ -96,7 +50,7 @@ describe('testing user service', () => {
             const result = await userService.updateUser('testuser', 'password');
 
             expect(spyOnMethod).toHaveBeenCalledTimes(1);
-            expect(spyOnMethod).toHaveBeenCalledWith(mockUser.username, mockUser.password);
+            expect(spyOnMethod).toHaveBeenCalledWith(mockUser[0].username, mockUser[0].password);
             expect(result).toEqual([1]);
         })
     }),
@@ -106,7 +60,7 @@ describe('testing user service', () => {
         it('should call userRepository.deleteUser() method and return true if user is deleted', async() => {
             
             convertToLowerCase.mockImplementation((username) => {
-                return mockUser.username;
+                return mockUser[0].username;
             });
             
             const spyOnMethod = jest
@@ -117,7 +71,7 @@ describe('testing user service', () => {
             const result = await userService.deleteUser('testuser', 'password');
 
             expect(spyOnMethod).toHaveBeenCalledTimes(1);
-            expect(spyOnMethod).toHaveBeenCalledWith(mockUser.username);
+            expect(spyOnMethod).toHaveBeenCalledWith(mockUser[0].username);
             expect(result).toEqual(1);
         })
     }),
@@ -128,10 +82,10 @@ describe('testing user service', () => {
             
             const spyOnMethod = jest
                 .spyOn(userRepository, 'getUserByUsername')
-                .mockReturnValue(mockForGet[0]);
+                .mockReturnValue(mockUser[0]);
 
             
-            const { username, email, createdAt, updateAt } = mockForGet[0];
+            const { username, email, createdAt, updateAt } = mockUser[0];
             const dtoReturnData = { username, email, createdAt, updateAt };
 
             userDTO.mockImplementation((user) => {
@@ -142,7 +96,7 @@ describe('testing user service', () => {
             const result = await userService.getUserByUsername('testuser');
 
             expect(spyOnMethod).toHaveBeenCalledTimes(1);
-            expect(spyOnMethod).toHaveBeenCalledWith(mockForGet[0].username);
+            expect(spyOnMethod).toHaveBeenCalledWith(mockUser[0].username);
             expect(result).toEqual({
                 username: 'testuser',
                 email: 'testuser@example.com',
@@ -158,17 +112,17 @@ describe('testing user service', () => {
             
             const spyOnMethod = jest
                 .spyOn(userRepository, 'getUserByUsername')
-                .mockReturnValue(mockForGet[0]);
+                .mockReturnValue(mockUser[0]);
 
             userDTO.mockImplementation((user, showPassword) => {
-                return mockForGet[0];         
+                return mockUser[0];         
             });
 
 
             const result = await userService.getUserWithPassword('testuser', true);
 
             expect(spyOnMethod).toHaveBeenCalledTimes(1);
-            expect(spyOnMethod).toHaveBeenCalledWith(mockForGet[0].username);
+            expect(spyOnMethod).toHaveBeenCalledWith(mockUser[0].username);
             expect(result).toEqual({
                 username: 'testuser',
                 email: 'testuser@example.com',
@@ -185,7 +139,7 @@ describe('testing user service', () => {
             
             const offset = 0;
             const limit = 3;
-            const dtoReturnData = mockForGet.map(obj => {
+            const dtoReturnData = mockUser.map(obj => {
                 return {
                   username: obj.username,
                   email: obj.email,
@@ -202,7 +156,7 @@ describe('testing user service', () => {
             
             const spyOnMethod = jest
                 .spyOn(userRepository, 'getAllUsers')
-                .mockReturnValue(mockForGet);
+                .mockReturnValue(mockUser);
             
             getUsersList.mockImplementation((users) => {
                 return dtoReturnData.slice(offset, limit);
@@ -218,5 +172,4 @@ describe('testing user service', () => {
         })
     })
     
-
 });

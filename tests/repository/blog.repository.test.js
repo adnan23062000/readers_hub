@@ -1,39 +1,6 @@
 const blogRepository = require('../../repository/blog.repository');
 const Blog = require('../../model/blog.model');
-
-const mockBlog = [
-    {
-        "id": 14,
-        "blogTitle": "blog title 3",
-        "blogBody": "adnan12345",
-        "author": "adnan11"
-    },
-    {
-        "id": 15,
-        "blogTitle": "blog title 4",
-        "blogBody": "blog body 4",
-        "author": "adnan2"
-    },
-    {
-        "id": 16,
-        "blogTitle": "blog title 5",
-        "blogBody": "blog body 5",
-        "author": "adnan2"
-    },
-    {
-        "id": 17,
-        "blogTitle": "test for issue 6",
-        "blogBody": "adnan12345",
-        "author": "adnan11"
-    },
-    {
-        "id": 18,
-        "blogTitle": "hello",
-        "blogBody": "adnan12345",
-        "author": "adnan11"
-    }
-];
-
+const { mockBlog } = require('../mockData');
 
 describe('Blog Repository unit tests', () => {
 
@@ -152,6 +119,5 @@ describe('Blog Repository unit tests', () => {
         });
       });
     });
-  
   
   });

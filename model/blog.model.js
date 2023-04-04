@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/databaseSequelize');
+const { sequelize } = require('../config/databaseSequelize');
 
 const Blog = sequelize.define('Blog', {
   
@@ -53,18 +53,16 @@ const Blog = sequelize.define('Blog', {
   {
     timestamps: false,
   }
-
-
 );
 
 
-Blog.sync()
-  .then(() => {
-    console.log('Blog table created successfully.');
-  })
-  .catch((err) => {
-    console.error('Error creating blog table:', err);
-  });
+// Blog.sync()
+//   .then(() => {
+//     console.log('Blog table created successfully.');
+//   })
+//   .catch((err) => {
+//     console.error('Error creating blog table:', err);
+//   });
   
 
 module.exports = Blog;

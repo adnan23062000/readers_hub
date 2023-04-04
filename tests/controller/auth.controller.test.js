@@ -104,8 +104,7 @@ describe('testing auth controller', () => {
         });
 
     });
-
-    
+ 
     describe('testing userLogin', () => {
 
         it('should return a empty request body error in the response', async() => {

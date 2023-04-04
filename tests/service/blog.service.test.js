@@ -3,46 +3,11 @@ const blogRepository = require('../../repository/blog.repository');
 const { calculateOffset } = require('../../utils/pagination.utils');
 const { getBlogsList } = require('../../utils/dtoDataList.utils');
 const blogDTO = require('../../DTO/blog.dto');
+const { mockBlog } = require('../mockData');
 
 jest.mock('../../utils/pagination.utils.js');
 jest.mock('../../utils/dtoDataList.utils.js');
 jest.mock('../../DTO/blog.dto.js');
-
-
-const mockBlog = [
-    {
-        "id": 14,
-        "blogTitle": "blog title 3",
-        "blogBody": "this is blog body",
-        "author": "adnan11"
-    },
-    {
-        "id": 15,
-        "blogTitle": "blog title 4",
-        "blogBody": "blog body 4",
-        "author": "adnan2"
-    },
-    {
-        "id": 16,
-        "blogTitle": "blog title 5",
-        "blogBody": "blog body 5",
-        "author": "adnan2"
-    },
-    {
-        "id": 17,
-        "blogTitle": "test for issue 6",
-        "blogBody": "adnan12345",
-        "author": "adnan11"
-    },
-    {
-        "id": 18,
-        "blogTitle": "hello",
-        "blogBody": "adnan12345",
-        "author": "adnan11"
-    }
-];
-
-
 
 describe('testing blog service', () => {
     
@@ -71,7 +36,7 @@ describe('testing blog service', () => {
                 .spyOn(blogRepository, 'updateBlog')
                 .mockReturnValue([1]);
 
-            const result = await blogService.updateBlog(14, 'this is blog body');
+            const result = await blogService.updateBlog(14, 'adnan12345');
 
             expect(spyOnMethod).toHaveBeenCalledTimes(1);
             expect(spyOnMethod).toHaveBeenCalledWith(mockBlog[0].id, mockBlog[0].blogBody);
@@ -120,7 +85,7 @@ describe('testing blog service', () => {
             expect(result).toEqual({
                 id: 14,
                 blogTitle: "blog title 3",
-                blogBody: "this is blog body",
+                blogBody: "adnan12345",
                 author: "adnan11"
             });
         })
@@ -156,5 +121,4 @@ describe('testing blog service', () => {
         })
     })
     
-
 });

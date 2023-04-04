@@ -101,7 +101,6 @@ module.exports = {
             return res.status(404).json({ success: false, data: "Blog not found" });
         }
         catch(error){
-            console.error(error);
             return res.status(500).json({ success: false, message: "blog update failed" });
         }
 
@@ -121,7 +120,6 @@ module.exports = {
             return res.status(404).json({ success: false, data: "blog not found" });
         }
         catch(error){
-            console.error(error);
             return res.status(500).json({ success: false, message: "Deletion failed"});
         }
         

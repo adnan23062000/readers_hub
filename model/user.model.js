@@ -1,5 +1,5 @@
 const { DataTypes } = require('sequelize');
-const sequelize = require('../config/databaseSequelize');
+const { sequelize } = require('../config/databaseSequelize')
 const bcrypt = require('bcrypt');
 
 const User = sequelize.define('User', {
@@ -82,13 +82,13 @@ const User = sequelize.define('User', {
 });
 
 
-User.sync()
-  .then(() => {
-    console.log('User table created successfully.');
-  })
-  .catch((err) => {
-    console.error('Error creating user table:', err);
-  });
+// User.sync()
+//   .then(() => {
+//     console.log('User table created successfully.');
+//   })
+//   .catch((err) => {
+//     console.error('Error creating user table:', err);
+//   });
   
 
 module.exports = User;

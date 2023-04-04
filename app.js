@@ -3,12 +3,16 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const indexRouter = require("./router/index.router");
+const syncModels = require('./model/index.model');
+const database = require('./config/databaseSequelize');
 
 const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+database.connectToDB();
+syncModels();
 
 app.use('/api/v1', indexRouter);
 

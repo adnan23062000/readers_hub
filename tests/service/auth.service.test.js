@@ -33,7 +33,6 @@ describe('testing auth service', () => {
         })
     }),
 
-
     describe('testing user login', () => {
         it('should return an access token to the newly registered user', async() => {
             
@@ -58,6 +57,5 @@ describe('testing auth service', () => {
 
         })
     })
-
 
 });
