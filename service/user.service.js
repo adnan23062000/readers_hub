@@ -1,5 +1,5 @@
 const UserDTO = require("../DTO/user.dto");
-const { convertToLowerCase, generateHashedPassword } = require("../utils/userValidation.utils");
+const { convertToLowerCase } = require("../utils/userValidation.utils");
 const { calculateOffset } = require('../utils/pagination.utils');
 const UserRepository = require("../repository/user.repository");
 
@@ -9,17 +9,13 @@ module.exports = {
         return await UserRepository.createUser(userData.username, userData.email, userData.password);
     },
 
-
-    updateUser: async (username, password) => {
-        //password = generateHashedPassword(password); 
+    updateUser: async (username, password) => { 
         return await UserRepository.updateUser(username, password);
     },
-
 
     getAllUsers: async (page, limit) => {
         
         const pageStart = calculateOffset(page, limit);
-
         const users = await UserRepository.getAllUsers(parseInt(pageStart), parseInt(limit));
         
         const usersList = [];
@@ -33,7 +29,6 @@ module.exports = {
         return usersList;
     },
 
-
     getUserByUsername: async (userName) => {
         
         const user = await UserRepository.getUserByUsername(userName);
@@ -45,7 +40,6 @@ module.exports = {
         return userDTO;
     
     },
-
 
     getUserWithPassword: async (userName, showPassword) => {
         
@@ -61,9 +55,7 @@ module.exports = {
     
     },
 
-
-    deleteUser: async (userName) => {
-        
+    deleteUser: async (userName) => {   
         const validUsername = convertToLowerCase(userName);
         return await UserRepository.deleteUser(validUsername);
     }

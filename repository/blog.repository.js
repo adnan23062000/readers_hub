@@ -1,6 +1,6 @@
 const Blog = require('../model/blog.model');
 
-// Get all blogs
+
 const getAllBlogs = async (offset, limit) => {
   
     try{
@@ -13,7 +13,6 @@ const getAllBlogs = async (offset, limit) => {
     }
 };
 
-// Get blog by blogId
 const getBlogById = async (blogId) => {
   
     try{
@@ -26,7 +25,6 @@ const getBlogById = async (blogId) => {
     }
 };
 
-// Create new blog
 const createBlog = async (blogTitle, blogBody, username) => {
 
     try{
@@ -38,7 +36,6 @@ const createBlog = async (blogTitle, blogBody, username) => {
     }
 };
 
-// Update blog by blogId
 const updateBlog = async (blogId, blogBody) => {
     
     try{
@@ -58,7 +55,6 @@ const updateBlog = async (blogId, blogBody) => {
       }
 };
 
-// Delete user by username
 const deleteBlog = async (blogId) => {
   
     try{

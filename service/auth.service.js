@@ -10,7 +10,6 @@ module.exports = {
     },
 
     userLogin: async (username, password) => {  
-        
         const user = await UserService.getUserWithPassword(username, true);
 
         if(!user)
@@ -23,7 +22,6 @@ module.exports = {
         }
 
         let accessToken = generateAccessToken(username);
-        
         return accessToken;
     }
 

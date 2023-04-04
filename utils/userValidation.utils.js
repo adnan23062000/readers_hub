@@ -10,7 +10,6 @@ module.exports = {
         return ans;
     },
 
-
     generateUUID:  () => {
         const myUuid = uuidv4();
         return myUuid;
@@ -30,15 +29,12 @@ module.exports = {
         return true;   
     },
 
-    compareHashedPassword: async (rawPassword, encryptedPassword) => {
-        
+    compareHashedPassword: async (rawPassword, encryptedPassword) => {   
         const result = await bcrypt.compare(rawPassword, encryptedPassword);
         return result;
-
     },
 
-    generateAccessToken:  (username) => {
-        
+    generateAccessToken:  (username) => { 
         return jwt.sign({ username: username }, process.env.ACCESS_TOKEN_SECRET, {
             algorithm: process.env.ACCESS_TOKEN_ALGORITHM,
             expiresIn: process.env.ACCESS_TOKEN_LIFE

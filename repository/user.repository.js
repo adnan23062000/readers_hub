@@ -1,6 +1,6 @@
 const User = require('../model/user.model');
 
-// Get all users
+
 const getAllUsers = async (offset, limit) => {
   
     try{
@@ -12,7 +12,6 @@ const getAllUsers = async (offset, limit) => {
     }
 };
 
-// Get user by username
 const getUserByUsername = async (username) => {
   
     try{
@@ -24,7 +23,6 @@ const getUserByUsername = async (username) => {
     }
 };
 
-// Create new user
 const createUser = async (username, email, password) => {
   
     try{
@@ -35,7 +33,6 @@ const createUser = async (username, email, password) => {
     }
 };
 
-// Update user password by username
 const updateUser = async (username, password) => {
     
     try{
@@ -53,7 +50,6 @@ const updateUser = async (username, password) => {
       }
 };
 
-// Delete user by username
 const deleteUser = async (username) => {
   
     try{
@@ -65,7 +61,6 @@ const deleteUser = async (username) => {
         throw error;
     }
 };
-
 
 
 module.exports = {

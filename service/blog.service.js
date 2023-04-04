@@ -11,11 +11,9 @@ module.exports = {
     getAllBlogs: async (page, limit) => {
 
         const pageStart = calculateOffset(page, limit);
-        
         const blogs = await BlogRepository.getAllBlogs(pageStart, limit);
         
         const blogsList = [];
-
         const dataValuesArray = blogs.map(blog => blog.dataValues);
 
         dataValuesArray.forEach(dataValue => {
