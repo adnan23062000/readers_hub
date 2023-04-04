@@ -27,9 +27,8 @@ module.exports = {
             });
         }
         catch(error){
-            if(error.name === 'SequelizeValidationError')
+            if(error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError')
                 return res.status(400).json({ success: false, message: SequelizerValidation.sequelizerErrorValidation(error) });
-
             return res.status(500).send();
         }
 
@@ -58,8 +57,8 @@ module.exports = {
                 return res.status(404).json({ success: false, message: error.message });
             if(error.message === 'Incorrect Password')
                 return res.status(401).json({ success: false, message: error.message });
-
-            return res.status(500).send();
+            console.log(error);
+            return res.status(500).json({ message: "login failed" });
         }
     }
 }

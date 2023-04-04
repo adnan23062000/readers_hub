@@ -31,7 +31,7 @@ const User = sequelize.define('User', {
     allowNull: false,
     unique: {
       arg: true,
-      msg: 'Email already exists'
+      msg: "Email already exists"
     },
     validate: {
       isEmail: {
@@ -64,12 +64,10 @@ const User = sequelize.define('User', {
 
 {
     hooks: {
-        beforeSave: async (User) => {
-          if (User.changed('password')) {
+        beforeCreate: async (User) => {
             const salt = bcrypt.genSaltSync(parseInt(process.env.SALT_ROUND));
             const encryptedPassword = bcrypt.hashSync(User.password, salt);
-            User.password = encryptedPassword;
-          }
+            User.password = encryptedPassword;  
         },
         beforeUpdate: async(User) => {
           if (User.changed('password')) {
