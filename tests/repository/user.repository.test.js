@@ -2,9 +2,12 @@ const userRepository = require('../../repository/user.repository');
 const User = require('../../model/user.model');
 const { mockUser } = require('../mockData');
 
+jest.mock('../../model/user.model');
+
 describe('User Repository unit tests', () => {
 
   describe('testing getAllUsers', () => {
+
     it('should return an array of users', async () => {
       const offset = 0;
       const limit = 3;
@@ -31,19 +34,6 @@ describe('User Repository unit tests', () => {
       );
     });
 
-    // it('should return an error', async() => {
-    //   const offset = 0;
-    //   const limit = 3;
-    //   const err = new Error('error occured');
-
-    //   const spyOnMethod = jest
-    //     .spyOn(User, 'findAll')
-    //     .mockRejectedValue(err);
-
-    //   const result = await userRepository.getAllUsers(offset, limit);
-
-    //   expect(result).rejects.toThrow(err);
-    // })
   });
 
   describe('testing getUserByUsername', () => {
@@ -70,17 +60,17 @@ describe('User Repository unit tests', () => {
       );
     });
 
-    // it('should return an error', async() => {
-    //   const err = new Error('error occured');
-      
-    //   jest
-    //     .spyOn(User, 'findOne')
-    //     .mockRejectedValue(err);
+    it('should return an error', async() => {
+      const err = new Error('error occured');
+      // User.findOne.mockRejectedValue(error);
+      jest
+        .spyOn(User, 'findOne')
+        .mockReturnValueOnce( err);
 
-    //   const result = await userRepository.getUserByUsername('testuser');
+      const result = await userRepository.getUserByUsername('testuser');
 
-    //   expect(result).rejects.toThrow(err);
-    // });
+      expect(result).toBe(err);
+    });
   });
 
   describe('testing createUser', () => {
