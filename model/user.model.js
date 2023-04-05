@@ -64,12 +64,10 @@ const User = sequelize.define('User', {
 
 {
     hooks: {
-        beforeSave: async (User) => {
-          if (User.changed('password')) {
+        beforeCreate: async (User) => {
             const salt = bcrypt.genSaltSync(parseInt(process.env.SALT_ROUND));
             const encryptedPassword = bcrypt.hashSync(User.password, salt);
             User.password = encryptedPassword;
-          }
         },
         beforeUpdate: async(User) => {
           if (User.changed('password')) {
@@ -79,16 +77,6 @@ const User = sequelize.define('User', {
           }
         }
       }
-});
-
-
-// User.sync()
-//   .then(() => {
-//     console.log('User table created successfully.');
-//   })
-//   .catch((err) => {
-//     console.error('Error creating user table:', err);
-//   });
-  
+});  
 
 module.exports = User;

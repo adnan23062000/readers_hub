@@ -5,17 +5,14 @@ const getAllUsers = async (offset, limit) => {
     return users;
 };
 
-
 const getUserByUsername = async (username) => {
     const user = await User.findOne({ where: { username } });
     return user;
 };
 
-
 const createUser = async (username, email, password) => {
     return await User.create({ username, email, password });
 };
-
 
 const updateUser = async (username, password) => {
     const user = await User.update({ password }, {
@@ -26,7 +23,6 @@ const updateUser = async (username, password) => {
     });
     return user;
 };
-
 
 const deleteUser = async (username) => {
     return await User.destroy({ where: {

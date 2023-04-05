@@ -55,14 +55,4 @@ const Blog = sequelize.define('Blog', {
   }
 );
 
-
-// Blog.sync()
-//   .then(() => {
-//     console.log('Blog table created successfully.');
-//   })
-//   .catch((err) => {
-//     console.error('Error creating blog table:', err);
-//   });
-  
-
 module.exports = Blog;

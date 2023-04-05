@@ -9,12 +9,6 @@ describe('testing auth service', () => {
 
     describe('testing user register', () => {
         it('should return an access token to the newly registered user', async() => {
-            
-            const mockUser = {
-                username: 'testuser',
-                email: 'testuser@example.com',
-                password: 'password',
-              };
             const mockAccessToken = 'testToken';
 
             generateAccessToken.mockImplementation((username) => {
@@ -35,11 +29,6 @@ describe('testing auth service', () => {
 
     describe('testing user login', () => {
         it('should return an access token to the newly registered user', async() => {
-            
-            const mockUser = {
-                username: 'testuser',
-                password: 'password',
-            };
             const mockAccessToken = 'testToken';
 
             compareHashedPassword.mockImplementation((givenName, username) => {

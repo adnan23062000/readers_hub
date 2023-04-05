@@ -57,7 +57,7 @@ module.exports = {
 
     deleteUser: async (userName) => {
         
-        const validUsername = convertToLowerCase(userName);
+        const validUsername = userName.toLowerCase();
         return await UserRepository.deleteUser(validUsername);
     }
 

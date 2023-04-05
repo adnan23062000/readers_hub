@@ -95,10 +95,10 @@ describe('testing auth controller', () => {
             await authController.userRegister(req, res);
 
 
-            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith({
                 success: false,
-                message: 'User registration failed'
+                message: 'user registration failed'
             });
 
         });

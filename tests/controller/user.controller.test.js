@@ -1,9 +1,10 @@
 const { getUserByUsername, getAllUsers, updateUser, deleteUser } = require('../../service/user.service');
-const userController = require('../../controller/user.controller');
 const { isParamValid, checkPasswordLength, convertToLowerCase } = require('../../utils/userValidation.utils');
 const { contentNegotiate } = require('../../utils/contentNegotiation.utils');
 const { pagination } = require('../../utils/pagination.utils');
 const { isRequestBodyEmpty } = require('../../utils/requestValidation.utils');
+const userController = require('../../controller/user.controller');
+const { mockUser } = require('../mockData');
 
 jest.mock('../../utils/requestValidation.utils.js');
 jest.mock('../../utils/userValidation.utils.js');
@@ -17,22 +18,6 @@ const res = {
     status: jest.fn().mockReturnThis(),
     json: jest.fn()
 };
-
-
-const expectedResponse = [{
-    username: 'testuser',
-    email: 'testuser@example.com',
-    password: 'password',
-    createdAt: '2023-03-22T10:30:55.000Z',
-    updateAt: '2023-03-28T10:57:10.000Z'
-},
-{
-    username: 'testuser2',
-    email: 'testuser2@example.com',
-    password: 'password2',
-    createdAt: '2023-03-23T10:30:55.000Z',
-    updateAt: '2023-03-29T10:57:10.000Z'
-}];
 
 
 describe('testing user controller', () => {
@@ -86,7 +71,7 @@ describe('testing user controller', () => {
 
             isParamValid.mockReturnValue(true);
             getUserByUsername.mockImplementation((userName) => {
-                return expectedResponse[0];
+                return mockUser[0];
             });
             contentNegotiate.mockImplementation((req, res, resultArray) => {
                 return true;
@@ -96,7 +81,7 @@ describe('testing user controller', () => {
             await userController.getUserByUsername(req, res);
 
             
-            expect(contentNegotiate).toHaveBeenCalledWith(req, res, [expectedResponse[0]]);
+            expect(contentNegotiate).toHaveBeenCalledWith(req, res, [mockUser[0]]);
 
         });
 
@@ -121,12 +106,12 @@ describe('testing user controller', () => {
             const mockPagination = { page: 0, limit: 3 };
             
             pagination.mockReturnValue(mockPagination);
-            getAllUsers.mockReturnValue(expectedResponse);
+            getAllUsers.mockReturnValue(mockUser);
             contentNegotiate.mockReturnValue(true);
 
             await userController.getUsers(req, res);
 
-            expect(contentNegotiate).toHaveBeenCalledWith(req, res, expectedResponse);
+            expect(contentNegotiate).toHaveBeenCalledWith(req, res, mockUser);
             
         });
 

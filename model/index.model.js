@@ -11,7 +11,7 @@ async function syncModels () {
     console.log('synced successfully');
   }
   catch(error){
-    console.log('sync failed'+error);
+    console.log('sync failed' + error);
   }
 }
 

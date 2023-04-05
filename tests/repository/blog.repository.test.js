@@ -4,10 +4,12 @@ const { mockBlog } = require('../mockData');
 
 describe('Blog Repository unit tests', () => {
 
-    describe('testing getAllBlogs', () => {
+  describe('testing getAllBlogs', () => {
+      
+      const offset = 0;
+      const limit = 3;
+      
       it('should return an array of blogs', async () => {
-        const offset = 0;
-        const limit = 3;
         const spyOnMethod = jest
           .spyOn(Blog, 'findAll')
           .mockImplementation(({ offset, limit }) => mockBlog.slice(offset, limit));
@@ -29,9 +31,20 @@ describe('Blog Repository unit tests', () => {
           ])
         );
       });
-    });
+
+      it('should return an error', async() => {
+        const mockError = new Error('error occured');
   
-    describe('testing getBlogById', () => {
+        jest
+          .spyOn(Blog, 'findAll')
+          .mockReturnValueOnce(mockError);
+  
+        const result = await blogRepository.getAllBlogs(offset, limit);
+        expect(result).toBe(mockError);
+      });
+  });
+  
+  describe('testing getBlogById', () => {
       it('should return a blog object for a valid blog id', async () => {
         const spyOnMethod = jest
           .spyOn(Blog, 'findOne')
@@ -53,25 +66,36 @@ describe('Blog Repository unit tests', () => {
           })
         );
       });
-    });
 
+      it('should return an error', async() => {
+        const mockError = new Error('error occured');
   
-    describe('testing createBlog', () => {
+        jest
+          .spyOn(Blog, 'findOne')
+          .mockReturnValueOnce(mockError);
+  
+        const result = await blogRepository.getBlogById(14);
+        expect(result).toBe(mockError);
+      });
+  });
+ 
+  describe('testing createBlog', () => {
+      
+      const blogTitle = 'blog title 3';
+      const blogBody = 'adnan12345';
+      const author = 'adnan11';
+
       it('should create a new blog', async () => {
         const spyOnMethod = jest
           .spyOn(Blog, 'create')
           .mockResolvedValueOnce(mockBlog[0]);
         
-        const result = await blogRepository.createBlog(
-          'blog title 3',
-          'adnan12345',
-          'adnan11'
-        );
+        const result = await blogRepository.createBlog(blogTitle, blogBody, author);
   
         expect(spyOnMethod).toHaveBeenCalledTimes(1);
         expect(spyOnMethod).toHaveBeenCalledWith({
-          blogBody: 'adnan12345',
           blogTitle: 'blog title 3',
+          blogBody: 'adnan12345',
           username: 'adnan11',
         });
         expect(result).toEqual(mockBlog[0]);
@@ -84,15 +108,30 @@ describe('Blog Repository unit tests', () => {
           })
         );
       });
-    });
+
+      it('should return an error', async() => {
+        const mockError = new Error('error occured');
   
-    describe('testing updateBlog', () => {
+        jest
+          .spyOn(Blog, 'create')
+          .mockReturnValueOnce(mockError);
+  
+        const result = await blogRepository.createBlog(blogTitle, blogBody, author);
+        expect(result).toBe(mockError);
+      });
+  });
+  
+  describe('testing updateBlog', () => {
+      
+      const blogId = 14;
+      const blogBody = 'adnan12345';
+    
       it('should update the blog body for a valid blogId', async () => {
         const spyOnUpdate = jest
           .spyOn(Blog, 'update')
           .mockResolvedValueOnce([1]);
         
-        const result = await blogRepository.updateBlog(14, 'adnan12345');
+        const result = await blogRepository.updateBlog(blogId, blogBody);
         
         expect(result).toEqual([1]);
         expect(spyOnUpdate).toHaveBeenCalledTimes(1);
@@ -101,13 +140,26 @@ describe('Blog Repository unit tests', () => {
           { where: { blogId: 14 } }, 
         );
       });
-    });
+
+      it('should return an error', async() => {
+        const mockError = new Error('error occured');
   
-    describe('testing deleteBlog', () => {
+        jest
+          .spyOn(Blog, 'update')
+          .mockReturnValueOnce(mockError);
+  
+        const result = await blogRepository.updateBlog(blogId, blogBody);
+        expect(result).toBe(mockError);
+      });
+  });
+  
+  describe('testing deleteBlog', () => {
+      
+      const blogId = 14;
+
       it('should delete a blog for a valid blogId', async () => {
         const spyOnDestroy = jest.spyOn(Blog, 'destroy').mockResolvedValueOnce(1);
         
-        const blogId = 14;
         const result = await blogRepository.deleteBlog(blogId);
         
         expect(result).toEqual(1);
@@ -118,6 +170,17 @@ describe('Blog Repository unit tests', () => {
           },
         });
       });
-    });
+
+      it('should return an error', async() => {
+        const mockError = new Error('error occured');
   
+        jest
+          .spyOn(Blog, 'destroy')
+          .mockReturnValueOnce(mockError);
+  
+        const result = await blogRepository.deleteBlog(blogId);
+        expect(result).toBe(mockError);
+      });
   });
+  
+});

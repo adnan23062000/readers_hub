@@ -1,12 +1,12 @@
 const { createBlog, getBlogById, getAllBlogs, updateBlog, deleteBlog } = require('../../service/blog.service');
-const blogController = require('../../controller/blog.controller');
-const { isParamValid, checkPasswordLength, convertToLowerCase } = require('../../utils/userValidation.utils');
 const { contentNegotiate } = require('../../utils/contentNegotiation.utils');
 const { pagination } = require('../../utils/pagination.utils');
 const { isRequestBodyEmpty } = require('../../utils/requestValidation.utils');
+const blogController = require('../../controller/blog.controller');
+const { mockBlog } = require('../mockData');
+
 
 jest.mock('../../utils/requestValidation.utils.js');
-jest.mock('../../utils/userValidation.utils.js');
 jest.mock('../../service/blog.service.js');
 jest.mock('../../utils/contentNegotiation.utils.js');
 jest.mock('../../utils/pagination.utils.js');
@@ -16,19 +16,6 @@ const res = {
     status: jest.fn().mockReturnThis(),
     json: jest.fn()
 };
-
-const expectedResponse = [{
-    "id": 14,
-    "blogTitle": "blog title 3",
-    "blogBody": "this is blog body",
-    "author": "adnan11"
-},
-{
-    "id": 15,
-    "blogTitle": "blog title 4",
-    "blogBody": "blog body 4",
-    "author": "adnan2"
-}];
 
 
 describe('testing blog controller', () => {
@@ -42,7 +29,7 @@ describe('testing blog controller', () => {
                 message: 'Empty Request Body'
             });
 
-            const result = await blogController.createBlog(req, res);
+            await blogController.createBlog(req, res);
 
             expect(res.status).toHaveBeenCalledWith(400);
             expect(res.json).toHaveBeenCalledWith({
@@ -70,7 +57,7 @@ describe('testing blog controller', () => {
             const req = { body: {blogTitle: 'blog title 3', blogBody: 'this is blog body'}, username: 'adnan11' };
 
             isRequestBodyEmpty.mockReturnValue(false);
-            createBlog.mockReturnValue(expectedResponse[0]);
+            createBlog.mockReturnValue(mockBlog[0]);
 
             await blogController.createBlog(req, res);
 
@@ -78,7 +65,7 @@ describe('testing blog controller', () => {
             expect(res.json).toHaveBeenCalledWith({ 
                 success: true, 
                 message: "Blog created", 
-                data: expectedResponse[0]
+                data: mockBlog[0]
             });
         });
 
@@ -100,12 +87,12 @@ describe('testing blog controller', () => {
         it('should return success', async() => {
             const req = { params: { blogId: 1} };
 
-            getBlogById.mockReturnValue(expectedResponse[0]);
+            getBlogById.mockReturnValue(mockBlog[0]);
             contentNegotiate.mockReturnValue(true);
 
             await blogController.getBlogById(req, res);
 
-            expect(contentNegotiate).toHaveBeenCalledWith(req, res, [expectedResponse[0]]);
+            expect(contentNegotiate).toHaveBeenCalledWith(req, res, [mockBlog[0]]);
         });
 
         it('should return an error when getBlogById fails', async() => {
@@ -126,12 +113,12 @@ describe('testing blog controller', () => {
             const mockPagination = { page: 0, limit: 3 };
             
             pagination.mockReturnValue(mockPagination);
-            getAllBlogs.mockReturnValue(expectedResponse);
+            getAllBlogs.mockReturnValue(mockBlog);
             contentNegotiate.mockReturnValue(true);
 
             await blogController.getAllBlogs(req, res);
 
-            expect(contentNegotiate).toHaveBeenCalledWith(req, res, expectedResponse);
+            expect(contentNegotiate).toHaveBeenCalledWith(req, res, mockBlog);
             
         });
 

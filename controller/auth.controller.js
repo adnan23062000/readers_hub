@@ -4,8 +4,7 @@ const SequelizerValidation = require('../utils/sequelizerValidition.utils');
 
 
 module.exports = {
-
-    
+   
     userRegister: async (req, res) => {
       
         const body = req.body;
@@ -32,10 +31,9 @@ module.exports = {
             });
         }
         catch(error){
-            return res.status(400).json({
-                success: false,
-                message: SequelizerValidation.sequelizerErrorValidation(error)
-            });
+            if(error.name === 'SequelizeValidationError' || error.name === 'SequelizeUniqueConstraintError')
+                return res.status(400).json({ success: false, message: SequelizerValidation.sequelizerErrorValidation(error) });
+            return res.status(500).json({ success: false, message: 'user registration failed' });
         }
 
     },
@@ -72,7 +70,6 @@ module.exports = {
         catch(error){
             if(error.message === 'user not found')
                 return res.status(404).json({ success: false, message: error.message });
-            
             return res.status(401).json({ success: false, message: error.message });
         }
     }
