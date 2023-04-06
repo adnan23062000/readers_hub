@@ -57,16 +57,12 @@ describe('testing auth controller', () => {
 
 
         it('should return success and the newly created jwt token in the response', async() => {
-
             const mockToken = 'testToken';
-            
-            
+              
             isRequestBodyEmpty.mockReturnValue(false);
             const spyOnMethod = jest.spyOn(authService, 'registerUser').mockResolvedValueOnce(mockToken);
 
-
             await authController.userRegister(req, res);
-
 
             expect(spyOnMethod).toHaveBeenCalledWith({
                 username: "adnan2306", 
@@ -82,25 +78,20 @@ describe('testing auth controller', () => {
             });
         });
 
-
         it('should return the error that occurs when user registration fails', async() => {
-
             const mockError = new Error('User registration failed');
 
             isRequestBodyEmpty.mockReturnValue(null);
             authService.registerUser.mockRejectedValueOnce(mockError);
             sequelizerErrorValidation.mockReturnValue('User registration failed');
 
-
             await authController.userRegister(req, res);
-
 
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith({
                 success: false,
                 message: 'user registration failed'
             });
-
         });
 
     });
@@ -108,7 +99,6 @@ describe('testing auth controller', () => {
     describe('testing userLogin', () => {
 
         it('should return a empty request body error in the response', async() => {
-
             const req = { body: {} };
 
             isRequestBodyEmpty.mockReturnValue({
@@ -126,9 +116,7 @@ describe('testing auth controller', () => {
             });
         });
 
-
         it('should return the one or more fields are empty error in the response', async() => {
-            
             const req = { body: {password: "adnan1234"} };
 
             isRequestBodyEmpty.mockReturnValue(false);
@@ -142,18 +130,13 @@ describe('testing auth controller', () => {
             });
         });
 
-
         it('should return success and the newly created jwt token in the response', async() => {
-
             const mockToken = 'testToken';
-            
             
             isRequestBodyEmpty.mockReturnValue(false);
             const spyOnMethod = jest.spyOn(authService, 'userLogin').mockResolvedValueOnce(mockToken);
 
-
             await authController.userLogin(req, res);
-
 
             expect(spyOnMethod).toHaveBeenCalledWith("adnan2306", "adnan1234");
             expect(res.status).toHaveBeenCalledWith(200);
@@ -164,26 +147,20 @@ describe('testing auth controller', () => {
             });
         });
 
-
         it('should return the error that occurs when user login fails', async() => {
-
             const mockError = new Error('User login failed');
 
             isRequestBodyEmpty.mockReturnValue(null);
             authService.userLogin.mockRejectedValueOnce(mockError);
 
-
             await authController.userLogin(req, res);
-
 
             expect(res.status).toHaveBeenCalledWith(401);
             expect(res.json).toHaveBeenCalledWith({
                 success: false,
                 message: 'User login failed'
             });
-
         });
-
-    })
+    });
 
 });

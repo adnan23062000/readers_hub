@@ -102,9 +102,10 @@ describe('testing user controller', () => {
     });
 
     describe('testing getUsers', () => {
-        it('should return a list of all users', async() => {
-            const mockPagination = { page: 0, limit: 3 };
-            
+        
+        const mockPagination = { page: 0, limit: 3 };
+        
+        it('should return a list of all users', async() => {           
             pagination.mockReturnValue(mockPagination);
             getAllUsers.mockReturnValue(mockUser);
             contentNegotiate.mockReturnValue(true);
@@ -117,7 +118,6 @@ describe('testing user controller', () => {
 
         it('should return an error message when getUsers() fails', async() => {
             const mockError = new Error('Error occured');
-            const mockPagination = { page: 0, limit: 3 };
 
             pagination.mockReturnValue(mockPagination);
             getAllUsers.mockRejectedValueOnce(mockError);

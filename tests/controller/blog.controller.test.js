@@ -22,7 +22,6 @@ describe('testing blog controller', () => {
     
     describe('testing createBlog', () => {
         it('should return a empty request body error in the response', async() => {
-
             isRequestBodyEmpty.mockReturnValue({
                 success: false,
                 status: 400,
@@ -38,8 +37,7 @@ describe('testing blog controller', () => {
             });
         });
 
-        it('should return the one or more fields are empty error in the response', async() => {
-            
+        it('should return the one or more fields are empty error in the response', async() => {   
             const req = { body: {blogTitle: 'blog title 3'} };
 
             isRequestBodyEmpty.mockReturnValue(false);
@@ -109,22 +107,21 @@ describe('testing blog controller', () => {
     });
 
     describe('testing getAllBlogs', () => {
+        
+        const mockPagination = { page: 0, limit: 3 };
+        
         it('should return a list of all blogs', async() => {
-            const mockPagination = { page: 0, limit: 3 };
-            
             pagination.mockReturnValue(mockPagination);
             getAllBlogs.mockReturnValue(mockBlog);
             contentNegotiate.mockReturnValue(true);
 
             await blogController.getAllBlogs(req, res);
 
-            expect(contentNegotiate).toHaveBeenCalledWith(req, res, mockBlog);
-            
+            expect(contentNegotiate).toHaveBeenCalledWith(req, res, mockBlog);    
         });
 
         it('should return an error message when getAllBlogs() fails', async() => {
             const mockError = new Error('Error occured');
-            const mockPagination = { page: 0, limit: 3 };
 
             pagination.mockReturnValue(mockPagination);
             getAllBlogs.mockRejectedValueOnce(mockError);
