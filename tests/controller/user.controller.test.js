@@ -41,7 +41,6 @@ describe('testing user controller', () => {
 
         });
 
-
         it('should return user not found error message', async() => {
             const req = { params:{ userName: 'mockParam'} };
             
@@ -52,9 +51,7 @@ describe('testing user controller', () => {
                 return false;
             });
 
-
             await userController.getUserByUsername(req, res);
-
 
             expect(res.status).toHaveBeenCalledWith(404);
             expect(res.json).toHaveBeenCalledWith({
@@ -64,11 +61,27 @@ describe('testing user controller', () => {
 
         });
 
+        it('should return an error when contentNegotiation() method fails', async() => {
+            const req = { params:{ userName: 'mockParam'} };
+            const mockError = new Error('error occured');
+            
+            isParamValid.mockReturnValue(true);
+            getUserByUsername.mockImplementation((userName) => {
+                return mockUser[0];
+            });
+            contentNegotiate.mockReturnValue(mockError);
+
+            try{
+                await userController.getUserByUsername(req, res);
+            } catch(error) {
+                expect(res.status).toHaveBeenCalledWith(500);
+                expect(res.json).toHaveBeenCalledWith({ success: false, message: 'error occured'});
+            }    
+        });
 
         it('should return expected data as response', async() => {
             const req = { params:{ userName: 'mockParam'} };
             
-
             isParamValid.mockReturnValue(true);
             getUserByUsername.mockImplementation((userName) => {
                 return mockUser[0];
@@ -77,18 +90,13 @@ describe('testing user controller', () => {
                 return true;
             });
 
-
             await userController.getUserByUsername(req, res);
-
-            
             expect(contentNegotiate).toHaveBeenCalledWith(req, res, [mockUser[0]]);
-
         });
-
 
         it('should return an error when getUserByUsername fails', async() => {
             const req = { params:{ userName: 'mockParam'} };
-            const mockError = new Error('Error occured');
+            const mockError = new Error('error occured');
 
             isParamValid.mockReturnValue(true);
             getUserByUsername.mockRejectedValueOnce(mockError);
@@ -97,7 +105,6 @@ describe('testing user controller', () => {
 
             expect(res.status).toHaveBeenCalledWith(500);
             expect(res.json).toHaveBeenCalledWith({ success: false, message: 'error occured'});
-
         });
     });
 
@@ -116,6 +123,21 @@ describe('testing user controller', () => {
             
         });
 
+        it('should return an error when contentNegotiation() fails', async() => {           
+            const mockError = new Error('Error occured');
+            
+            pagination.mockReturnValue(mockPagination);
+            getAllUsers.mockReturnValue(mockUser);
+            contentNegotiate.mockReturnValue(mockError);
+
+            try{
+                await userController.getUsers(req, res);
+            } catch(error){
+                expect(res.status).toHaveBeenCalledWith(500);
+                expect(res.json).toHaveBeenCalledWith({ success: false, message: 'error occured'});
+            }
+        });
+
         it('should return an error message when getUsers() fails', async() => {
             const mockError = new Error('Error occured');
 
@@ -130,6 +152,24 @@ describe('testing user controller', () => {
     });
 
     describe('testing updateUser', () => {
+              
+        it('should return empty request body error message', async() => {
+            const req = { body: {} };
+
+            isRequestBodyEmpty.mockReturnValue({
+                success: false,
+                status: 400,
+                message: 'Empty request body'
+            });
+
+            await userController.updateUser(req, res);
+
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.json).toHaveBeenCalledWith({
+                success: false, message: "Empty request body"
+            });
+        });
+        
         it('should return invalid request body error message', async() => {
             const req = { body: { username: 'test' } };
             
@@ -153,6 +193,18 @@ describe('testing user controller', () => {
 
             expect(res.status).toHaveBeenCalledWith(400);
             expect(res.json).toHaveBeenCalledWith({ success: false, message: "invalid username"});
+        });
+
+        it('should return password length error', async() => {
+            const req = { body: { password: 'pass' }, params: 'testuser' };
+
+            isRequestBodyEmpty.mockReturnValue(false);
+            isParamValid.mockReturnValue(true);
+
+            await userController.updateUser(req, res);
+
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.json).toHaveBeenCalledWith( { success: false, message: "password length should be atleast 6 characters" });
         });
 
         it('should return an error message', async() => {

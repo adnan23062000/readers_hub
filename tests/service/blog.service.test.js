@@ -116,7 +116,6 @@ describe('testing blog service', () => {
                 return dtoReturnData;         
             });
 
-
             const result = await blogService.getBlogById(14);
 
             expect(spyOnMethod).toHaveBeenCalledTimes(1);
@@ -127,6 +126,18 @@ describe('testing blog service', () => {
                 blogBody: "adnan12345",
                 author: "adnan11"
             });
+        });
+
+        it('should return null in case of a blog is not found', async() => {   
+            const spyOnMethod = jest
+                .spyOn(blogRepository, 'getBlogById')
+                .mockReturnValue(null);
+
+            const result = await blogService.getBlogById(14);
+
+            expect(spyOnMethod).toHaveBeenCalledTimes(1);
+            expect(spyOnMethod).toHaveBeenCalledWith(mockBlog[0].id);
+            expect(result).toEqual(null);
         });
 
         it('should return an error', async() => {
@@ -168,7 +179,7 @@ describe('testing blog service', () => {
             expect(result).toEqual(mockBlog.slice(offset, limit));
         });
 
-        it('should return an error', async() => {
+        it('should return an error, the error is created in generating blog list', async() => {
             const mockError = new Error('error occured');
       
             calculateOffset.mockImplementation((page, limit) => {
@@ -183,6 +194,23 @@ describe('testing blog service', () => {
 
             const result = await blogService.getAllBlogs(offset, limit);
             expect(result).toBe(mockError);
+        });
+
+        it('should return an error from the blogRepository.getAllBlogs() method', async() => {
+            const mockError = new Error('An error occured');
+      
+            calculateOffset.mockImplementation((page, limit) => {
+                return offset;
+            });
+            
+            const spyOnMethod = jest.spyOn(blogRepository, 'getAllBlogs').mockReturnValue(mockError);
+            
+            try {
+                await blogService.getAllBlogs(offset, limit);
+            } catch (error) {
+                expect(spyOnMethod).toHaveBeenCalledTimes(1);
+                expect(error).toBe(mockError);
+            }
         });
     })
     

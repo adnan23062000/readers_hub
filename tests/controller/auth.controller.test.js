@@ -78,12 +78,28 @@ describe('testing auth controller', () => {
             });
         });
 
+        it('should return a sequelize validation error', async () => {
+            const mockError = new Error('Validation Error');
+            mockError.name = 'SequelizeValidationError';
+        
+            isRequestBodyEmpty.mockReturnValue(null);
+            authService.registerUser.mockRejectedValueOnce(mockError);
+            sequelizerErrorValidation.mockReturnValue(mockError.message);
+        
+            await authController.userRegister(req, res);
+        
+            expect(res.status).toHaveBeenCalledWith(400);
+            expect(res.json).toHaveBeenCalledWith({
+              success: false,
+              message: mockError.message,
+            });
+        });
+
         it('should return the error that occurs when user registration fails', async() => {
             const mockError = new Error('User registration failed');
 
             isRequestBodyEmpty.mockReturnValue(null);
             authService.registerUser.mockRejectedValueOnce(mockError);
-            sequelizerErrorValidation.mockReturnValue('User registration failed');
 
             await authController.userRegister(req, res);
 
@@ -144,6 +160,21 @@ describe('testing auth controller', () => {
             expect(res.json).toHaveBeenCalledWith({
                 success: true,
                 message: "user logged in"
+            });
+        });
+
+        it('should return user not found', async() => {
+            const mockError = new Error('user not found');
+
+            isRequestBodyEmpty.mockReturnValue(null);
+            authService.userLogin.mockRejectedValueOnce(mockError);
+
+            await authController.userLogin(req, res);
+
+            expect(res.status).toHaveBeenCalledWith(404);
+            expect(res.json).toHaveBeenCalledWith({
+                success: false,
+                message: 'user not found'
             });
         });
 

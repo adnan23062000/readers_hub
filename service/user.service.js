@@ -1,5 +1,4 @@
 const UserDTO = require("../DTO/user.dto");
-const { convertToLowerCase } = require("../utils/userValidation.utils");
 const { getUsersList } = require('../utils/dtoDataList.utils');
 const { calculateOffset } = require('../utils/pagination.utils');
 const UserRepository = require("../repository/user.repository");

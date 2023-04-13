@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">52.38% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>42/42</span>
+                <span class='fraction'>22/42</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>5/6</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/5</span>
+                <span class='fraction'>0/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">52.38% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>42/42</span>
+                <span class='fraction'>22/42</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -112,38 +112,38 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">const BlogDTO = require("../DTO/blog.dto");
 const { calculateOffset } = require('../utils/pagination.utils');
@@ -152,39 +152,39 @@ const BlogRepository = require('../repository/blog.repository');
 &nbsp;
 module.exports = {
     
-    createBlog: async (blogData, blogAuthor) =&gt; {
-        return await BlogRepository.createBlog(blogData.blogTitle, blogData.blogBody, blogAuthor);
+    createBlog: <span class="fstat-no" title="function not covered" >async (blogData, blogAuthor) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        return await BlogRepository.createBlog(blogData.blogTitle, blogData.blogBody, blogAuthor);</span>
     },
 &nbsp;
-    getAllBlogs: async (page, limit) =&gt; {
-&nbsp;
-        const offset = calculateOffset(page, limit);
-        
-        const blogs = await BlogRepository.getAllBlogs(offset, limit);
-        const blogsList = getBlogsList(blogs);
-&nbsp;
-        return blogsList;
+    getAllBlogs: <span class="fstat-no" title="function not covered" >async (page, limit) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >        const offset = calculateOffset(page, limit);</span>
+<span class="cstat-no" title="statement not covered" >        </span>
+<span class="cstat-no" title="statement not covered" >        const blogs = await BlogRepository.getAllBlogs(offset, limit);</span>
+<span class="cstat-no" title="statement not covered" >        const blogsList = getBlogsList(blogs);</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >        return blogsList;</span>
     },
 &nbsp;
-    getBlogById: async (blogId) =&gt; {
-        
-        const blog = await BlogRepository.getBlogById(blogId);
-&nbsp;
-        if(!blog)
-<span class="branch-0 cbranch-no" title="branch not covered" >            return null;</span>
-        
-        const blogDTO = new BlogDTO(blog);
-        return blogDTO;
-    
+    getBlogById: <span class="fstat-no" title="function not covered" >async (blogId) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        </span>
+<span class="cstat-no" title="statement not covered" >        const blog = await BlogRepository.getBlogById(blogId);</span>
+<span class="cstat-no" title="statement not covered" ></span>
+<span class="cstat-no" title="statement not covered" >        if(!blog)</span>
+<span class="cstat-no" title="statement not covered" >            return null;</span>
+<span class="cstat-no" title="statement not covered" >        </span>
+<span class="cstat-no" title="statement not covered" >        const blogDTO = new BlogDTO(blog);</span>
+<span class="cstat-no" title="statement not covered" >        return blogDTO;</span>
+<span class="cstat-no" title="statement not covered" >    </span>
     },
 &nbsp;
-    updateBlog: async (blogId, updatedBlogBody) =&gt; {
-        return await BlogRepository.updateBlog(blogId, updatedBlogBody);
+    updateBlog: <span class="fstat-no" title="function not covered" >async (blogId, updatedBlogBody) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >        return await BlogRepository.updateBlog(blogId, updatedBlogBody);</span>
     },
 &nbsp;
-    deleteBlog: async (blogId) =&gt; {   
-        return await BlogRepository.deleteBlog(blogId);
-    },
+    deleteBlog: <span class="fstat-no" title="function not covered" >async (blogId) =&gt; {   </span>
+<span class="cstat-no" title="statement not covered" >        return await BlogRepository.deleteBlog(blogId);</span>
+<span class="cstat-no" title="statement not covered" >    },</span>
 &nbsp;
 };</pre></td></tr></table></pre>
 
@@ -193,7 +193,7 @@ module.exports = {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-04-06T04:22:37.220Z
+                at 2023-04-11T09:33:26.483Z
             </div>
         <script src="../prettify.js"></script>
         <script>

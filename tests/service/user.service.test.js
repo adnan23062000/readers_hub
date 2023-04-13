@@ -1,6 +1,5 @@
 const userService = require('../../service/user.service');
 const userRepository = require('../../repository/user.repository');
-const { convertToLowerCase } = require('../../utils/userValidation.utils');
 const { calculateOffset } = require('../../utils/pagination.utils');
 const { getUsersList } = require('../../utils/dtoDataList.utils');
 const userDTO = require('../../DTO/user.dto');
@@ -134,6 +133,18 @@ describe('testing user service', () => {
             });
         });
 
+        it('should return a null value from userRepository.getUserByUsername()', async() => {
+            const spyOnMethod = jest
+                .spyOn(userRepository, 'getUserByUsername')
+                .mockReturnValue(null);
+   
+            const result = await userService.getUserByUsername('testuser');
+
+            expect(spyOnMethod).toHaveBeenCalledTimes(1);
+            expect(spyOnMethod).toHaveBeenCalledWith(mockUser[0].username);
+            expect(result).toBe(null);
+        });
+
         it('should return an error', async() => {
             const mockError = new Error('error occured');
       
@@ -150,7 +161,7 @@ describe('testing user service', () => {
 
 
     describe('testing get user by username with password', () => {
-        it('should call userRepository.getUserWithPassword() method and return a user object of that username with hashed password', async() => {
+        it('should call userRepository.getUserByUsername() method and return a user object of that username with hashed password', async() => {
             
             const spyOnMethod = jest
                 .spyOn(userRepository, 'getUserByUsername')
@@ -172,6 +183,18 @@ describe('testing user service', () => {
                 createdAt: '2023-03-22T10:30:55.000Z',
                 updateAt: '2023-03-28T10:57:10.000Z'
             });
+        });
+
+        it('should return a null value from userRepository.getUserByUsername()', async() => {
+            const spyOnMethod = jest
+                .spyOn(userRepository, 'getUserByUsername')
+                .mockReturnValue(null);
+   
+            const result = await userService.getUserWithPassword('testuser', true);
+
+            expect(spyOnMethod).toHaveBeenCalledTimes(1);
+            expect(spyOnMethod).toHaveBeenCalledWith(mockUser[0].username);
+            expect(result).toBe(null);
         });
 
         it('should return an error', async() => {
@@ -222,6 +245,23 @@ describe('testing user service', () => {
             expect(spyOnMethod).toHaveBeenCalledTimes(1);
             expect(result).toEqual(dataAfterPagination);
 
+        });
+
+        it('should return an error from the userRepository.getAllUsers() method', async() => {
+            const mockError = new Error('An error occured');
+      
+            calculateOffset.mockImplementation((page, limit) => {
+                return offset;
+            });
+            
+            const spyOnMethod = jest.spyOn(userRepository, 'getAllUsers').mockReturnValue(mockError);
+            
+            try {
+                await userService.getAllUsers(offset, limit);
+            } catch (error) {
+                expect(spyOnMethod).toHaveBeenCalledTimes(1);
+                expect(error).toBe(mockError);
+            }
         });
 
         it('should return an error', async() => {

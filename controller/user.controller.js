@@ -7,7 +7,6 @@ const Validation = require('../utils/requestValidation.utils');
 
 module.exports = {
     
-
     getUserByUsername: async (req, res) => {
         const userName = req.params.userName;
 
@@ -33,7 +32,6 @@ module.exports = {
         }
         
     },
-
 
 
     getUsers: async (req, res) => {
