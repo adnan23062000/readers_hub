@@ -4,11 +4,11 @@ const { isUserLoggedIn } = require('../middleware/authentication.middleware');
 const router = require("express").Router();
 
 router.route('/')
-    .get(isUserLoggedIn, getUsers)
+    .get(getUsers)
 
 
 router.route('/:userName')
-    .get(isUserLoggedIn, getUserByUsername)
+    .get(getUserByUsername)
     .put(isUserLoggedIn, updateUser)
     .delete(isUserLoggedIn, deleteUser)
 

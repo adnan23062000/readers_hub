@@ -5,11 +5,13 @@ const cookieParser = require('cookie-parser');
 const indexRouter = require("./router/index.router");
 const syncModels = require('./model/index.model');
 const database = require('./config/databaseSequelize');
+const cors = require('cors');
 
 const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(cors());
 
 database.connectToDB();
 syncModels();

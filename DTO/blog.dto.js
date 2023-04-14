@@ -5,7 +5,9 @@ class BlogDTO {
           id: blog["blogId"],
           blogTitle: blog["blogTitle"],
           blogBody: blog["blogBody"],
-          author: blog["username"]
+          author: blog["username"],
+          createdAt: blog["createdAt"],
+          updatedAt: blog["updatedAt"]
         };
 
         return obj;
