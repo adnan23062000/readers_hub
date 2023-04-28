@@ -1,22 +1,20 @@
 require("dotenv").config();
-
 const express = require("express");
-
 const bodyParser = require('body-parser');
-
 const cookieParser = require('cookie-parser');
+const indexRouter = require("./router/index.router");
+const syncModels = require('./model/index.model');
+const database = require('./config/databaseSequelize');
 
 const app = express();
-
-const indexRouter = require("./router/index.router");
-
-
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+database.connectToDB();
+syncModels();
 
-app.use('/', indexRouter);
+app.use('/api/v1', indexRouter);
 
 app.use('*', (req, res) => {
     return res.status(404).json({

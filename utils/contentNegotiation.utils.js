@@ -8,15 +8,6 @@ module.exports = {
 
     contentNegotiate: (req, res, results) => {  
         
-        
-        if(req.headers.accept === 'application/json'){
-            return res.status(200).json({
-                success: true,
-                data: results
-            }); 
-        }
-
-
 
         if(req.headers.accept === 'application/xml'){
 
@@ -41,7 +32,7 @@ module.exports = {
                     formattedString += `${key}: ${value}\n`;
                 }
 
-                formattedString +=`\n\n\n`;
+                formattedString +=`\n\n`;
 
             }
             
@@ -60,7 +51,9 @@ module.exports = {
             res.status(200);
             return res.send(htmlData);
         }
+        
 
+        //default return of json data
         return res.status(200).json({
             success: true,
             data: results

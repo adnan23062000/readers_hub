@@ -13,7 +13,6 @@ module.exports = {
 
     generateUUID:  () => {
         const myUuid = uuidv4();
-        console.log(myUuid);
         return myUuid;
     },
 
@@ -24,7 +23,7 @@ module.exports = {
         return encryptedPassword;
     },
 
-    checkParamValidity: (parameter) => {
+    isParamValid: (parameter) => {
         if(parameter.includes(" ")){
             return false;
         }

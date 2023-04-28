@@ -21,6 +21,4 @@ module.exports = {
         return (limit*(page-1));
     }
 
-
-
 }
