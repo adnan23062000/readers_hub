@@ -13,14 +13,10 @@ module.exports = {
             paginationObj.limit = 5;
 
         return paginationObj;
-
     },
-
 
     calculateOffset: (page, limit) => {
         return (limit*(page-1));
     }
-
-
 
 }

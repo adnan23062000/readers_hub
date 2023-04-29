@@ -15,17 +15,29 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
     primaryKey: true,
+    unique: {
+      args: true,
+      msg: 'user already exists'
+    },
     validate: {
-      isAlphanumeric: true,
+      isAlphanumeric: {
+        msg: "Invalid username"
+      },
     },
   },
 
   email: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
+    unique: {
+      arg: true,
+      msg: "Email already exists"
+    },
     validate: {
-      isEmail: true,
+      isEmail: {
+        msg: "not an email"
+      },
+      
     },
   },
 
@@ -33,7 +45,7 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
     validate: {
-      len: [6, ],
+      len: [6, ], 
     },
   },
 
@@ -52,12 +64,16 @@ const User = sequelize.define('User', {
 
 {
     hooks: {
-        beforeSave: async (User) => {
+        beforeCreate: async (User) => {
+            const salt = bcrypt.genSaltSync(parseInt(process.env.SALT_ROUND));
+            const encryptedPassword = bcrypt.hashSync(User.password, salt);
+            User.password = encryptedPassword;  
+        },
+        beforeUpdate: async(User) => {
           if (User.changed('password')) {
-
-          const salt = bcrypt.genSaltSync(parseInt(process.env.SALT_ROUND));
-          const encryptedPassword = bcrypt.hashSync(User.password, salt);
-          User.password = encryptedPassword;
+            const salt = bcrypt.genSaltSync(parseInt(process.env.SALT_ROUND));
+            const encryptedPassword = bcrypt.hashSync(User.password, salt);
+            User.password = encryptedPassword;
           }
         }
       }
