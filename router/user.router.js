@@ -13,5 +13,4 @@ router.route('/:userName')
     .delete(isUserLoggedIn, deleteUser)
 
 
-
 module.exports = router;

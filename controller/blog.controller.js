@@ -2,8 +2,7 @@ const BlogService = require('../service/blog.service');
 const { contentNegotiate } = require("../utils/contentNegotiation.utils");
 const { pagination } = require('../utils/pagination.utils');
 const Validation = require('../utils/requestValidation.utils');
-
-
+const jwt = require('jsonwebtoken');
 
 module.exports = {
     
@@ -23,8 +22,10 @@ module.exports = {
             return res.status(400).json({success: false, message: "Invalid request body"});
         
 
-        const author = req.username;
-
+        console.log(req.cookies);
+        const token = req.cookies.jwt;
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const author = decoded.username;
 
         try{ 
             const blogData = await BlogService.createBlog(body, author);                

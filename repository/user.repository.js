@@ -1,7 +1,7 @@
 const User = require('../model/user.model');
 
 const getAllUsers = async (offset, limit) => {
-    const users = await User.findAll({ offset, limit });
+    const users = await User.findAll({ order: [['updatedAt', 'DESC']], offset, limit });
     return users;
 };
 

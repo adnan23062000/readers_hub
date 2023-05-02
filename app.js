@@ -6,12 +6,19 @@ const indexRouter = require("./router/index.router");
 const syncModels = require('./model/index.model');
 const database = require('./config/databaseSequelize');
 const cors = require('cors');
-
 const app = express();
+
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(cors());
+
+app.use(cors({
+    origin: [process.env.CROSS_ORIGIN_1, process.env.CROSS_ORIGIN_2],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
+    credentials: true,
+}));
+
 
 database.connectToDB();
 syncModels();

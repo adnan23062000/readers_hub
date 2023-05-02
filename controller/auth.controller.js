@@ -22,7 +22,7 @@ module.exports = {
 
         try{    
             const accessToken = await authService.registerUser(body);
-            res.cookie("jwt", accessToken, { httpOnly: true });
+            res.cookie("jwt", accessToken);
                                   
             return res.status(201).json({
                 success: true,
@@ -60,7 +60,7 @@ module.exports = {
         
             const accessToken = await authService.userLogin(username, password);
 
-            res.cookie("jwt", accessToken, { httpOnly: true });
+            res.cookie("jwt", accessToken);
         
             res.status(200).json({
                 success: true,

@@ -1,7 +1,7 @@
 const Blog = require('../model/blog.model');
 
 const getAllBlogs = async (offset, limit) => {
-    const blogs = await Blog.findAll({ offset, limit });
+    const blogs = await Blog.findAll({ order: [['updatedAt', 'DESC']], offset, limit });
     return blogs;
 };
 
