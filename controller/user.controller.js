@@ -1,7 +1,8 @@
-const { getUserByUsername, updateUser, getAllUsers, deleteUser } = require("../service/user.service");
+const { getUserByUsername, getUserWithPassword, updateUser, getAllUsers, deleteUser } = require("../service/user.service");
 const { isParamValid, checkPasswordLength, convertToLowerCase } = require("../utils/userValidation.utils");
 const { contentNegotiate } = require("../utils/contentNegotiation.utils");
 const { pagination } = require('../utils/pagination.utils');
+const { compareHashedPassword } = require('../utils/userValidation.utils');
 const Validation = require('../utils/requestValidation.utils');
 
 
@@ -16,7 +17,7 @@ module.exports = {
         }
         
         try{
-            const result = await getUserByUsername(userName);
+            const result = await getUserByUsername(userName, true);
             if(!result)
                 return res.status(404).json({
                     success: false,
@@ -61,7 +62,7 @@ module.exports = {
             })
         }
 
-        if(!body.password)
+        if(!body.password || !body.currentPassword)
             return res.status(400).json({ success: false, message: "Invalid request body"}); 
 
         const userName = req.params.userName;
@@ -77,6 +78,15 @@ module.exports = {
             })
         }
 
+        const currentUser = await getUserWithPassword(userName, true);
+        const currentPasswordCorrect = await compareHashedPassword(body.currentPassword, currentUser.password);
+        
+        if(!currentPasswordCorrect){
+            return res.status(400).json({
+                success: false,
+                message: "current password is not correct"
+            })
+        }
 
         try{
             const result = await updateUser(convertToLowerCase(userName), body.password);

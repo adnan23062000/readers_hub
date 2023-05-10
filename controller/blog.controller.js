@@ -95,7 +95,7 @@ module.exports = {
         const blogId = req.params.blogId;
         
         try{
-            const result = await BlogService.updateBlog(blogId, body.blogBody);
+            const result = await BlogService.updateBlog(blogId, body.blogTitle, body.blogBody);
             if(result){
                 return res.status(200).json({ success: true, data: "Blog updated successfully" });
             }

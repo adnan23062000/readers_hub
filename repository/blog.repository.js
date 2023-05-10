@@ -14,8 +14,8 @@ const createBlog = async (blogTitle, blogBody, username) => {
     return await Blog.create({ blogTitle, blogBody, username });
 };
 
-const updateBlog = async (blogId, blogBody) => {
-    const blog = await Blog.update({ blogBody }, {
+const updateBlog = async (blogId, blogTitle, blogBody) => {
+    const blog = await Blog.update({ blogTitle, blogBody }, {
         where: {
             blogId
         }

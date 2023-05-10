@@ -31,8 +31,8 @@ module.exports = {
     
     },
 
-    updateBlog: async (blogId, updatedBlogBody) => {
-        return await BlogRepository.updateBlog(blogId, updatedBlogBody);
+    updateBlog: async (blogId, updatedBlogTitle, updatedBlogBody) => {
+        return await BlogRepository.updateBlog(blogId, updatedBlogTitle, updatedBlogBody);
     },
 
     deleteBlog: async (blogId) => {   
