@@ -25,6 +25,12 @@ module.exports = {
         return usersList;
     },
 
+    
+    getUserCount: async () => {
+        const userCount = UserRepository.getTotalUserCount();
+        return userCount;
+    },
+
 
     getUserByUsername: async (userName) => {
         

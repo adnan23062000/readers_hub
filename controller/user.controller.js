@@ -1,4 +1,4 @@
-const { getUserByUsername, getUserWithPassword, updateUser, getAllUsers, deleteUser } = require("../service/user.service");
+const { getUserByUsername, getUserWithPassword, updateUser, getAllUsers, deleteUser, getUserCount } = require("../service/user.service");
 const { isParamValid, checkPasswordLength, convertToLowerCase } = require("../utils/userValidation.utils");
 const { contentNegotiate } = require("../utils/contentNegotiation.utils");
 const { pagination } = require('../utils/pagination.utils');
@@ -48,7 +48,15 @@ module.exports = {
         }
     },
 
-
+    getUserCount: async (req, res) => {
+        try{
+            const userCount = await getUserCount();
+            return res.status(200).json({ success: true, totalUsers: userCount});
+        }
+        catch(error){
+            return res.status(500).json({ success: false, message: 'error occured'});
+        }
+    },
 
     updateUser: async (req, res) => {
         

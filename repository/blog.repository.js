@@ -29,6 +29,11 @@ const deleteBlog = async (blogId) => {
     }});
 };
 
+const getTotalBlogCount = async () => {
+    const count = await Blog.count();
+    return count;
+};
+
 
 module.exports = {
   getAllBlogs,
@@ -36,4 +41,5 @@ module.exports = {
   createBlog,
   updateBlog,
   deleteBlog,
+  getTotalBlogCount,
 };

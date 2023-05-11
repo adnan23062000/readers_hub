@@ -19,6 +19,11 @@ module.exports = {
         return blogsList;
     },
 
+    getBlogCount: async () => {
+        const blogCount = BlogRepository.getTotalBlogCount();
+        return blogCount;
+    },
+
     getBlogById: async (blogId) => {
         
         const blog = await BlogRepository.getBlogById(blogId);
