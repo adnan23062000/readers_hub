@@ -1,4 +1,5 @@
 APP_PORT='my app port'
+APP_HOST='my IP address'
 DB_PORT='my db port'
 DB_HOST='host name of my db'
 DB_USER='username of my db'
