@@ -81,7 +81,7 @@ module.exports = {
     getBlogCount: async (req, res) => {
         try{
             const blogCount = await BlogService.getBlogCount();
-            return res.status(200).json({ success: true, totalUsers: blogCount});
+            return res.status(200).json({ success: true, totalBlogs: blogCount});
         }
         catch(error){
             return res.status(500).json({ success: false, message: 'error occured'});
