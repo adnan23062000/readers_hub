@@ -13,7 +13,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 app.use(cors({
-    origin: [process.env.CROSS_ORIGIN_1, process.env.CROSS_ORIGIN_2],
+    // origin: [process.env.CROSS_ORIGIN_1, process.env.CROSS_ORIGIN_2],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
     credentials: true,
