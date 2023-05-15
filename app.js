@@ -32,6 +32,6 @@ app.use('*', (req, res) => {
     })
 });
 
-app.listen(process.env.APP_PORT || 8000, process.env.APP_HOST || 'localhost', () => {
-    console.log("server up and running on PORT: ", process.env.APP_HOST, process.env.APP_PORT);
+app.listen(process.env.PORT || 8000, process.env.HOST || 'localhost', () => {
+    console.log("server up and running on PORT: ", process.env.HOST, process.env.PORT);
 });
